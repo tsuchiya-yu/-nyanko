@@ -26,15 +26,17 @@ create table public.profiles (
 -- Create cats table
 create table public.cats (
     id uuid default gen_random_uuid() primary key,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     name text not null,
     birthdate date not null,
-    is_birthdate_estimated boolean default false,
+    is_birthdate_estimated boolean default false not null,
     breed text not null,
     catchphrase text,
     description text not null,
     image_url text not null,
-    owner_id uuid references public.profiles(id) on delete cascade not null,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+    instagram_url text,
+    x_url text,
+    owner_id uuid references public.profiles(id) on delete cascade not null
 );
 
 -- Create cat photos table
@@ -128,13 +130,13 @@ create policy "Users can delete their own favorites"
 -- Insert sample data
 insert into public.profiles (id, name, avatar_url)
 values
-    ('d0d8488e-b86e-4e35-88c7-3e39c4b978d6', '猫野 花子', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80'),
-    ('f5b57068-f0c9-4d39-8f6c-1f8f557f777f', '佐藤 太郎', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e');
+    ('3e07891a-4d8b-4d8f-9748-bc59b3d02e1b', '猫野 花子', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80'),
+    ('fae59c15-b0a4-4681-9e0a-083bf285bac6', '佐藤 太郎', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e');
 
-insert into public.cats (id, name, birthdate, is_birthdate_estimated, breed, catchphrase, description, image_url, owner_id)
+insert into public.cats (id, name, birthdate, is_birthdate_estimated, breed, catchphrase, description, image_url, instagram_url, x_url, owner_id)
 values
-    ('897badee-71fd-40f9-a006-f8d7606f38d2', 'モカ', '2020-04-15', false, 'スコティッシュフォールド', 'いつも元気いっぱい！甘えん坊な女の子♪', '人懐っこくて、来客時もすぐに膝の上に乗ってきます。おやつの時間が大好きで、音を聞くとどこからともなく現れます。', 'https://images.unsplash.com/photo-1513245543132-31f507417b26', 'd0d8488e-b86e-4e35-88c7-3e39c4b978d6'),
-    ('b49cb104-9c63-4b45-a5b3-76c13d3b6f8c', 'ソラ', '2021-07-20', true, '雑種', '空のように自由な男の子', '保護猫として迎えました。最初は人見知りでしたが、今では家族の一員として毎日楽しく過ごしています。', 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba', 'f5b57068-f0c9-4d39-8f6c-1f8f557f777f');
+    ('897badee-71fd-40f9-a006-f8d7606f38d2', 'モカ', '2020-04-15', false, 'スコティッシュフォールド', 'いつも元気いっぱい！甘えん坊な女の子♪', '人懐っこくて、来客時もすぐに膝の上に乗ってきます。おやつの時間が大好きで、音を聞くとどこからともなく現れます。', 'https://images.unsplash.com/photo-1513245543132-31f507417b26', 'https://www.instagram.com/moka_scottish/', 'https://x.com/moka_chan', '3e07891a-4d8b-4d8f-9748-bc59b3d02e1b'),
+    ('b49cb104-9c63-4b45-a5b3-76c13d3b6f8c', 'ソラ', '2021-07-20', true, '雑種', '空のように自由な男の子', '保護猫として迎えました。最初は人見知りでしたが、今では家族の一員として毎日楽しく過ごしています。', 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba', 'https://www.instagram.com/sora_freedom/', null, 'fae59c15-b0a4-4681-9e0a-083bf285bac6');
 
 insert into public.cat_photos (cat_id, image_url, comment)
 values

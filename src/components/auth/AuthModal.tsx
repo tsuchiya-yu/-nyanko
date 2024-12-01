@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import { useSessionRefresh } from '../../hooks/useSessionRefresh';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
+  useSessionRefresh();
   const navigate = useNavigate();
   const { setUser, fetchProfile } = useAuthStore();
   const [mode, setMode] = useState<'login' | 'register'>('login');

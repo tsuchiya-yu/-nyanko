@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PawPrint } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import AuthModal from './auth/AuthModal';
 import { useHeaderFooter } from '../context/HeaderContext';
@@ -22,12 +21,11 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-pink-50 to-purple-50">
       {isHeaderFooterVisible && (
-        <header className="fixed top-0 left-0 right-0 bg-white shadow">
+        <header className="fixed top-0 left-0 right-0 bg-white shadow z-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <Link to="/" className="flex items-center">
-                <PawPrint className="h-8 w-8 text-pink-500" />
-                <span className="ml-2 text-xl font-semibold text-gray-800">にゃんこみゅ</span>
+                <img src="/images/logo.png" alt="ロゴ" loading="lazy" className='inline-block w-[120px]'/>
               </Link>
               <div className="flex items-center space-x-4">
                 {user ? (
@@ -69,7 +67,7 @@ export default function Layout({ children }: LayoutProps) {
         </header>
       )}
 
-      <main className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'my-20nm' : 'my-2'}` }>
+      <main className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'my-20' : 'my-2'}` }>
         {children}
       </main>
 
@@ -85,7 +83,7 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
             </div>
             <div className="text-center text-gray-500">
-              <p>© 2024 にゃんこみゅ All rights reserved.</p>
+              <p>© 2024 CAT LINK All rights reserved.</p>
             </div>
           </div>
         </footer>

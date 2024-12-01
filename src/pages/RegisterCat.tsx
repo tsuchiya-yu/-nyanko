@@ -13,6 +13,8 @@ interface CatFormData {
   catchphrase: string;
   description: string;
   imageUrl: string;
+  instagramUrl?: string;
+  xUrl?: string;
 }
 
 export default function RegisterCat() {
@@ -30,6 +32,8 @@ export default function RegisterCat() {
         catchphrase: data.catchphrase,
         description: data.description,
         image_url: data.imageUrl,
+        instagram_url: data.instagramUrl || null,
+        x_url: data.xUrl || null,
         owner_id: user?.id,
       });
 

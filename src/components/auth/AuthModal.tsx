@@ -26,7 +26,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     if (onSuccess) {
       onSuccess();
     }
-    alert(mode === 'login' ? 'ログインしました' : 'アカウントを作成しました');
+    console.log(mode === 'login' ? 'ログインしました' : 'アカウントを作成しました');
     navigate(`/profile/${userId}`);
   };
 
@@ -78,7 +78,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       <div className="bg-white rounded-2xl w-full max-w-md relative">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+          className="absolute right-[-10px] top-[-30px] text-gray-400 hover:text-gray-600"
         >
           <X className="h-6 w-6" />
         </button>
@@ -115,7 +115,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             {mode === 'register' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  お名前
+                  飼い主さんのニックネーム
                 </label>
                 <input
                   type="text"
@@ -124,14 +124,14 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   onChange={(e) => setName(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  placeholder="猫野 太郎"
+                  placeholder="猫田 太郎"
                 />
               </div>
             )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                メールアドレス
+               飼い主さんのメールアドレス
               </label>
               <input
                 type="email"

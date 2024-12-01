@@ -22,14 +22,15 @@ export default function Home() {
   return (
     <div className="space-y-12">
       <section className="text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          愛猫との素敵な思い出を共有しよう
+        <h1 className="text-3xl my-8 font-bold text-center text-black">
+          愛猫の紹介を１ページに
         </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          にゃんこみゅは、猫好きの皆さんのための特別なコミュニティ。
-          あなたの大切な家族を紹介して、新しい出会いを見つけましょう。
+        <img src="/images/main_visual2.jpg" alt="Main Visual" className="h-auto" loading="lazy" />
+        <p className="text-2xl text-black mt-10">
+          「CAT LINK」は愛猫のプロフィールページをかんたんに作れます
         </p>
       </section>
+
 
       <section>
         <div className="flex justify-between items-center mb-6">

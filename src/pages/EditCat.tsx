@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -21,7 +21,19 @@ export default function EditCat() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CatFormData>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<CatFormData>({
+    defaultValues: {
+      name: '',
+      birthdate: '',
+      isBirthdateEstimated: false,
+      breed: '',
+      catchphrase: '',
+      description: '',
+      imageUrl: '',
+      instagramUrl: '',
+      xUrl: '',
+    }
+  });
 
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
@@ -39,21 +51,25 @@ export default function EditCat() {
         throw new Error('編集権限がありません');
       }
 
-      reset({
-        name: data.name,
-        birthdate: data.birthdate,
-        isBirthdateEstimated: data.is_birthdate_estimated,
-        breed: data.breed,
-        catchphrase: data.catchphrase || '',
-        description: data.description,
-        imageUrl: data.image_url,
-        instagramUrl: data.instagram_url || '',
-        xUrl: data.x_url || '',
-      });
-
       return data;
     },
   });
+
+  useEffect(() => {
+    if (cat) {
+      reset({
+        name: cat.name,
+        birthdate: cat.birthdate,
+        isBirthdateEstimated: cat.is_birthdate_estimated,
+        breed: cat.breed,
+        catchphrase: cat.catchphrase || '',
+        description: cat.description,
+        imageUrl: cat.image_url,
+        instagramUrl: cat.instagram_url || '',
+        xUrl: cat.x_url || '',
+      });
+    }
+  }, [cat, reset]);
 
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {

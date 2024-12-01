@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Heart, Share2, ArrowLeft, Image, Instagram, Twitter, Edit } from 'lucide-react';
+import { Share2, ArrowLeft, Instagram, Twitter } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import AuthModal from '../components/auth/AuthModal';
 import ShareModal from '../components/ShareModal';
+import { handleApiError } from '../lib/api';
+import { useHeaderFooter } from '../context/HeaderContext';
+import { calculateAge } from '../utils/calculateAge';
 
 interface CatWithOwner {
   id: string;
@@ -30,18 +33,34 @@ interface CatPhoto {
   comment: string;
 }
 
-function calculateAge(birthdate: string): number {
-  const birth = new Date(birthdate);
-  const today = new Date();
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  
-  return age;
-}
+// モーダルコンポーネント
+const Modal = ({ isOpen, onClose, photo }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black/70"
+      style={{ marginTop: "0" }}
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg p-4 max-w-md mx-auto relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-[-30px] right-[-20px] text-gray-600 text-3xl"
+        >
+          ×
+        </button>
+        <img src={photo.image_url} alt="" className="w-full h-auto rounded-lg mb-4" />
+        {photo.comment && (
+          <p className="text-gray-800 text-sm text-center">{photo.comment}</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default function CatProfile() {
   const { id } = useParams<{ id: string }>();
@@ -49,27 +68,35 @@ export default function CatProfile() {
   const queryClient = useQueryClient();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const { setHeaderFooterVisible } = useHeaderFooter();
 
   const { data: cat, isLoading, error } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
+      try {
+        if (!id) throw new Error('猫IDが見つかりません');
 
-      const { data, error: fetchError } = await supabase
-        .from('cats')
-        .select(`
-          *,
-          profiles (
-            name
-          )
-        `)
-        .eq('id', id)
-        .single();
+        const { data, error: fetchError } = await supabase
+          .from('cats')
+          .select(`
+            *,
+            profiles (
+              name
+            )
+          `)
+          .eq('id', id)
+          .single();
 
-      if (fetchError) throw fetchError;
-      if (!data) throw new Error('猫が見つかりません');
-      
-      return data as CatWithOwner;
+        if (fetchError) throw fetchError;
+        if (!data) throw new Error('猫が見つかりません');
+        
+        return data as CatWithOwner;
+      } catch (error) {
+        await handleApiError(error);
+        throw error;
+      }
     },
     retry: false,
   });
@@ -138,6 +165,24 @@ export default function CatProfile() {
     toggleFavorite.mutate();
   };
 
+  const openModal = (photo) => {
+    setSelectedPhoto(photo);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPhoto(null);
+  };
+
+  useEffect(() => {
+    setHeaderFooterVisible(false);
+
+    return () => {
+      setHeaderFooterVisible(true);
+    };
+  }, [setHeaderFooterVisible]);
+
   if (isLoading) {
     return (
       <div className="text-center py-12">
@@ -168,67 +213,42 @@ export default function CatProfile() {
   const age = calculateAge(cat.birthdate);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="relative h-96">
+    <div className="max-w-[480px] mx-auto space-y-6 relative">
+      <div className='text-center mt-6'>
+          <Link to="/">
+            <img src="/images/logo_title.png" alt="ロゴ" loading="lazy" className='inline-block w-[160px]'/>
+          </Link>
+      </div>
+      <div className="overflow-hidden">
+        <div className="flex flex-col items-center text-center">
+          <div className="fixed top-4 right-4 z-40">
+            <button
+              onClick={() => setIsShareModalOpen(true)}
+              className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
+            >
+              <Share2 className="h-6 w-6" />
+            </button>
+          </div>
           <img
             src={cat.image_url}
             alt={cat.name}
-            className="w-full h-full object-cover"
+            className="w-[88px] h-[88px] rounded-full object-cover"
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
-            <h1 className="text-3xl font-bold text-white">{cat.name}</h1>
-            <p className="text-white/90">
-              {cat.breed} • {age}歳
+          <div className="pt-2.5 text-gray-700">
+            <h1 className="text-sm font-bold ">{cat.name}</h1>
+            <p className="text-xs">
+              {cat.breed} | {age}歳
               {cat.is_birthdate_estimated && ' (推定)'}
             </p>
             {cat.catchphrase && (
-              <p className="text-white/90 mt-2 text-lg">{cat.catchphrase}</p>
+              <p className="mt-2 text-base">{cat.catchphrase}</p>
             )}
           </div>
         </div>
 
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <p className="text-sm text-gray-500">飼い主</p>
-              <Link
-                to={`/profile/${cat.owner_id}`}
-                className="text-lg font-medium hover:text-pink-500"
-              >
-                {cat.profiles.name}さん
-              </Link>
-            </div>
-            <div className="flex space-x-4">
-              {user?.id === cat.owner_id && (
-                <Link
-                  to={`/cats/${cat.id}/edit`}
-                  className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
-                >
-                  <Edit className="h-6 w-6" />
-                </Link>
-              )}
-              <button
-                onClick={handleFavoriteClick}
-                className={`p-2 rounded-full transition-colors ${
-                  isFavorited
-                    ? 'bg-pink-500 text-white'
-                    : 'bg-pink-100 text-pink-500 hover:bg-pink-200'
-                }`}
-              >
-                <Heart className="h-6 w-6" />
-              </button>
-              <button
-                onClick={() => setIsShareModalOpen(true)}
-                className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
-              >
-                <Share2 className="h-6 w-6" />
-              </button>
-            </div>
-          </div>
-
+        <div className="">
           {(cat.instagram_url || cat.x_url) && (
-            <div className="flex space-x-4 mb-6">
+            <div className="flex space-x-1 my-4 justify-center">
               {cat.instagram_url && (
                 <a
                   href={cat.instagram_url}
@@ -236,8 +256,7 @@ export default function CatProfile() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-pink-500 hover:text-pink-600"
                 >
-                  <Instagram className="h-5 w-5 mr-2" />
-                  Instagram
+                  <Instagram className="h-8 w-8 mr-2" />
                 </a>
               )}
               {cat.x_url && (
@@ -247,54 +266,45 @@ export default function CatProfile() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-gray-500 hover:text-gray-600"
                 >
-                  <Twitter className="h-5 w-5 mr-2" />
-                  X (Twitter)
+                  <Twitter className="h-8 w-8 mr-2" />
                 </a>
               )}
             </div>
           )}
 
           <div className="prose max-w-none">
-            <h2 className="text-xl font-semibold mb-2">プロフィール</h2>
-            <p className="text-gray-700 whitespace-pre-line">{cat.description}</p>
+            <p className="text-gray-700 whitespace-pre-line text-sm">{cat.description}</p>
           </div>
 
           {photos && photos.length > 0 && (
-            <div className="mt-8">
+            <div className="mt4">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">写真ギャラリー</h2>
-                {user?.id === cat.owner_id && (
-                  <Link
-                    to={`/cats/${cat.id}/photos`}
-                    className="inline-flex items-center text-pink-500 hover:text-pink-600"
-                  >
-                    <Image className="h-5 w-5 mr-2" />
-                    写真を管理
-                  </Link>
-                )}
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {photos.map((photo) => (
                   <div
                     key={photo.id}
-                    className="relative aspect-square rounded-lg overflow-hidden"
+                    className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
+                    onClick={() => openModal(photo)}
                   >
                     <img
                       src={photo.image_url}
-                      alt=""
+                      alt={`${cat.name} の画像`}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
-                    {photo.comment && (
-                      <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity
-                        flex items-center justify-center p-4">
-                        <p className="text-white text-sm text-center">{photo.comment}</p>
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
             </div>
           )}
+        </div>
+
+        <div className='text-center mt-20'>
+          <Link to="/">
+            <img src="/images/logo_title.png" alt="ロゴ" className='inline-block w-[160px]'/>
+          </Link>
+          <p className="text-xs text-gray-700 mt-2">©︎CAT LINK All Rights Reserved</p>
         </div>
       </div>
 
@@ -307,6 +317,7 @@ export default function CatProfile() {
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
       />
+      <Modal isOpen={isModalOpen} onClose={closeModal} photo={selectedPhoto} />
     </div>
   );
 }

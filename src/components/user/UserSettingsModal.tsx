@@ -106,11 +106,11 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" style={{ marginTop: "0" }}>
       <div className="bg-white rounded-2xl w-full max-w-md relative">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+          className="absolute right-[-10px] top-[-30px] text-gray-400 hover:text-gray-600"
         >
           <X className="h-6 w-6" />
         </button>
@@ -152,15 +152,15 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
             {mode === 'profile' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  お名前
+                  飼い主さんのニックネーム
                 </label>
                 <input
                   type="text"
                   {...register('name', {
-                    required: 'お名前は必須です',
+                    required: '飼い主さんのニックネームは必須です',
                     minLength: {
                       value: 2,
-                      message: 'お名前は2文字以上で入力してください',
+                      message: '飼い主さんのニックネームは2文字以上で入力してください',
                     },
                   })}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg

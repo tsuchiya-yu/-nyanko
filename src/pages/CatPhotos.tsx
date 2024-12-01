@@ -84,7 +84,7 @@ export default function CatPhotos() {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          {cat?.name}の写真ギャラリー
+          {cat?.name}ちゃんの写真ギャラリー
         </h1>
 
         <form onSubmit={handleSubmit((data) => addPhoto.mutate(data))} className="space-y-4">

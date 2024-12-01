@@ -71,24 +71,24 @@ export default function UserProfile() {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800">{profile?.name}さんのページ</h1>
-          {isOwnProfile && (
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="inline-flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-            >
-              <Settings className="h-5 w-5 mr-2" />
-              設定
-            </button>
-          )}
         </div>
         {isOwnProfile && (
-          <Link
-            to="/register-cat"
-            className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-colors"
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            新しい猫ちゃんを登録
-          </Link>
+          <>
+            <Link
+              to="/register-cat"
+              className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-colors"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              新しい猫ちゃんを登録
+            </Link>
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-colors ml-3"
+            >
+              <Settings className="h-5 w-5 mr-2" />
+              アカウント設定
+            </button>
+          </>
         )}
       </div>
 
@@ -124,7 +124,7 @@ export default function UserProfile() {
         )}
       </div>
 
-      {isOwnProfile && (
+      {/* {isOwnProfile && (
         <div className="space-y-6">
           <div className="flex items-center space-x-2">
             <Heart className="h-6 w-6 text-pink-500" />
@@ -141,7 +141,7 @@ export default function UserProfile() {
             </div>
           )}
         </div>
-      )}
+      )} */}
 
       {isOwnProfile && (
         <UserSettingsModal

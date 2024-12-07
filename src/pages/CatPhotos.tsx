@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface PhotoFormData {
-  imageUrl: string;
+  image_url: string;
   comment: string;
 }
 
@@ -54,7 +54,7 @@ export default function CatPhotos() {
         .from('cat_photos')
         .insert({
           cat_id: id,
-          image_url: data.imageUrl,
+          image_url: data.image_url,
           comment: data.comment,
         });
 
@@ -94,12 +94,12 @@ export default function CatPhotos() {
             </label>
             <input
               type="url"
-              {...register('imageUrl', { required: '写真URLは必須です' })}
+              {...register('image_url', { required: '写真URLは必須です' })}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
-            {errors.imageUrl && (
-              <p className="mt-1 text-sm text-red-600">{errors.imageUrl.message}</p>
+            {errors.image_url && (
+              <p className="mt-1 text-sm text-red-600">{errors.image_url.message}</p>
             )}
           </div>
 

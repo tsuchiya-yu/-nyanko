@@ -241,7 +241,7 @@ export default function CatProfile() {
               {cat.is_birthdate_estimated && ' (推定)'}
             </p>
             {cat.catchphrase && (
-              <p className="mt-2 text-base">{cat.catchphrase}</p>
+              <p className="my-2 text-base">{cat.catchphrase}</p>
             )}
           </div>
         </div>

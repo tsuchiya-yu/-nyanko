@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
@@ -8,33 +8,52 @@ import { useAuthStore } from '../store/authStore';
 interface CatFormData {
   name: string;
   birthdate: string;
-  isBirthdateEstimated: boolean;
+  is_birthdate_estimated: boolean;
   breed: string;
   catchphrase: string;
   description: string;
-  imageUrl: string;
-  instagramUrl?: string;
-  xUrl?: string;
+  image_url: string;
+  instagram_url?: string;
+  x_url?: string;
+  homepage_url?: string;
+  gender?: string;
 }
 
 export default function RegisterCat() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { register, handleSubmit, formState: { errors } } = useForm<CatFormData>();
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
+      if (imageFile) {
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('pet-photos')
+          .upload(`cats/${imageFile.name}`, imageFile);
+
+        if (uploadError) throw uploadError;
+
+        const { publicURL } = supabase.storage
+          .from('pet-photos')
+          .getPublicUrl(uploadData.path);
+
+        data.image_url = publicURL;
+      }
+
       const { error } = await supabase.from('cats').insert({
         name: data.name,
         birthdate: data.birthdate,
-        is_birthdate_estimated: data.isBirthdateEstimated,
+        is_birthdate_estimated: data.is_birthdate_estimated,
         breed: data.breed,
         catchphrase: data.catchphrase,
         description: data.description,
-        image_url: data.imageUrl,
-        instagram_url: data.instagramUrl || null,
-        x_url: data.xUrl || null,
+        image_url: data.image_url,
+        instagram_url: data.instagram_url || null,
+        x_url: data.x_url || null,
+        homepage_url: data.homepage_url || null,
         owner_id: user?.id,
+        gender: data.gender,
       });
 
       if (error) throw error;
@@ -67,6 +86,20 @@ export default function RegisterCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              性別
+            </label>
+            <select
+              {...register('gender')}
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            >
+              <option value={null}>不明</option>
+              <option value="男の子">男の子</option>
+              <option value="女の子">女の子</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               生年月日
             </label>
             <input
@@ -82,7 +115,7 @@ export default function RegisterCat() {
               <label className="inline-flex items-center">
                 <input
                   type="checkbox"
-                  {...register('isBirthdateEstimated')}
+                  {...register('is_birthdate_estimated')}
                   className="rounded border-gray-300 text-pink-500 focus:ring-pink-500"
                 />
                 <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
@@ -97,6 +130,7 @@ export default function RegisterCat() {
             <input
               type="text"
               {...register('breed', { required: '品種は必須です' })}
+              placeholder="ミックス"
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
@@ -107,12 +141,12 @@ export default function RegisterCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              キャッチコピー
+              ひとこと
             </label>
             <input
               type="text"
               {...register('catchphrase')}
-              placeholder="例：いつも元気いっぱい！甘えん坊な女の子♪"
+              placeholder="いつも元気いっぱい！甘えん坊な女の子♪"
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
@@ -125,6 +159,11 @@ export default function RegisterCat() {
             <textarea
               {...register('description', { required: '紹介文は必須です' })}
               rows={4}
+              placeholder={`丸顔で大きな耳が特徴的な愛らしい女の子です。
+普段はとても甘えん坊で、人が近くにいると安心する性格ですが、意外と独立心も強く、一人で窓の外を眺めたりするのが好きです。
+家ではお気に入りのクッションでのんびり過ごす時間が多く、家族にはとても優しい性格で癒しを与えてくれる存在です。
+
+子供たちとも仲良く遊ぶ穏やかな一面もあり、まさに我が家の人気者！！`}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
@@ -135,17 +174,58 @@ export default function RegisterCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              メイン写真URL
+              プロフィール写真
             </label>
             <input
-              type="url"
-              {...register('imageUrl', { required: '写真URLは必須です' })}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files) {
+                  setImageFile(e.target.files[0]);
+                }
+              }}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
-            {errors.imageUrl && (
-              <p className="mt-1 text-sm text-red-600">{errors.imageUrl.message}</p>
-            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              InstagramのURL
+            </label>
+            <input
+              type="url"
+              {...register('instagram_url')}
+              placeholder="https://www.instagram.com/..."
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              XのURL
+            </label>
+            <input
+              type="url"
+              {...register('x_url')}
+              placeholder="https://x.com/..."
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              ホームページのURL
+            </label>
+            <input
+              type="url"
+              {...register('x_url')}
+              placeholder="https://nekoneko.com/..."
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            />
           </div>
 
           <button

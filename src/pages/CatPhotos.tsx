@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { v4 as uuidv4 } from 'uuid';
 
 interface PhotoFormData {
-  image_url: string;
+  imageFile: File | null;
   comment: string;
+}
+
+function sanitizeFileName(fileName: string): string {
+  const dotIndex = fileName.lastIndexOf('.');
+  const baseName = fileName.substring(0, dotIndex);
+  const extension = fileName.substring(dotIndex);
+
+  // 無効な文字を置換
+  const sanitizedBaseName = baseName.replace(/[^a-zA-Z0-9_-]/g, '_');
+
+  return sanitizedBaseName + extension;
 }
 
 export default function CatPhotos() {
@@ -48,21 +60,73 @@ export default function CatPhotos() {
     },
   });
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.onerror = () => {
+        setPreviewUrl(null);
+        console.error('画像の読み込みに失敗しました');
+      };
+      reader.readAsDataURL(imageFile);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [imageFile]);
+
   const addPhoto = useMutation({
     mutationFn: async (data: PhotoFormData) => {
-      const { error } = await supabase
-        .from('cat_photos')
-        .insert({
-          cat_id: id,
-          image_url: data.image_url,
-          comment: data.comment,
-        });
-
-      if (error) throw error;
+      console.log("addPhoto mutation started:", data); 
+      if (!data.imageFile) {
+        throw new Error('画像を選択してください');
+      }
+      const uniqueId = uuidv4();
+      const sanitizedFileName = sanitizeFileName(data.imageFile.name);
+      const filePath = `cats/${uniqueId}_${sanitizedFileName}`;
+  
+      try {
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('pet-photos')
+          .upload(filePath, data.imageFile);
+  
+        if (uploadError) {
+          console.error('Upload error:', uploadError); 
+          throw uploadError;
+        }
+  
+        const { data: { publicUrl } } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
+    
+        console.log("Generated publicURL:", publicUrl); 
+  
+        const { error, data: insertedData } = await supabase
+          .from('cat_photos')
+          .insert({
+            cat_id: id,
+            image_url: publicUrl,
+            comment: data.comment,
+          });
+  
+        if (error) {
+          console.error('Database insert error:', error); 
+          throw error;
+        }
+        console.log("Data inserted successfully:", insertedData); 
+  
+      } catch (error) {
+        console.error("Error in addPhoto mutation:", error); 
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cat-photos', id] });
       reset();
+      setImageFile(null);
+      setPreviewUrl(null);
     },
   });
 
@@ -87,19 +151,28 @@ export default function CatPhotos() {
           {cat?.name}ちゃんの写真ギャラリー
         </h1>
 
-        <form onSubmit={handleSubmit((data) => addPhoto.mutate(data))} className="space-y-4">
+        <form onSubmit={handleSubmit((data) => addPhoto.mutate({...data, imageFile}))} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              写真URL
+              写真
             </label>
             <input
-              type="url"
-              {...register('image_url', { required: '写真URLは必須です' })}
+              type="file"
+              accept="image/*"
+              {...register('imageFile', { required: '写真は必須です' })}
+              onChange={(e) => {
+                if (e.target.files) {
+                  setImageFile(e.target.files[0]);
+                }
+              }}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
-            {errors.image_url && (
-              <p className="mt-1 text-sm text-red-600">{errors.image_url.message}</p>
+            {errors.imageFile && (
+              <p className="mt-1 text-sm text-red-600">{errors.imageFile.message}</p>
+            )}
+            {previewUrl && (
+              <img src={previewUrl} alt="プレビュー" className="mt-2 max-w-[200px] h-auto" />
             )}
           </div>
 

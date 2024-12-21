@@ -22,6 +22,7 @@ interface CatWithOwner {
   instagram_url: string | null;
   x_url: string | null;
   owner_id: string;
+  gender: string | null;
   profiles: {
     name: string;
   };
@@ -238,7 +239,7 @@ export default function CatProfile() {
             <h1 className="text-sm font-bold ">{cat.name}</h1>
             <p className="text-xs">
               {cat.breed} | {age}歳
-              {cat.is_birthdate_estimated && ' (推定)'}
+              {cat.is_birthdate_estimated && ' (推定)'} {cat.gender !== null ? " | " + cat.gender : "" }
             </p>
             {cat.catchphrase && (
               <p className="my-2 text-base">{cat.catchphrase}</p>
@@ -248,7 +249,7 @@ export default function CatProfile() {
 
         <div className="">
           {(cat.instagram_url || cat.x_url) && (
-            <div className="flex space-x-1 my-4 justify-center">
+            <div className="flex space-x-1 mb-4 justify-center">
               {cat.instagram_url && (
                 <a
                   href={cat.instagram_url}

@@ -1,39 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import { v4 as uuidv4 } from 'uuid';
 
 interface CatFormData {
   name: string;
   birthdate: string;
-  isBirthdateEstimated: boolean;
+  is_birthdate_estimated: boolean;
   breed: string;
   catchphrase: string;
   description: string;
-  imageUrl: string;
-  instagramUrl?: string;
-  xUrl?: string;
+  image_url: string;
+  instagram_url?: string;
+  x_url?: string;
+  gender?: string;
+}
+
+function sanitizeFileName(fileName: string): string {
+  const dotIndex = fileName.lastIndexOf('.');
+  const baseName = fileName.substring(0, dotIndex);
+  const extension = fileName.substring(dotIndex);
+
+  // 無効な文字を置換
+  const sanitizedBaseName = baseName.replace(/[^a-zA-Z0-9_-]/g, '_');
+
+  return sanitizedBaseName + extension;
 }
 
 export default function EditCat() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CatFormData>({
-    defaultValues: {
-      name: '',
-      birthdate: '',
-      isBirthdateEstimated: false,
-      breed: '',
-      catchphrase: '',
-      description: '',
-      imageUrl: '',
-      instagramUrl: '',
-      xUrl: '',
-    }
-  });
 
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
@@ -55,40 +55,88 @@ export default function EditCat() {
     },
   });
 
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<CatFormData>();
+
   useEffect(() => {
     if (cat) {
       reset({
         name: cat.name,
         birthdate: cat.birthdate,
-        isBirthdateEstimated: cat.is_birthdate_estimated,
+        is_birthdate_estimated: cat.is_birthdate_estimated,
         breed: cat.breed,
         catchphrase: cat.catchphrase || '',
         description: cat.description,
-        imageUrl: cat.image_url,
-        instagramUrl: cat.instagram_url || '',
-        xUrl: cat.x_url || '',
+        image_url: cat.image_url,
+        instagram_url: cat.instagram_url || '',
+        x_url: cat.x_url || '',
+        homepage_url: cat.homepage_url || '',
+        gender: cat.gender || null,
       });
     }
   }, [cat, reset]);
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(cat?.image_url || null);
+
+  useEffect(() => {
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.onerror = () => {
+        setPreviewUrl(null);
+        console.error('画像の読み込みに失敗しました');
+      };
+      reader.readAsDataURL(imageFile);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [imageFile]);
+
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
+      // 画像をSupabase Storageにアップロード
+      if (imageFile) {
+        const uniqueId = uuidv4();
+        const sanitizedFileName = sanitizeFileName(imageFile.name);
+        const filePath = `cats/${uniqueId}_${sanitizedFileName}`;
+
+        console.log('Uploading file:', filePath);
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('pet-photos')
+          .upload(filePath, imageFile);
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
+
+        console.log('Upload successful:', uploadData);
+
+        // アップロードした画像のURLを取得
+        const { data: { publicUrl } } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
+
+        console.log('Public URL:', publicUrl); 
+
+        data.image_url = publicUrl;
+      }
+
+      console.log('data', data);
+
       const { error } = await supabase
         .from('cats')
         .update({
-          name: data.name,
-          birthdate: data.birthdate,
-          is_birthdate_estimated: data.isBirthdateEstimated,
-          breed: data.breed,
-          catchphrase: data.catchphrase,
-          description: data.description,
-          image_url: data.imageUrl,
-          instagram_url: data.instagramUrl || null,
-          x_url: data.xUrl || null,
+          ...data,
+          image_url: data.image_url,
         })
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Update error:', error); // デバッグログ
+        throw error;
+      }
     },
     onSuccess: () => {
       alert('猫ちゃんの情報を更新しました');
@@ -137,6 +185,21 @@ export default function EditCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              性別
+            </label>
+            <select
+              {...register('gender')}
+              defaultValue={cat?.gender || null}
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            >
+              <option value={null}>不明</option>
+              <option value="男の子">男の子</option>
+              <option value="女の子">女の子</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               生年月日
             </label>
             <input
@@ -152,7 +215,7 @@ export default function EditCat() {
               <label className="inline-flex items-center">
                 <input
                   type="checkbox"
-                  {...register('isBirthdateEstimated')}
+                  {...register('is_birthdate_estimated')}
                   className="rounded border-gray-300 text-pink-500 focus:ring-pink-500"
                 />
                 <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
@@ -177,7 +240,7 @@ export default function EditCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              キャッチコピー
+              ひとこと
             </label>
             <input
               type="text"
@@ -205,16 +268,22 @@ export default function EditCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              メイン写真URL
+              プロフィール写真
             </label>
             <input
-              type="url"
-              {...register('imageUrl', { required: '写真URLは必須です' })}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files) {
+                  setImageFile(e.target.files[0]);
+                }
+              }}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
-            {errors.imageUrl && (
-              <p className="mt-1 text-sm text-red-600">{errors.imageUrl.message}</p>
+
+            {previewUrl && (
+              <img src={previewUrl} alt="プレビュー" className="mt-2 max-w-[200px] h-auto" />
             )}
           </div>
 
@@ -224,7 +293,7 @@ export default function EditCat() {
             </label>
             <input
               type="url"
-              {...register('instagramUrl')}
+              {...register('instagram_url')}
               placeholder="https://www.instagram.com/..."
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
@@ -237,8 +306,21 @@ export default function EditCat() {
             </label>
             <input
               type="url"
-              {...register('xUrl')}
+              {...register('x_url')}
               placeholder="https://x.com/..."
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              ホームページのURL
+            </label>
+            <input
+              type="url"
+              {...register('x_url')}
+              placeholder="https://nekoneko.com/..."
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />

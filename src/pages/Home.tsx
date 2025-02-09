@@ -26,44 +26,66 @@ export default function Home() {
       {/* ヒーローセクション */}
       <section className="relative">
         <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
+          <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800">
-              あなたの愛猫を1つのページに
+              うちの愛猫を1つのページに
             </h1>
-            <div className="relative w-full max-w-lg mx-auto aspect-[4/3] mb-8">
+            <div className="relative w-full mx-auto mb-8 ml-[-10px] mr-[-10px] w-auto">
               <img
-                src="https://dummyimage.com/800x600/fdf2f8/262626.png&text=Hero+Image"
+                src="https://dummyimage.com/700x900/000/262626.png&text=Hero+Image"
                 alt="愛猫の写真"
-                className="w-full h-full object-cover rounded-lg shadow-lg"
+                className="object-cover rounded-lg shadow-lg w-[800px] h-[700px]"
               />
+              <div className="absolute block sm:flex flex-col justify-end items-end right-0 left-0 bottom-[-160px] sm:right-[200px]">
+                <a
+                  href="https://www.instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow min-w-[400px] mb-2"
+                >
+                  <Instagram className="h-5 w-5 mr-2" />
+                  Instagram
+                </a>
+                <a
+                  href="https://x.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow min-w-[400px] mb-8"
+                >
+                  <Twitter className="h-5 w-5 mr-2" />
+                  X
+                </a>
+                <div className='inline-flex space-x-2'>
+                  <img
+                    src="https://dummyimage.com/50x50/fff/262626.png&text=Image1"
+                    alt="愛猫の写真１"
+                    className="w-[50px] h-[50px] object-cover rounded-lg shadow-lg"
+                  />
+                  <img
+                    src="https://dummyimage.com/200x200/fff/262626.png&text=Image2"
+                    alt="愛猫の写真２"
+                    className="w-[200px] h-[200px] object-cover rounded-lg shadow-lg"
+                  />
+                  <img
+                    src="https://dummyimage.com/50x50/fff/262626.png&text=Image3"
+                    alt="愛猫の写真３"
+                    className="w-[50px] h-[50px] object-cover rounded-lg shadow-lg"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex justify-center space-x-4">
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
-              >
-                <Instagram className="h-5 w-5 mr-2" />
-                Instagram
-              </a>
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
-              >
-                <Twitter className="h-5 w-5 mr-2" />
-                X
-              </a>
-            </div>
-            <Link
-              to="/register-cat"
-              className="inline-block px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
-            >
-              今すぐ始める
-            </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 mt-[160px]">
+          <Link
+                to="/register-cat"
+                className="inline-block px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+              >
+                今すぐ始める
+          </Link>
         </div>
       </section>
 

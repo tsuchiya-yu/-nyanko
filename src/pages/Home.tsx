@@ -25,23 +25,28 @@ export default function Home() {
     <div className="space-y-16 pb-12">
       {/* ヒーローセクション */}
       <section className="relative">
-        <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20 lg:pt-4 pt-4">
           <div className="max-w-7xl mx-auto text-center space-y-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800">
-              うちの愛猫を1つのページに
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-8">
+              うちの猫を1ページに
             </h1>
-            <div className="relative w-full mx-auto mb-8 ml-[-10px] mr-[-10px] w-auto">
-              <img
-                src="https://dummyimage.com/700x900/000/262626.png&text=Hero+Image"
-                alt="愛猫の写真"
-                className="object-cover rounded-lg shadow-lg w-[800px] h-[700px]"
-              />
-              <div className="absolute block sm:flex flex-col justify-end items-end right-0 left-0 bottom-[-160px] sm:right-[200px]">
+            <div className="flex flex-col sm:flex-row w-full mx-auto mb-8">
+              {/* 画像部分 */}
+              <div className="w-full sm:w-1/2">
+                <img
+                  src="https://dummyimage.com/600x700/000/262626.png&text=Hero+Image"
+                  alt="愛猫の写真"
+                  className="w-full h-auto object-cover rounded-lg shadow-lg"
+                />
+              </div>
+
+              {/* ソーシャルリンク＆画像ギャラリー */}
+              <div className="w-full sm:w-1/2 flex flex-col items-center p-4 sm:pt-0">
                 <a
                   href="https://www.instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow min-w-[400px] mb-2"
+                  className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-4"
                 >
                   <Instagram className="h-5 w-5 mr-2" />
                   Instagram
@@ -50,55 +55,54 @@ export default function Home() {
                   href="https://x.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow min-w-[400px] mb-8"
+                  className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-6"
                 >
                   <Twitter className="h-5 w-5 mr-2" />
                   X
                 </a>
-                <div className='inline-flex space-x-2'>
-                  <img
-                    src="https://dummyimage.com/50x50/fff/262626.png&text=Image1"
-                    alt="愛猫の写真１"
-                    className="w-[50px] h-[50px] object-cover rounded-lg shadow-lg"
-                  />
-                  <img
-                    src="https://dummyimage.com/200x200/fff/262626.png&text=Image2"
-                    alt="愛猫の写真２"
-                    className="w-[200px] h-[200px] object-cover rounded-lg shadow-lg"
-                  />
-                  <img
-                    src="https://dummyimage.com/50x50/fff/262626.png&text=Image3"
-                    alt="愛猫の写真３"
-                    className="w-[50px] h-[50px] object-cover rounded-lg shadow-lg"
-                  />
-                </div>
+
+                <div className="flex w-full space-x-2">
+                  <div className="w-[24%] aspect-square">
+                      <img
+                        src="https://dummyimage.com/200x200/fff/262626.png&text=Image1"
+                        alt="愛猫の写真１"
+                        className="w-full object-cover rounded-lg shadow-lg"
+                      />
+                    </div>
+                  <div className="w-[50%] aspect-square">
+                      <img
+                        src="https://dummyimage.com/200x200/fff/262626.png&text=Image2"
+                        alt="愛猫の写真２"
+                        className="w-full object-cover rounded-lg shadow-lg"
+                      />
+                  </div>
+                    <div className="w-[24%] aspect-square">
+                      <img
+                        src="https://dummyimage.com/200x200/fff/262626.png&text=Image3"
+                        alt="愛猫の写真３"
+                        className="w-full object-cover rounded-lg shadow-lg"
+                      />
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 mt-[160px]">
-          <Link
-                to="/register-cat"
-                className="inline-block px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
-              >
-                今すぐ始める
-          </Link>
-        </div>
+      <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[0px]">
+        <Link
+          to="/register-cat"
+          className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+        >
+          今すぐ始める
+        </Link>
       </section>
 
       {/* 新着の猫ちゃん */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">みんなの愛猫</h2>
-          <Link
-            to="/cats"
-            className="inline-block px-8 py-3 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
-          >
-            もっと見る
-          </Link>
         </div>
         {isLoading ? (
           <div className="text-center py-12">
@@ -111,6 +115,14 @@ export default function Home() {
             ))}
           </div>
         )}
+        <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 my-4">
+          <Link
+            to="/cats"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+          >
+            もっと見る
+          </Link>
+        </section>
       </section>
 
       {/* 3ステップ */}
@@ -159,7 +171,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <Link
             to="/register"
-            className="inline-block px-8 py-3 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
           >
             無料で始める
           </Link>
@@ -172,35 +184,35 @@ export default function Home() {
           スマホでかんたん操作
         </h2>
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center">
             <img
               src="https://dummyimage.com/300x200/fdf2f8/262626.png&text=Feature+1"
               alt="写真の追加"
-              className="w-48 h-32 object-cover rounded-lg mr-6"
+              className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
             />
-            <div>
+            <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">写真の追加</h3>
               <p className="text-gray-600">スマホで撮影した写真をすぐにアップロード</p>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center">
             <img
               src="https://dummyimage.com/300x200/fdf2f8/262626.png&text=Feature+2"
               alt="プロフィール編集"
-              className="w-48 h-32 object-cover rounded-lg mr-6"
+              className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
             />
-            <div>
+            <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">プロフィール編集</h3>
               <p className="text-gray-600">いつでもどこでも情報を更新できます</p>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center">
             <img
               src="https://dummyimage.com/300x200/fdf2f8/262626.png&text=Feature+3"
               alt="SNSシェア"
-              className="w-48 h-32 object-cover rounded-lg mr-6"
+              className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
             />
-            <div>
+            <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">SNSシェア</h3>
               <p className="text-gray-600">InstagramやXへ簡単に共有</p>
             </div>
@@ -209,7 +221,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <Link
             to="/register"
-            className="inline-block px-8 py-3 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
           >
             今すぐ始める
           </Link>

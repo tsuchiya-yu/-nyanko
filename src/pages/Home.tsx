@@ -133,7 +133,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <img
-              src="https://dummyimage.com/400x300/fdf2f8/262626.png&text=Step+1"
+              src="/images/top/step1.png"
               alt="会員登録"
               className="w-full h-48 object-cover rounded-lg mb-4"
             />
@@ -145,7 +145,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <img
-              src="https://dummyimage.com/400x300/fdf2f8/262626.png&text=Step+2"
+              src="/images/top/step2.png"
               alt="猫ちゃん情報の入力"
               className="w-full h-48 object-cover rounded-lg mb-4"
             />
@@ -157,7 +157,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <img
-              src="https://dummyimage.com/400x300/fdf2f8/262626.png&text=Step+3"
+              src="/images/top/step3.png"
               alt="ページの公開"
               className="w-full h-48 object-cover rounded-lg mb-4"
             />

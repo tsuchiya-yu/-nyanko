@@ -214,6 +214,7 @@ export default function CatPhotos() {
                   src={photo.image_url}
                   alt=""
                   className="w-full h-48 object-cover"
+                  decoding="async" loading="lazy"
                 />
                 <button
                   onClick={() => deletePhoto.mutate(photo.id)}

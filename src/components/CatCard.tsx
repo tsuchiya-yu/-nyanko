@@ -18,6 +18,7 @@ export default function CatCard({ cat }: CatCardProps) {
             src={cat.image_url}
             alt={cat.name}
             className="w-full h-full object-cover"
+            decoding="async" loading="lazy"
           />
           <button
             onClick={(e) => {

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, Heart, Image, Settings } from 'lucide-react';
+import { Plus, Image, Settings } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import CatCard from '../components/CatCard';
 import { useAuthStore } from '../store/authStore';
+import CatCard from '../components/CatCard';
 import UserSettingsModal from '../components/user/UserSettingsModal';
 import type { Cat } from '../types';
 
 export default function UserProfile() {
   const { id } = useParams();
-  const { user } = useAuthStore();
+  const { user, signOut } = useAuthStore();
   const isOwnProfile = user?.id === id;
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -58,6 +58,11 @@ export default function UserProfile() {
     enabled: isOwnProfile,
   });
 
+  const handleSignOut = async () => {
+    await signOut();
+    alert('ログアウトしました');
+  };
+
   if (profileLoading || catsLoading || favoritesLoading) {
     return (
       <div className="text-center py-12">
@@ -73,22 +78,22 @@ export default function UserProfile() {
       </div>
       <div className="">
         {isOwnProfile && (
-          <>
-            <Link
-              to="/register-cat"
-              className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition-colors mr-3 mb-2"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              新しい猫ちゃんを登録
-            </Link>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition-colors"
-            >
-              <Settings className="h-5 w-5 mr-2" />
-              アカウント設定
-            </button>
-          </>
+        <div className="inline-flex flex-col sm:flex-row">
+          <Link
+            to="/register-cat"
+            className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition-colors mr-3 mb-2"
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            新しい猫ちゃんを登録
+          </Link>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition-colors mr-3 mb-2"
+          >
+            <Settings className="h-5 w-5 mr-2" />
+            アカウント設定
+          </button>
+        </div>
         )}
       </div>
 
@@ -150,6 +155,16 @@ export default function UserProfile() {
           profile={profile}
         />
       )}
+
+    <div className="w-full text-right">
+      <button
+        onClick={handleSignOut}
+        className="px-4 py-2 rounded transition-colors mb-2 text-link-blue "
+        >
+        ログアウトする
+      </button>
+    </div>
+
     </div>
   );
 }

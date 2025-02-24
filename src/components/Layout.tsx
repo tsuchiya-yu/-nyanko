@@ -10,13 +10,8 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { user, signOut } = useAuthStore();
+  const { user } = useAuthStore();
   const { isHeaderFooterVisible } = useHeaderFooter();
-
-  const handleSignOut = async () => {
-    await signOut();
-    alert('ログアウトしました');
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-pink-50 to-purple-50">
@@ -36,12 +31,6 @@ export default function Layout({ children }: LayoutProps) {
                     >
                       マイページ
                     </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 font-medium transition-colors"
-                    >
-                      ログアウト
-                    </button>
                   </>
                 ) : (
                   <>

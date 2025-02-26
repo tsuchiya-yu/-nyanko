@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Privacy() {
   return (
     <div className="max-w-3xl mx-auto">

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Share2, ArrowLeft, Instagram, Twitter } from 'lucide-react';
+import { Share2, ArrowLeft, Instagram, Twitter, Heart } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import AuthModal from '../components/auth/AuthModal';
@@ -9,6 +9,7 @@ import ShareModal from '../components/ShareModal';
 import { handleApiError } from '../lib/api';
 import { useHeaderFooter } from '../context/HeaderContext';
 import { calculateAge } from '../utils/calculateAge';
+import { Helmet } from 'react-helmet';
 
 interface CatWithOwner {
   id: string;
@@ -34,8 +35,14 @@ interface CatPhoto {
   comment: string;
 }
 
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  photo: CatPhoto | null;
+}
+
 // モーダルコンポーネント
-const Modal = ({ isOpen, onClose, photo }) => {
+const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -54,8 +61,8 @@ const Modal = ({ isOpen, onClose, photo }) => {
         >
           ×
         </button>
-        <img src={photo.image_url} alt="" className="w-full h-auto rounded-lg mb-4" />
-        {photo.comment && (
+        <img src={photo?.image_url} alt="" className="w-full h-auto rounded-lg mb-4" />
+        {photo?.comment && (
           <p className="text-gray-800 text-sm text-center">{photo.comment}</p>
         )}
       </div>
@@ -70,7 +77,7 @@ export default function CatProfile() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<CatPhoto | null>(null);
   const { setHeaderFooterVisible } = useHeaderFooter();
 
   const { data: cat, isLoading, error } = useQuery({
@@ -166,7 +173,7 @@ export default function CatProfile() {
     toggleFavorite.mutate();
   };
 
-  const openModal = (photo) => {
+  const openModal = (photo: CatPhoto) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
   };
@@ -177,10 +184,10 @@ export default function CatProfile() {
   };
 
   useEffect(() => {
-    setHeaderFooterVisible(false);
+    setHeaderFooterVisible?.(false);
 
     return () => {
-      setHeaderFooterVisible(true);
+      setHeaderFooterVisible?.(true);
     };
   }, [setHeaderFooterVisible]);
 
@@ -215,6 +222,19 @@ export default function CatProfile() {
 
   return (
     <div className="max-w-[480px] mx-auto space-y-6 relative">
+      <Helmet>
+        <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
+        <meta name="description" content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`} />
+        <meta name="keywords" content={`${cat.name}, ${cat.breed}, 猫, ペット, プロフィール, 写真`} />
+        <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
+        <meta property="og:type" content="profile" />
+        <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}`} />
+        <meta property="og:image" content={cat.image_url} />
+        <meta property="og:description" content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`} />
+        <meta property="profile:first_name" content={cat.name} />
+        <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
+      </Helmet>
+      
       <div className='text-center mt-6'>
           <Link to="/">
             <img src="/images/logo_title.png" alt="ロゴ" loading="lazy" className='inline-block w-[160px]'/>
@@ -230,11 +250,22 @@ export default function CatProfile() {
               <Share2 className="h-6 w-6" />
             </button>
           </div>
-          <img
-            src={cat.image_url}
-            alt={cat.name}
-            className="w-[88px] h-[88px] rounded-full object-cover"
-          />
+          <div className="relative">
+            <img
+              src={cat.image_url}
+              alt={cat.name}
+              className="w-[88px] h-[88px] rounded-full object-cover"
+            />
+            <button
+              onClick={handleFavoriteClick}
+              className="absolute -bottom-1 -right-1 p-1.5 bg-white/90 rounded-full hover:bg-white transition-colors shadow-sm"
+              aria-label={isFavorited ? 'いいね解除' : 'いいね'}
+            >
+              <Heart
+                className={`h-4 w-4 ${isFavorited ? 'text-pink-500 fill-pink-500' : 'text-pink-500'}`}
+              />
+            </button>
+          </div>
           <div className="pt-2.5 text-gray-700">
             <h1 className="text-sm font-bold ">{cat.name}</h1>
             <p className="text-xs">
@@ -281,11 +312,11 @@ export default function CatProfile() {
             <div className="mt4">
               <div className="flex justify-between items-center mb-4">
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3" style={{ gap: '1px' }}>
                 {photos.map((photo) => (
                   <div
                     key={photo.id}
-                    className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
+                    className="relative aspect-square overflow-hidden cursor-pointer group"
                     onClick={() => openModal(photo)}
                   >
                     <img
@@ -294,6 +325,7 @@ export default function CatProfile() {
                       loading="lazy"
                       className="w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-200"></div>
                   </div>
                 ))}
               </div>

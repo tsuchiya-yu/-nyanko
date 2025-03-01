@@ -133,7 +133,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-               飼い主さんのメールアドレス
+               メールアドレス
               </label>
               <input
                 type="email"

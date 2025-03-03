@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { v4 as uuidv4 } from 'uuid';
+import { Helmet } from 'react-helmet';
 
 interface CatFormData {
   name: string;
@@ -16,6 +18,7 @@ interface CatFormData {
   image_url: string;
   instagram_url?: string;
   x_url?: string;
+  homepage_url?: string;
   gender?: string;
 }
 
@@ -31,9 +34,12 @@ function sanitizeFileName(fileName: string): string {
 }
 
 export default function EditCat() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
@@ -47,8 +53,11 @@ export default function EditCat() {
         .single();
 
       if (error) throw error;
+      if (!data) throw new Error('猫が見つかりません');
+      
+      // 自分の猫かチェック
       if (data.owner_id !== user?.id) {
-        throw new Error('編集権限がありません');
+        throw new Error('この猫の編集権限がありません');
       }
 
       return data;
@@ -70,13 +79,15 @@ export default function EditCat() {
         instagram_url: cat.instagram_url || '',
         x_url: cat.x_url || '',
         homepage_url: cat.homepage_url || '',
-        gender: cat.gender || null,
+        gender: cat.gender || '',
       });
+      
+      // cat.image_urlが存在する場合、プレビューURLとして設定
+      if (cat.image_url) {
+        setPreviewUrl(cat.image_url);
+      }
     }
   }, [cat, reset]);
-
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(cat?.image_url || null);
 
   useEffect(() => {
     if (imageFile) {
@@ -154,18 +165,42 @@ export default function EditCat() {
 
   if (!cat) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <p className="text-center text-gray-600">猫の情報を取得できませんでした</p>
+      <div className="max-w-4xl mx-auto py-12">
+        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <p className="text-gray-600 mb-4">猫の情報を取得できませんでした</p>
+          <Link
+            to="/"
+            className="inline-flex items-center text-pink-500 hover:text-pink-600"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            ホームに戻る
+          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>{`${cat.name}のプロフィールを編集 | CAT LINK`}</title>
+        <meta name="description" content={`${cat.name}のプロフィール情報を編集します。名前、年齢、品種、写真などの情報を更新できます。`} />
+        <meta name="keywords" content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`} />
+        <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
+        <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}/edit`} />
+        <meta property="og:image" content={cat.image_url} />
+        <meta property="og:description" content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`} />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
+      </Helmet>
+      
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">猫ちゃんの情報を編集</h1>
+        <div className="flex items-center mb-6">
+          <Link to={`/cats/${id}`} className="text-pink-500 hover:text-pink-600 mr-4">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-800">{cat.name}のプロフィールを編集</h1>
+        </div>
 
         <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="space-y-6">
           <div>
@@ -189,10 +224,10 @@ export default function EditCat() {
             </label>
             <select
               {...register('gender')}
-              defaultValue={cat?.gender || null}
+              defaultValue={cat?.gender || ''}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             >
-              <option value={null}>不明</option>
+              <option value="">不明</option>
               <option value="男の子">男の子</option>
               <option value="女の子">女の子</option>
             </select>
@@ -273,17 +308,33 @@ export default function EditCat() {
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => {
-                if (e.target.files) {
-                  setImageFile(e.target.files[0]);
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.files && e.target.files[0]) {
+                  const file = e.target.files[0];
+                  setImageFile(file);
+
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    if (reader.result) {
+                      setPreviewUrl(reader.result.toString());
+                    }
+                  };
+                  reader.readAsDataURL(file);
                 }
               }}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
 
-            {previewUrl && (
-              <img src={previewUrl} alt="プレビュー" className="mt-2 max-w-[200px] h-auto" />
+            {/* プレビュー画像の表示 */}
+            {(previewUrl || cat?.image_url) && (
+              <img
+                src={previewUrl || cat?.image_url}
+                alt="プレビュー"
+                className="mt-2 max-w-[200px] h-auto"
+                decoding="async"
+                loading="lazy"
+              />
             )}
           </div>
 
@@ -315,7 +366,7 @@ export default function EditCat() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              ホームページのURL
+              その他ホームページのURL
             </label>
             <input
               type="url"

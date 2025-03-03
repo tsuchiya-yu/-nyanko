@@ -1,8 +1,32 @@
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+import { Helmet } from 'react-helmet';
+
 export default function Privacy() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">プライバシーポリシー</h1>
+    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>プライバシーポリシー | CAT LINK</title>
+        <meta name="description" content="CAT LINKのプライバシーポリシーです。個人情報の取り扱いについて説明しています。" />
+        <meta name="keywords" content="CAT LINK, プライバシーポリシー, 個人情報保護, 猫, ペット, プロフィール" />
+        <meta property="og:title" content="プライバシーポリシー | CAT LINK" />
+        <meta property="og:url" content="https://cat-link.com/privacy" />
+        <meta property="og:description" content="CAT LINKのプライバシーポリシーです。個人情報の取り扱いについて説明しています。" />
+        <link rel="canonical" href="https://cat-link.com/privacy" />
+      </Helmet>
+      
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center mb-6">
+          <Link to="/" className="text-pink-500 hover:text-pink-600 mr-4">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-800">プライバシーポリシー</h1>
+        </div>
         
         <div className="prose max-w-none">
           <h2>1. 個人情報の収集について</h2>

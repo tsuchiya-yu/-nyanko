@@ -1,9 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { useQuery } from '@tanstack/react-query';
-import { Instagram, Twitter, ChevronDown } from 'lucide-react';
+import { InstagramIcon, X, ChevronDown } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import CatCard from '../components/CatCard';
+import AuthModal from '../components/auth/AuthModal';
+import { useState } from 'react';
 import type { Cat } from '../types';
 
 export default function Home() {
@@ -21,11 +22,18 @@ export default function Home() {
     },
   });
 
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
   return (
     <div className="space-y-16 pb-12">
+      <Helmet>
+        <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
+        <link rel="canonical" href="https://cat-link.com/" />
+      </Helmet>
+      
       {/* ヒーローセクション */}
       <section className="relative">
-        <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20 lg:pt-4 pt-4">
+        <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-8">
               うちの猫を1ページに
@@ -44,22 +52,18 @@ export default function Home() {
               {/* ソーシャルリンク＆画像ギャラリー */}
               <div className="w-full sm:w-1/2 flex flex-col items-center p-4 sm:pt-0">
                 <a
-                  href="https://www.instagram.com"
-                  target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-4"
                 >
-                  <Instagram className="h-5 w-5 mr-2" />
-                  Instagram
+                  <InstagramIcon className="h-5 w-5 mr-2" />
+                  うちの猫日記
                 </a>
                 <a
-                  href="https://x.com"
-                  target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-6"
                 >
-                  <Twitter className="h-5 w-5 mr-2" />
-                  X
+                  <X className="h-5 w-5 mr-2" />
+                  うちの猫日
                 </a>
 
                 <div className="flex w-full space-x-2">
@@ -95,18 +99,18 @@ export default function Home() {
       </section>
 
       <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[0px]">
-        <Link
-          to="/register-cat"
-          className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
-        >
-          今すぐ始める
-        </Link>
+        <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+            >
+              今すぐ始める
+        </button>
       </section>
 
       {/* 新着の猫ちゃん */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">みんなの猫</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">みんなの愛猫</h2>
         </div>
         {isLoading ? (
           <div className="text-center py-12">
@@ -119,14 +123,14 @@ export default function Home() {
             ))}
           </div>
         )}
-        <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 my-4">
+        {/* <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 my-4">
           <Link
             to="/cats"
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
           >
             もっと見る
           </Link>
-        </section>
+        </section> */}
       </section>
 
       {/* 3ステップ */}
@@ -175,12 +179,12 @@ export default function Home() {
           </div>
         </div>
         <div className="text-center mt-8">
-          <Link
-            to="/register"
+          <button
+            onClick={() => setIsAuthModalOpen(true)}
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
           >
             無料で始める
-          </Link>
+          </button>
         </div>
       </section>
 
@@ -189,8 +193,8 @@ export default function Home() {
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
           スマホでかんたん操作
         </h2>
-        <div className="space-y-6">
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center">
+        <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4 scrollbar-none sm:space-x-0 sm:space-y-6 sm:flex-col sm:overflow-x-visible">
+          <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <img
               src="/images/top/feature1.png"
               alt="写真の追加"
@@ -202,7 +206,7 @@ export default function Home() {
               <p className="text-gray-600">スマホで撮影した写真をすぐにアップロード</p>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center">
+          <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <img
               src="/images/top/feature2.png"
               alt="プロフィール編集"
@@ -214,7 +218,7 @@ export default function Home() {
               <p className="text-gray-600">いつでもどこでも情報を更新できます</p>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center">
+          <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <img
               src="/images/top/feature3.png"
               alt="SNSシェア"
@@ -228,12 +232,12 @@ export default function Home() {
           </div>
         </div>
         <div className="text-center mt-8">
-          <Link
-            to="/register"
+          <button
+            onClick={() => setIsAuthModalOpen(true)}
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
           >
             今すぐ始める
-          </Link>
+          </button>
         </div>
       </section>
 
@@ -245,7 +249,7 @@ export default function Home() {
         <div className="space-y-4">
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">ページを作成するとお金がかかりますか？</span>
+              <span className="font-medium">CAT LINKの利用にお金はかかりますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
@@ -254,24 +258,29 @@ export default function Home() {
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">複数の猫を登録できますか？</span>
+              <span className="font-medium">CAT LINKを利用することでどんなことができますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              はい、1つのアカウントで複数の猫ちゃんを登録できます。
+              CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
             </p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">登録した情報は後から編集できますか？</span>
+              <span className="font-medium">会員登録をするとどんなメリットがありますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              はい、いつでも自由に情報を更新できます。
+              会員登録をすると、猫ちゃんギャラリーを作成できるほか、他のユーザーの猫ちゃんに「いいね！」をすることができます。さらに、猫ちゃんの成長記録を写真と共に残すことができ、思い出をいつでも振り返ることができます。
             </p>
           </details>
         </div>
       </section>
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </div>
   );
 }

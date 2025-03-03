@@ -9,7 +9,7 @@ import ShareModal from '../components/ShareModal';
 import { handleApiError } from '../lib/api';
 import { useHeaderFooter } from '../context/HeaderContext';
 import { calculateAge } from '../utils/calculateAge';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 interface CatWithOwner {
   id: string;
@@ -349,6 +349,7 @@ export default function CatProfile() {
       <ShareModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
+        catName={cat.name}
       />
       <Modal isOpen={isModalOpen} onClose={closeModal} photo={selectedPhoto} />
     </div>

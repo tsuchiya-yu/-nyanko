@@ -8,7 +8,7 @@ import { useFavorites } from '../hooks/useFavorites';
 import CatCard from '../components/CatCard';
 import UserSettingsModal from '../components/user/UserSettingsModal';
 import type { Cat } from '../types';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const getGreetingMessage = () => {
   const hour = new Date().getHours();

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { v4 as uuidv4 } from 'uuid';
+import { Helmet } from 'react-helmet';
 
 interface PhotoFormData {
   imageFile: File | null;
@@ -24,7 +25,6 @@ function sanitizeFileName(fileName: string): string {
 
 export default function CatPhotos() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<PhotoFormData>();
 
@@ -90,7 +90,7 @@ export default function CatPhotos() {
       const filePath = `cats/${uniqueId}_${sanitizedFileName}`;
   
       try {
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('pet-photos')
           .upload(filePath, data.imageFile);
   
@@ -145,12 +145,26 @@ export default function CatPhotos() {
   });
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          {cat?.name}ちゃんの写真ギャラリー
-        </h1>
+    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {cat && (
+        <Helmet>
+          <title>{`${cat.name}の写真ギャラリー | CAT LINK`}</title>
+          <meta name="description" content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`} />
+          <meta name="keywords" content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`} />
+          <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
+          <meta property="og:url" content={`https://cat-link.com/cats/${id}/photos`} />
+          <meta property="og:image" content={photos && photos.length > 0 ? photos[0].image_url : 'https://cat-link.com/images/ogp.jpg'} />
+          <meta property="og:description" content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`} />
+          <meta name="robots" content="noindex, follow" />
+          <link rel="canonical" href={`https://cat-link.com/cats/${id}`} />
+        </Helmet>
+      )}
+      
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+        {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
+      </h1>
 
+      <div className="bg-white rounded-lg shadow-md p-6">
         <form onSubmit={handleSubmit((data) => addPhoto.mutate({...data, imageFile}))} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

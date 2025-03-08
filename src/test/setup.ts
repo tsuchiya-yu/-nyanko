@@ -1,7 +1,10 @@
 import '@testing-library/jest-dom';
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import { setupServer } from 'msw/node';
-import { afterAll, afterEach, beforeAll, vi } from 'vitest';
+
+// Supabaseのモックをインポート
+import './mocks/supabase';
 
 // React Routerの警告を抑制
 vi.mock('react-router-dom', async () => {
@@ -18,9 +21,16 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+// 環境変数のモック
+vi.mock('import.meta.env', () => ({
+  VITE_SUPABASE_URL: 'https://example.supabase.co',
+  VITE_SUPABASE_ANON_KEY: 'mock-anon-key',
+}));
+
 // テスト後にクリーンアップ
 afterEach(() => {
   cleanup();
+  vi.clearAllMocks();
 });
 
 // MSWのサーバーをセットアップする場合

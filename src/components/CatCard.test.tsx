@@ -11,6 +11,14 @@ import { calculateAge } from '../utils/calculateAge';
 vi.mock('../store/authStore');
 vi.mock('../hooks/useFavorites');
 vi.mock('../utils/calculateAge');
+vi.mock('../lib/supabase', () => ({
+  supabase: {
+    from: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    eq: vi.fn().mockReturnThis(),
+    then: vi.fn().mockImplementation(callback => callback({ data: [], error: null })),
+  },
+}));
 
 describe('CatCardコンポーネント', () => {
   // 各テスト前にモックをリセット

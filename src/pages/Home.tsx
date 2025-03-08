@@ -40,7 +40,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-8">
               うちの猫を1ページに
             </h1>
-            <div className="flex flex-col sm:flex-row w-full mx-auto mb-8">
+            <div className="flex flex-col sm:flex-row w-full mx-auto mb-6">
               {/* 画像部分 */}
               <div className="w-full sm:w-1/2">
                 <img
@@ -59,14 +59,14 @@ export default function Home() {
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-4"
                 >
                   <InstagramIcon className="h-5 w-5 mr-2" />
-                  うちの猫日記
+                  うちのコ日記 in Instagram
                 </a>
                 <a
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-6"
                 >
                   <X className="h-5 w-5 mr-2" />
-                  うちの猫日
+                  うちのコ日記 in X
                 </a>
 
                 <div className="flex w-full space-x-2">
@@ -100,6 +100,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            <p className="text-lg max-w-3xl mx-auto px-4 py-3">
+              あなたの愛猫の写真やプロフィールを登録して、他の猫好きさんに共有しよう！
+            </p>
           </div>
         </div>
       </section>

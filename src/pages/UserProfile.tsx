@@ -60,7 +60,7 @@ export default function UserProfile() {
   if (profileLoading || catsLoading || favoritesLoading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
       </div>
     );
   }
@@ -105,14 +105,14 @@ export default function UserProfile() {
             <div className="inline-flex flex-col sm:flex-row gap-4">
               <Link
                 to="/register-cat"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-full hover:from-pink-500 hover:to-pink-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
                 <Plus className="h-5 w-5 mr-2 animate-pulse" />
                 新しい猫ちゃんを登録
               </Link>
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-full hover:from-pink-500 hover:to-pink-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
                 <Settings className="h-5 w-5 mr-2" />
                 アカウント設定

@@ -232,8 +232,8 @@ export default function RegisterCat() {
             type="submit"
             disabled={mutation.isPending}
             className="w-full py-2 px-4 border border-transparent rounded-full
-              bg-pink-500 hover:bg-pink-600 text-white font-medium
-              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+              bg-gray-500 hover:bg-gray-600 text-white font-medium
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
               transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mutation.isPending ? '登録中...' : '登録する'}

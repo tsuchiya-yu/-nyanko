@@ -35,7 +35,7 @@ export default function Home() {
 
       {/* ヒーローセクション */}
       <section className="relative">
-        <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
+        <div className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-8">
               うちの猫を1ページに
@@ -110,7 +110,7 @@ export default function Home() {
       <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[0px]">
         <button
           onClick={() => setIsAuthModalOpen(true)}
-          className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+          className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
         >
           今すぐ始める
         </button>
@@ -123,7 +123,7 @@ export default function Home() {
         </div>
         {isLoading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -152,7 +152,7 @@ export default function Home() {
               alt="会員登録"
               className="w-full h-48 object-scale-down rounded-lg mb-4"
             />
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               1
             </div>
             <h3 className="text-lg font-medium text-gray-800 mb-2">会員登録</h3>
@@ -166,7 +166,7 @@ export default function Home() {
               decoding="async"
               loading="lazy"
             />
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               2
             </div>
             <h3 className="text-lg font-medium text-gray-800 mb-2">猫ちゃん情報の入力</h3>
@@ -180,7 +180,7 @@ export default function Home() {
               decoding="async"
               loading="lazy"
             />
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               3
             </div>
             <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
@@ -190,7 +190,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <button
             onClick={() => setIsAuthModalOpen(true)}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
             無料で始める
           </button>
@@ -246,7 +246,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <button
             onClick={() => setIsAuthModalOpen(true)}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
             今すぐ始める
           </button>

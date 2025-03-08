@@ -160,7 +160,7 @@ export default function EditCat() {
   if (isLoading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
       </div>
     );
   }
@@ -170,7 +170,7 @@ export default function EditCat() {
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">猫の情報を取得できませんでした</p>
-          <Link to="/" className="inline-flex items-center text-pink-500 hover:text-pink-600">
+          <Link to="/" className="inline-flex items-center text-gray-700 hover:text-gray-900">
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -204,7 +204,7 @@ export default function EditCat() {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
-          <Link to={`/cats/${id}`} className="text-pink-500 hover:text-pink-600 mr-4">
+          <Link to={`/cats/${id}`} className="text-gray-700 hover:text-gray-900 mr-4">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <h1 className="text-2xl font-bold text-gray-800">{cat.name}のプロフィールを編集</h1>
@@ -217,7 +217,7 @@ export default function EditCat() {
               type="text"
               {...register('name', { required: '名前は必須です' })}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
             {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
           </div>
@@ -227,7 +227,7 @@ export default function EditCat() {
             <select
               {...register('gender')}
               defaultValue={cat?.gender || ''}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             >
               <option value="">不明</option>
               <option value="男の子">男の子</option>
@@ -241,7 +241,7 @@ export default function EditCat() {
               type="date"
               {...register('birthdate', { required: '生年月日は必須です' })}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
             {errors.birthdate && (
               <p className="mt-1 text-sm text-red-600">{errors.birthdate.message}</p>
@@ -251,7 +251,7 @@ export default function EditCat() {
                 <input
                   type="checkbox"
                   {...register('is_birthdate_estimated')}
-                  className="rounded border-gray-300 text-pink-500 focus:ring-pink-500"
+                  className="rounded border-gray-300 text-gray-500 focus:ring-gray-500"
                 />
                 <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
               </label>
@@ -264,7 +264,7 @@ export default function EditCat() {
               type="text"
               {...register('breed', { required: '品種は必須です' })}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
             {errors.breed && <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>}
           </div>
@@ -276,7 +276,7 @@ export default function EditCat() {
               {...register('catchphrase')}
               placeholder="例：いつも元気いっぱい！甘えん坊な女の子♪"
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
           </div>
 
@@ -286,7 +286,7 @@ export default function EditCat() {
               {...register('description', { required: '紹介文は必須です' })}
               rows={4}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
             {errors.description && (
               <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
@@ -313,7 +313,7 @@ export default function EditCat() {
                 }
               }}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
 
             {/* プレビュー画像の表示 */}
@@ -335,7 +335,7 @@ export default function EditCat() {
               {...register('instagram_url')}
               placeholder="https://www.instagram.com/..."
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
           </div>
 
@@ -346,7 +346,7 @@ export default function EditCat() {
               {...register('x_url')}
               placeholder="https://x.com/..."
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
           </div>
 
@@ -359,7 +359,7 @@ export default function EditCat() {
               {...register('homepage_url')}
               placeholder="https://nekoneko.com/..."
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
           </div>
 
@@ -367,8 +367,8 @@ export default function EditCat() {
             type="submit"
             disabled={mutation.isPending}
             className="w-full py-2 px-4 border border-transparent rounded-full
-              bg-pink-500 hover:bg-pink-600 text-white font-medium
-              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+              bg-gray-800 hover:bg-gray-700 text-white font-medium
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
               transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mutation.isPending ? '更新中...' : '更新する'}

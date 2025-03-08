@@ -92,7 +92,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
                 ${
                   mode === 'login'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               onClick={() => setMode('login')}
@@ -103,7 +103,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
                 ${
                   mode === 'register'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               onClick={() => setMode('register')}
@@ -128,7 +128,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   value={name}
                   onChange={e => setName(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   placeholder="猫田 太郎"
                 />
               </div>
@@ -142,7 +142,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 placeholder="example@email.com"
               />
             </div>
@@ -155,7 +155,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 placeholder="••••••••"
               />
             </div>
@@ -165,7 +165,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               disabled={loading}
               className="w-full py-2 px-4 border border-transparent rounded-full
                 bg-pink-500 hover:bg-pink-600 text-white font-medium
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? '処理中...' : mode === 'login' ? 'ログイン' : 'アカウントを作成'}

@@ -15,7 +15,7 @@ export default function Layout({ children }: LayoutProps) {
   const { isHeaderFooterVisible } = useHeaderFooter();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-pink-50 to-purple-50">
+    <div className="min-h-screen flex flex-col bg-white">
       {isHeaderFooterVisible && (
         <header
           className="fixed top-0 left-0 right-0 bg-white shadow z-40 w-full"
@@ -36,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
                   <>
                     <Link
                       to={`/profile/${user.id}`}
-                      className="px-4 py-2 rounded-full text-pink-600 hover:text-pink-700 font-medium"
+                      className="px-4 py-2 rounded-full text-gray-700 hover:text-gray-900 font-medium"
                     >
                       マイページ
                     </Link>
@@ -45,7 +45,7 @@ export default function Layout({ children }: LayoutProps) {
                   <>
                     <button
                       onClick={() => setIsAuthModalOpen(true)}
-                      className="px-4 py-2 rounded-full text-pink-600 hover:text-pink-700 font-medium"
+                      className="px-4 py-2 rounded-full text-gray-700 hover:text-gray-900 font-medium"
                     >
                       ログイン
                     </button>
@@ -53,7 +53,7 @@ export default function Layout({ children }: LayoutProps) {
                       onClick={() => {
                         setIsAuthModalOpen(true);
                       }}
-                      className="px-4 py-2 rounded-full bg-pink-500 text-white hover:bg-pink-600 font-medium transition-colors"
+                      className="px-4 py-2 rounded-full bg-gray-500 text-white hover:bg-gray-600 font-medium transition-colors"
                     >
                       新規登録
                     </button>

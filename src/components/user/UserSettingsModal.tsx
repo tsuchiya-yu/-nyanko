@@ -132,7 +132,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
                 ${
                   mode === 'profile'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               onClick={() => setMode('profile')}
@@ -143,7 +143,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
                 ${
                   mode === 'email'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               onClick={() => setMode('email')}
@@ -154,7 +154,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
                 ${
                   mode === 'password'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               onClick={() => setMode('password')}
@@ -179,7 +179,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                     },
                   })}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
               </div>
@@ -200,7 +200,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                     },
                   })}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 />
                 {errors.email && (
                   <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
@@ -220,7 +220,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                       required: '現在のパスワードは必須です',
                     })}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                      focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                      focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.currentPassword && (
                     <p className="mt-1 text-sm text-red-600">{errors.currentPassword.message}</p>
@@ -241,7 +241,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                       },
                     })}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                      focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                      focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.newPassword && (
                     <p className="mt-1 text-sm text-red-600">{errors.newPassword.message}</p>
@@ -259,7 +259,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                         value === watch('newPassword') || 'パスワードが一致しません',
                     })}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                      focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                      focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                   {errors.confirmPassword && (
                     <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
@@ -271,8 +271,8 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
             <button
               type="submit"
               className="w-full py-2 px-4 border border-transparent rounded-full
-                bg-pink-500 hover:bg-pink-600 text-white font-medium
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+                bg-gray-800 hover:bg-gray-700 text-white font-medium
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               更新する

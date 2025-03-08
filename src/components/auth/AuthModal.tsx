@@ -116,7 +116,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">{error}</div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form 
+            id={mode === 'login' ? "login-form" : "register-form"}
+            onSubmit={handleSubmit} 
+            className="space-y-4" 
+            autoComplete="on"
+          >
             {mode === 'register' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -130,6 +135,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   placeholder="猫田 太郎"
+                  autoComplete="name"
                 />
               </div>
             )}
@@ -144,6 +150,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 placeholder="example@email.com"
+                autoComplete="email"
+                name="email"
               />
             </div>
 
@@ -157,6 +165,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 placeholder="••••••••"
+                autoComplete={mode === 'login' ? "current-password" : "new-password"}
+                name="password"
               />
             </div>
 

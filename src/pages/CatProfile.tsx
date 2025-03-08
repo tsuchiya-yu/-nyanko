@@ -23,6 +23,7 @@ interface CatWithOwner {
   image_url: string;
   instagram_url: string | null;
   x_url: string | null;
+  homepage_url: string | null;
   owner_id: string;
   gender: string | null;
   profiles: {
@@ -294,7 +295,7 @@ export default function CatProfile() {
                   href={cat.instagram_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-pink-500 hover:text-pink-600"
+                  className="inline-flex items-center text-gray-500 hover:text-gray-600"
                 >
                   <Instagram className="h-8 w-8 mr-2" />
                 </a>
@@ -307,6 +308,19 @@ export default function CatProfile() {
                   className="inline-flex items-center text-gray-500 hover:text-gray-600"
                 >
                   <Twitter className="h-8 w-8 mr-2" />
+                </a>
+              )}
+              {cat.homepage_url && (
+                <a
+                  href={cat.homepage_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-gray-500 hover:text-gray-600"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
                 </a>
               )}
             </div>

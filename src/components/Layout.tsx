@@ -1,5 +1,5 @@
 import { useState, type ReactNode, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '../store/authStore';
 import AuthModal from './auth/AuthModal';
@@ -13,6 +13,17 @@ export default function Layout({ children }: LayoutProps) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { user } = useAuthStore();
   const { isHeaderFooterVisible } = useHeaderFooter();
+  const navigate = useNavigate();
+
+  const handleAuthAction = () => {
+    if (user) {
+      // ユーザーがログイン済みの場合はUserProfileページに遷移
+      navigate(`/profile/${user.id}`);
+    } else {
+      // 未ログインの場合は認証モーダルを表示
+      setIsAuthModalOpen(true);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -44,15 +55,13 @@ export default function Layout({ children }: LayoutProps) {
                 ) : (
                   <>
                     <button
-                      onClick={() => setIsAuthModalOpen(true)}
+                      onClick={handleAuthAction}
                       className="px-4 py-2 rounded-full text-gray-700 hover:text-gray-900 font-medium"
                     >
                       ログイン
                     </button>
                     <button
-                      onClick={() => {
-                        setIsAuthModalOpen(true);
-                      }}
+                      onClick={handleAuthAction}
                       className="px-4 py-2 rounded-full bg-gray-500 text-white hover:bg-gray-600 font-medium transition-colors"
                     >
                       新規登録

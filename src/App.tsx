@@ -1,17 +1,17 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import Layout from './components/Layout';
-import { HeaderProvider } from './context/HeaderContext';
-import { useSessionRefresh } from './hooks/useSessionRefresh';
-import CatPhotos from './pages/CatPhotos';
-import CatProfile from './pages/CatProfile';
-import EditCat from './pages/EditCat';
-import Home from './pages/Home';
-import Privacy from './pages/Privacy';
-import RegisterCat from './pages/RegisterCat';
-import Terms from './pages/Terms';
-import UserProfile from './pages/UserProfile';
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import Layout from "./components/Layout";
+import { HeaderProvider } from "./context/HeaderContext";
+import { useSessionRefresh } from "./hooks/useSessionRefresh";
+import CatPhotos from "./pages/CatPhotos";
+import CatProfile from "./pages/CatProfile";
+import EditCat from "./pages/EditCat";
+import Home from "./pages/Home";
+import Privacy from "./pages/Privacy";
+import RegisterCat from "./pages/RegisterCat";
+import Terms from "./pages/Terms";
+import UserProfile from "./pages/UserProfile";
 
 export default function App() {
   useSessionRefresh();

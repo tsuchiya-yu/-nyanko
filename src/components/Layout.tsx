@@ -1,9 +1,9 @@
-import { useState, type ReactNode, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, type ReactNode, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import { useAuthStore } from '../store/authStore';
-import AuthModal from './auth/AuthModal';
-import { useHeaderFooter } from '../context/HeaderContext';
+import { useAuthStore } from "../store/authStore";
+import AuthModal from "./auth/AuthModal";
+import { useHeaderFooter } from "../context/HeaderContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,7 +19,7 @@ export default function Layout({ children }: LayoutProps) {
       {isHeaderFooterVisible && (
         <header
           className="fixed top-0 left-0 right-0 bg-white shadow z-40 w-full"
-          style={{ position: 'fixed', top: 0, left: 0, right: 0 }}
+          style={{ position: "fixed", top: 0, left: 0, right: 0 }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-12">
@@ -65,7 +65,9 @@ export default function Layout({ children }: LayoutProps) {
         </header>
       )}
 
-      <main className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'mt-16 mb-4' : 'my-2'}`}>
+      <main
+        className={`flex-grow mx-2 ${isHeaderFooterVisible ? "mt-16 mb-4" : "my-2"}`}
+      >
         {children}
       </main>
 
@@ -87,7 +89,10 @@ export default function Layout({ children }: LayoutProps) {
         </footer>
       )}
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </div>
   );
 }

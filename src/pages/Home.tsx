@@ -1,22 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
-import { InstagramIcon, X, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { useQuery } from "@tanstack/react-query";
+import { InstagramIcon, X, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
-import AuthModal from '../components/auth/AuthModal';
-import CatCard from '../components/CatCard';
-import { supabase } from '../lib/supabase';
+import AuthModal from "../components/auth/AuthModal";
+import CatCard from "../components/CatCard";
+import { supabase } from "../lib/supabase";
 
-import type { Cat } from '../types';
+import type { Cat } from "../types";
 
 export default function Home() {
   const { data: cats, isLoading } = useQuery({
-    queryKey: ['cats'],
+    queryKey: ["cats"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('cats')
-        .select('*')
-        .order('created_at', { ascending: false })
+        .from("cats")
+        .select("*")
+        .order("created_at", { ascending: false })
         .limit(6);
 
       if (error) throw error;
@@ -116,7 +116,9 @@ export default function Home() {
       {/* 新着の猫ちゃん */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">みんなの愛猫</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            みんなの愛猫
+          </h2>
         </div>
         {isLoading ? (
           <div className="text-center py-12">
@@ -124,7 +126,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cats?.map(cat => <CatCard key={cat.id} cat={cat} />)}
+            {cats?.map((cat) => <CatCard key={cat.id} cat={cat} />)}
           </div>
         )}
         {/* <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 my-4">
@@ -166,7 +168,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               2
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">猫ちゃん情報の入力</h3>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">
+              猫ちゃん情報の入力
+            </h3>
             <p className="text-gray-600">名前や写真、プロフィールを登録</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -180,7 +184,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               3
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">
+              ページの公開
+            </h3>
             <p className="text-gray-600">SNSで共有して思い出を残そう</p>
           </div>
         </div>
@@ -209,8 +215,12 @@ export default function Home() {
               loading="lazy"
             />
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">写真の追加</h3>
-              <p className="text-gray-600">スマホで撮影した写真をすぐにアップロード</p>
+              <h3 className="text-lg font-medium text-gray-800 mb-2">
+                写真の追加
+              </h3>
+              <p className="text-gray-600">
+                スマホで撮影した写真をすぐにアップロード
+              </p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
@@ -222,8 +232,12 @@ export default function Home() {
               loading="lazy"
             />
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">プロフィール編集</h3>
-              <p className="text-gray-600">いつでもどこでも情報を更新できます</p>
+              <h3 className="text-lg font-medium text-gray-800 mb-2">
+                プロフィール編集
+              </h3>
+              <p className="text-gray-600">
+                いつでもどこでも情報を更新できます
+              </p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
@@ -235,7 +249,9 @@ export default function Home() {
               loading="lazy"
             />
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">SNSシェア</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-2">
+                SNSシェア
+              </h3>
               <p className="text-gray-600">InstagramやXへ簡単に共有</p>
             </div>
           </div>
@@ -252,18 +268,26 @@ export default function Home() {
 
       {/* よくある質問 */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">よくある質問</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
+          よくある質問
+        </h2>
         <div className="space-y-4">
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">CAT LINKの利用にお金はかかりますか？</span>
+              <span className="font-medium">
+                CAT LINKの利用にお金はかかりますか？
+              </span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
-            <p className="mt-4 text-gray-600">いいえ、完全無料でご利用いただけます。</p>
+            <p className="mt-4 text-gray-600">
+              いいえ、完全無料でご利用いただけます。
+            </p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">CAT LINKを利用することでどんなことができますか？</span>
+              <span className="font-medium">
+                CAT LINKを利用することでどんなことができますか？
+              </span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
@@ -273,7 +297,9 @@ export default function Home() {
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">会員登録をするとどんなメリットがありますか？</span>
+              <span className="font-medium">
+                会員登録をするとどんなメリットがありますか？
+              </span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
@@ -283,7 +309,10 @@ export default function Home() {
         </div>
       </section>
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </div>
   );
 }

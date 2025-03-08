@@ -1,17 +1,10 @@
-import {
-  X,
-  Check,
-  Copy,
-  Instagram,
-  Twitter,
-  MessageCircle,
-} from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { X, Check, Copy, Instagram, Twitter, MessageCircle } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useAuthStore } from "../store/authStore";
-import AuthModal from "./auth/AuthModal";
+import { useAuthStore } from '../store/authStore';
+import AuthModal from './auth/AuthModal';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -19,11 +12,7 @@ interface ShareModalProps {
   catName: string;
 }
 
-export default function ShareModal({
-  isOpen,
-  onClose,
-  catName,
-}: ShareModalProps) {
+export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps) {
   const [copied, setCopied] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const currentUrl = window.location.href;
@@ -36,49 +25,45 @@ export default function ShareModal({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error("URLのコピーに失敗しました:", err);
+      console.error('URLのコピーに失敗しました:', err);
     }
   };
 
   const handleShare = (platform: string) => {
     const encodedUrl = encodeURIComponent(currentUrl);
-    const encodedTitle = encodeURIComponent(
-      `${catName}の猫プロフィール | CAT LINK`,
-    );
-    let shareUrl = "";
+    const encodedTitle = encodeURIComponent(`${catName}の猫プロフィール | CAT LINK`);
+    let shareUrl = '';
 
     switch (platform) {
-      case "Instagram":
+      case 'Instagram':
         // Instagramはディープリンクが制限されているので、
         // まずクリップボードにURLをコピーしてからInstagramアプリを開く
         navigator.clipboard.writeText(currentUrl);
-        alert(
-          "URLをコピーしました。Instagramアプリを開いて貼り付けてください。",
-        );
+        alert('URLをコピーしました。Instagramアプリを開いて貼り付けてください。');
         // モバイルの場合はInstagramアプリを開く試み
-        shareUrl = "instagram://";
+        shareUrl = 'instagram://';
         break;
-      case "Twitter":
+      case 'Twitter':
         shareUrl = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
         break;
-      case "LINE":
+      case 'LINE':
         shareUrl = `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`;
         break;
       default:
         // Web Share APIをサポートしているブラウザ向け
-        if (typeof navigator !== "undefined" && navigator.share) {
+        if (typeof navigator !== 'undefined' && navigator.share) {
           navigator
             .share({
               title: `${catName}の猫プロフィール | CAT LINK`,
               url: currentUrl,
             })
-            .catch((err) => console.error("Error sharing:", err));
+            .catch(err => console.error('Error sharing:', err));
           return;
         }
     }
 
     if (shareUrl) {
-      window.open(shareUrl, "_blank");
+      window.open(shareUrl, '_blank');
     }
   };
 
@@ -96,7 +81,7 @@ export default function ShareModal({
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-      style={{ marginTop: "0" }}
+      style={{ marginTop: '0' }}
     >
       <div className="bg-white rounded-2xl w-full max-w-md relative">
         <button
@@ -107,18 +92,16 @@ export default function ShareModal({
         </button>
 
         <div className="p-6 text-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            {catName}／CAT LINK
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{catName}／CAT LINK</h3>
           <div className="mb-4">
             <div className="flex justify-center mb-4">
               <div className="border border-gray-300 rounded-md p-4 inline-block">
                 <QRCodeSVG
                   value={currentUrl}
                   size={160}
-                  bgColor={"#ffffff"}
-                  fgColor={"#000000"}
-                  level={"L"}
+                  bgColor={'#ffffff'}
+                  fgColor={'#000000'}
+                  level={'L'}
                   includeMargin={true}
                 />
               </div>
@@ -140,28 +123,23 @@ export default function ShareModal({
             </button>
           </div>
           <p className="text-lg text-gray-600 mb-4">このページをシェアする</p>
-          <div
-            id="share-buttons"
-            className="flex justify-center space-x-4 mb-6"
-          >
+          <div id="share-buttons" className="flex justify-center space-x-4 mb-6">
             <button
-              onClick={() => handleShare("Twitter")}
+              onClick={() => handleShare('Twitter')}
               className="p-2 bg-blue-400 text-white rounded-full hover:opacity-90 transition-opacity"
               aria-label="Xでシェア"
             >
               <Twitter className="h-6 w-6" />
             </button>
             <button
-              onClick={() => handleShare("LINE")}
+              onClick={() => handleShare('LINE')}
               className="p-2 bg-green-500 text-white rounded-full hover:opacity-90 transition-opacity"
               aria-label="LINEでシェア"
             >
               <MessageCircle className="h-6 w-6" />
             </button>
           </div>
-          <p className="text-sm text-gray-600 mb-2">
-            自分の猫ちゃんのページをつくる
-          </p>
+          <p className="text-sm text-gray-600 mb-2">自分の猫ちゃんのページをつくる</p>
           <button
             onClick={handleRegister}
             className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"

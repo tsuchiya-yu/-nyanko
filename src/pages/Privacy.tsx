@@ -1,7 +1,7 @@
-import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { ArrowLeft } from 'lucide-react';
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 export default function Privacy() {
   useEffect(() => {
@@ -34,9 +34,7 @@ export default function Privacy() {
           <Link to="/" className="text-pink-500 hover:text-pink-600 mr-4">
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">
-            プライバシーポリシー
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800">プライバシーポリシー</h1>
         </div>
 
         <div className="prose max-w-none">
@@ -74,9 +72,7 @@ export default function Privacy() {
           </p>
 
           <h2>5. 個人情報の開示・訂正・削除</h2>
-          <p>
-            ユーザーは、当サービスに対して個人情報の開示、訂正、削除を請求することができます。
-          </p>
+          <p>ユーザーは、当サービスに対して個人情報の開示、訂正、削除を請求することができます。</p>
 
           <h2>6. Cookieの使用について</h2>
           <p>

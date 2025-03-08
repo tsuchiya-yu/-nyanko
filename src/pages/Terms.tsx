@@ -1,7 +1,7 @@
-import { ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { ArrowLeft } from 'lucide-react';
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 export default function Terms() {
   useEffect(() => {
@@ -16,10 +16,7 @@ export default function Terms() {
           name="description"
           content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
         />
-        <meta
-          name="keywords"
-          content="CAT LINK, 利用規約, 猫, ペット, プロフィール, 写真"
-        />
+        <meta name="keywords" content="CAT LINK, 利用規約, 猫, ペット, プロフィール, 写真" />
         <meta property="og:title" content="利用規約 | CAT LINK" />
         <meta property="og:url" content="https://cat-link.com/terms" />
         <meta
@@ -57,9 +54,7 @@ export default function Terms() {
           </ul>
 
           <h2>3. 禁止事項</h2>
-          <p>
-            ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。
-          </p>
+          <p>ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。</p>
           <ul>
             <li>法令または公序良俗に違反する行為</li>
             <li>犯罪行為に関連する行為</li>
@@ -73,9 +68,7 @@ export default function Terms() {
             当社は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。
           </p>
           <ul>
-            <li>
-              本サービスにかかるコンピュータシステムの保守点検または更新を行う場合
-            </li>
+            <li>本サービスにかかるコンピュータシステムの保守点検または更新を行う場合</li>
             <li>
               地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合
             </li>

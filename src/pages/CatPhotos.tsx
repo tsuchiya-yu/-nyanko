@@ -219,8 +219,8 @@ export default function CatPhotos() {
             type="submit"
             disabled={addPhoto.isPending}
             className="w-full py-2 px-4 border border-transparent rounded-full
-              bg-pink-500 hover:bg-pink-600 text-white font-medium
-              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+              text-white bg-gray-800 hover:bg-gray-500 font-medium
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-500 
               transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {addPhoto.isPending ? '追加中...' : '写真を追加'}

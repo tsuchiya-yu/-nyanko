@@ -164,7 +164,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               type="submit"
               disabled={loading}
               className="w-full py-2 px-4 border border-transparent rounded-full
-                bg-pink-500 hover:bg-pink-600 text-white font-medium
+                text-white bg-gray-800 hover:bg-gray-200 font-medium
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >

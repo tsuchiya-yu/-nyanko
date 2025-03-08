@@ -28,12 +28,9 @@ export default function Terms() {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
-          <Link to="/" className="text-pink-500 hover:text-pink-600 mr-4">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
           <h1 className="text-2xl font-bold text-gray-800">利用規約</h1>
         </div>
-
+        
         <div className="prose max-w-none">
           <h2>1. はじめに</h2>
           <p>
@@ -90,6 +87,22 @@ export default function Terms() {
             当社は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
             なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
           </p>
+
+          <h2>8. 個人情報の取扱い</h2>
+          <p>
+            当社は、ユーザーの個人情報を適切に取扱います。
+            個人情報の利用目的、第三者への提供等については、当社の個人情報保護方針に従って行います。
+          </p>
+
+          <h2>9. 準拠法と管轄裁判所</h2>
+          <p>
+            本規約の解釈にあたっては、日本法を準拠法とします。
+            本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
+          </p>
+          
+          <div className="text-right text-sm text-gray-600 mt-8">
+            制定日：2025年3月1日
+          </div>
         </div>
       </div>
     </div>

@@ -31,9 +31,6 @@ export default function Privacy() {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
-          <Link to="/" className="text-pink-500 hover:text-pink-600 mr-4">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
           <h1 className="text-2xl font-bold text-gray-800">プライバシーポリシー</h1>
         </div>
 
@@ -90,6 +87,10 @@ export default function Privacy() {
           <p>
             本プライバシーポリシーに関するお問い合わせは、当サービスの問い合わせフォームよりご連絡ください。
           </p>
+          
+          <div className="text-right text-sm text-gray-600 mt-8">
+            制定日：2025年3月1日
+          </div>
         </div>
       </div>
     </div>

@@ -12,11 +12,11 @@ export interface Cat {
   owner_id: string;
   gender: string | null;
   is_birthdate_estimated: boolean;
-} 
+}
 
 export interface Favorite {
   id: string;
   user_id: string;
   cat_id: string;
   created_at: string;
-} 
+}

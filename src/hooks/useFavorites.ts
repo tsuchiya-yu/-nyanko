@@ -1,8 +1,14 @@
-import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+
 import { supabase } from '../lib/supabase';
-import type { Cat, Favorite } from '../types';
 import { useAuthStore } from '../store/authStore';
+
+import type { Cat, Favorite } from '../types';
+
+interface SupabaseError {
+  message: string;
+}
 
 export const useFavorites = () => {
   const { user } = useAuthStore();
@@ -15,10 +21,7 @@ export const useFavorites = () => {
     queryFn: async () => {
       if (!user) return [];
 
-      const { data, error } = await supabase
-        .from('favorites')
-        .select('*')
-        .eq('user_id', user.id);
+      const { data, error } = await supabase.from('favorites').select('*').eq('user_id', user.id);
 
       if (error) {
         setError(error.message);
@@ -39,10 +42,7 @@ export const useFavorites = () => {
     queryFn: async () => {
       if (!user || favoriteCatIds.length === 0) return [];
 
-      const { data, error } = await supabase
-        .from('cats')
-        .select('*')
-        .in('id', favoriteCatIds);
+      const { data, error } = await supabase.from('cats').select('*').in('id', favoriteCatIds);
 
       if (error) {
         setError(error.message);
@@ -70,7 +70,7 @@ export const useFavorites = () => {
       queryClient.invalidateQueries({ queryKey: ['favorites', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['favorite-cats'] });
     },
-    onError: (error: any) => {
+    onError: (error: SupabaseError) => {
       setError(error.message);
     },
   });
@@ -92,7 +92,7 @@ export const useFavorites = () => {
       queryClient.invalidateQueries({ queryKey: ['favorites', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['favorite-cats'] });
     },
-    onError: (error: any) => {
+    onError: (error: SupabaseError) => {
       setError(error.message);
     },
   });
@@ -128,4 +128,4 @@ export const useFavorites = () => {
     isFavorite,
     toggleFavorite,
   };
-}; 
+};

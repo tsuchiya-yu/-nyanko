@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { Helmet } from 'react-helmet';
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 export default function Terms() {
   useEffect(() => {
@@ -12,14 +12,20 @@ export default function Terms() {
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <Helmet>
         <title>利用規約 | CAT LINK</title>
-        <meta name="description" content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。" />
+        <meta
+          name="description"
+          content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
+        />
         <meta name="keywords" content="CAT LINK, 利用規約, 猫, ペット, プロフィール, 写真" />
         <meta property="og:title" content="利用規約 | CAT LINK" />
         <meta property="og:url" content="https://cat-link.com/terms" />
-        <meta property="og:description" content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。" />
+        <meta
+          property="og:description"
+          content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
+        />
         <link rel="canonical" href="https://cat-link.com/terms" />
       </Helmet>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
           <Link to="/" className="text-pink-500 hover:text-pink-600 mr-4">
@@ -27,11 +33,12 @@ export default function Terms() {
           </Link>
           <h1 className="text-2xl font-bold text-gray-800">利用規約</h1>
         </div>
-        
+
         <div className="prose max-w-none">
           <h2>1. はじめに</h2>
           <p>
-            この利用規約（以下「本規約」）は、CAT LINK（以下「本サービス」）の利用条件を定めるものです。
+            この利用規約（以下「本規約」）は、CAT
+            LINK（以下「本サービス」）の利用条件を定めるものです。
             登録ユーザーの皆様には、本規約に従って本サービスをご利用いただきます。
           </p>
 
@@ -47,9 +54,7 @@ export default function Terms() {
           </ul>
 
           <h2>3. 禁止事項</h2>
-          <p>
-            ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。
-          </p>
+          <p>ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。</p>
           <ul>
             <li>法令または公序良俗に違反する行為</li>
             <li>犯罪行為に関連する行為</li>
@@ -64,7 +69,9 @@ export default function Terms() {
           </p>
           <ul>
             <li>本サービスにかかるコンピュータシステムの保守点検または更新を行う場合</li>
-            <li>地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合</li>
+            <li>
+              地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合
+            </li>
             <li>その他、当社が本サービスの提供が困難と判断した場合</li>
           </ul>
 

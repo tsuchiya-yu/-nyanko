@@ -1,14 +1,16 @@
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, Image, Settings, Edit, Heart } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuthStore } from '../store/authStore';
-import { useFavorites } from '../hooks/useFavorites';
+import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useParams, Link } from 'react-router-dom';
+
 import CatCard from '../components/CatCard';
 import UserSettingsModal from '../components/user/UserSettingsModal';
+import { useFavorites } from '../hooks/useFavorites';
+import { supabase } from '../lib/supabase';
+import { useAuthStore } from '../store/authStore';
+
 import type { Cat } from '../types';
-import { Helmet } from 'react-helmet-async';
 
 const getGreetingMessage = () => {
   const hour = new Date().getHours();
@@ -33,11 +35,7 @@ export default function UserProfile() {
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data;
@@ -47,10 +45,7 @@ export default function UserProfile() {
   const { data: cats, isLoading: catsLoading } = useQuery({
     queryKey: ['user-cats', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('cats')
-        .select('*')
-        .eq('owner_id', id);
+      const { data, error } = await supabase.from('cats').select('*').eq('owner_id', id);
 
       if (error) throw error;
       return data as Cat[];
@@ -75,47 +70,61 @@ export default function UserProfile() {
       {profile && (
         <Helmet>
           <title>{`${profile.name}のプロフィール | CAT LINK`}</title>
-          <meta name="description" content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`} />
-          <meta name="keywords" content={`${profile.name}, 猫, ペット, プロフィール, 写真, 愛猫家`} />
+          <meta
+            name="description"
+            content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
+          />
+          <meta
+            name="keywords"
+            content={`${profile.name}, 猫, ペット, プロフィール, 写真, 愛猫家`}
+          />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
           <meta property="og:url" content={`https://cat-link.com/profile/${id}`} />
-          <meta property="og:image" content={profile.avatar_url || 'https://cat-link.com/images/default-avatar.jpg'} />
-          <meta property="og:description" content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`} />
+          <meta
+            property="og:image"
+            content={profile.avatar_url || 'https://cat-link.com/images/default-avatar.jpg'}
+          />
+          <meta
+            property="og:description"
+            content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
+          />
           <meta property="profile:username" content={profile.name} />
           <link rel="canonical" href={`https://cat-link.com/profile/${id}`} />
         </Helmet>
       )}
-      
+
       <div className="space-y-8">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800">{profile?.name}さん、{getGreetingMessage()}</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            {profile?.name}さん、{getGreetingMessage()}
+          </h1>
         </div>
         <div className="">
           {isOwnProfile && (
-          <div className="inline-flex flex-col sm:flex-row gap-4">
-            <Link
-              to="/register-cat"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-full hover:from-pink-500 hover:to-pink-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-            >
-              <Plus className="h-5 w-5 mr-2 animate-pulse" />
-              新しい猫ちゃんを登録
-            </Link>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-full hover:from-pink-500 hover:to-pink-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-            >
-              <Settings className="h-5 w-5 mr-2" />
-              アカウント設定
-            </button>
-          </div>
+            <div className="inline-flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/register-cat"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-full hover:from-pink-500 hover:to-pink-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <Plus className="h-5 w-5 mr-2 animate-pulse" />
+                新しい猫ちゃんを登録
+              </Link>
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-full hover:from-pink-500 hover:to-pink-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <Settings className="h-5 w-5 mr-2" />
+                アカウント設定
+              </button>
+            </div>
           )}
         </div>
 
         <div className="space-y-6">
           <h2 className="text-xl font-semibold text-gray-800">登録している猫ちゃん</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cats?.map((cat) => (
+            {cats?.map(cat => (
               <div key={cat.id} className="relative">
                 <CatCard cat={cat} />
                 {isOwnProfile && (
@@ -151,7 +160,7 @@ export default function UserProfile() {
               <h2 className="text-xl font-semibold text-gray-800">いいねした猫ちゃん</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favoriteCats.map((cat) => (
+              {favoriteCats.map(cat => (
                 <div key={cat.id} className="relative">
                   <CatCard cat={cat} />
                 </div>
@@ -168,15 +177,14 @@ export default function UserProfile() {
           />
         )}
 
-      <div className="w-full text-right">
-        <button
-          onClick={handleSignOut}
-          className="px-4 py-2 rounded transition-colors mb-2 text-gray-400"
+        <div className="w-full text-right">
+          <button
+            onClick={handleSignOut}
+            className="px-4 py-2 rounded transition-colors mb-2 text-gray-400"
           >
-          ログアウト
-        </button>
-      </div>
-
+            ログアウト
+          </button>
+        </div>
       </div>
     </div>
   );

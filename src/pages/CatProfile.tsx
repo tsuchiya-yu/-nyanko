@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Share2, ArrowLeft, Instagram, Twitter, Heart } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuthStore } from '../store/authStore';
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useParams, Link } from 'react-router-dom';
+
 import AuthModal from '../components/auth/AuthModal';
 import ShareModal from '../components/ShareModal';
-import { handleApiError } from '../lib/api';
 import { useHeaderFooter } from '../context/HeaderContext';
+import { handleApiError } from '../lib/api';
+import { supabase } from '../lib/supabase';
+import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
-import { Helmet } from 'react-helmet-async';
 
 interface CatWithOwner {
   id: string;
@@ -48,12 +49,12 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black/70"
-      style={{ marginTop: "0" }}
+      style={{ marginTop: '0' }}
       onClick={onClose}
     >
       <div
         className="bg-white rounded-lg p-4 max-w-md mx-auto relative"
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <button
           onClick={onClose}
@@ -62,9 +63,7 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
           ×
         </button>
         <img src={photo?.image_url} alt="" className="w-full h-auto rounded-lg mb-4" />
-        {photo?.comment && (
-          <p className="text-gray-800 text-sm text-center">{photo.comment}</p>
-        )}
+        {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
       </div>
     </div>
   );
@@ -80,7 +79,11 @@ export default function CatProfile() {
   const [selectedPhoto, setSelectedPhoto] = useState<CatPhoto | null>(null);
   const { setHeaderFooterVisible } = useHeaderFooter();
 
-  const { data: cat, isLoading, error } = useQuery({
+  const {
+    data: cat,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
       try {
@@ -88,18 +91,20 @@ export default function CatProfile() {
 
         const { data, error: fetchError } = await supabase
           .from('cats')
-          .select(`
+          .select(
+            `
             *,
             profiles (
               name
             )
-          `)
+          `
+          )
           .eq('id', id)
           .single();
 
         if (fetchError) throw fetchError;
         if (!data) throw new Error('猫が見つかりません');
-        
+
         return data as CatWithOwner;
       } catch (error) {
         await handleApiError(error);
@@ -148,15 +153,9 @@ export default function CatProfile() {
       if (!user || !id) throw new Error('ユーザーが見つかりません');
 
       if (isFavorited) {
-        await supabase
-          .from('favorites')
-          .delete()
-          .eq('cat_id', id)
-          .eq('user_id', user.id);
+        await supabase.from('favorites').delete().eq('cat_id', id).eq('user_id', user.id);
       } else {
-        await supabase
-          .from('favorites')
-          .insert({ cat_id: id, user_id: user.id });
+        await supabase.from('favorites').insert({ cat_id: id, user_id: user.id });
       }
     },
     onSuccess: () => {
@@ -206,10 +205,7 @@ export default function CatProfile() {
           <p className="text-gray-600 mb-4">
             {error instanceof Error ? error.message : '猫の情報を取得できませんでした'}
           </p>
-          <Link
-            to="/"
-            className="inline-flex items-center text-pink-500 hover:text-pink-600"
-          >
+          <Link to="/" className="inline-flex items-center text-pink-500 hover:text-pink-600">
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -224,21 +220,35 @@ export default function CatProfile() {
     <div className="max-w-[480px] mx-auto space-y-6 relative">
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
-        <meta name="description" content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`} />
-        <meta name="keywords" content={`${cat.name}, ${cat.breed}, 猫, ペット, プロフィール, 写真`} />
+        <meta
+          name="description"
+          content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
+        />
+        <meta
+          name="keywords"
+          content={`${cat.name}, ${cat.breed}, 猫, ペット, プロフィール, 写真`}
+        />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}`} />
         <meta property="og:image" content={cat.image_url} />
-        <meta property="og:description" content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`} />
+        <meta
+          property="og:description"
+          content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
+        />
         <meta property="profile:first_name" content={cat.name} />
         <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
       </Helmet>
-      
-      <div className='text-center mt-6'>
-          <Link to="/">
-            <img src="/images/logo_title.png" alt="ロゴ" loading="lazy" className='inline-block w-[160px]'/>
-          </Link>
+
+      <div className="text-center mt-6">
+        <Link to="/">
+          <img
+            src="/images/logo_title.png"
+            alt="ロゴ"
+            loading="lazy"
+            className="inline-block w-[160px]"
+          />
+        </Link>
       </div>
       <div className="overflow-hidden">
         <div className="flex flex-col items-center text-center">
@@ -269,12 +279,10 @@ export default function CatProfile() {
           <div className="pt-2.5 text-gray-700">
             <h1 className="text-sm font-bold ">{cat.name}</h1>
             <p className="text-xs">
-              {cat.breed} | {age}歳
-              {cat.is_birthdate_estimated && ' (推定)'} {cat.gender !== null ? " | " + cat.gender : "" }
+              {cat.breed} | {age}歳{cat.is_birthdate_estimated && ' (推定)'}{' '}
+              {cat.gender !== null ? ' | ' + cat.gender : ''}
             </p>
-            {cat.catchphrase && (
-              <p className="my-2 text-base">{cat.catchphrase}</p>
-            )}
+            {cat.catchphrase && <p className="my-2 text-base">{cat.catchphrase}</p>}
           </div>
         </div>
 
@@ -310,10 +318,9 @@ export default function CatProfile() {
 
           {photos && photos.length > 0 && (
             <div className="mt4">
-              <div className="flex justify-between items-center mb-4">
-              </div>
+              <div className="flex justify-between items-center mb-4"></div>
               <div className="grid grid-cols-2 sm:grid-cols-3" style={{ gap: '1px' }}>
-                {photos.map((photo) => (
+                {photos.map(photo => (
                   <div
                     key={photo.id}
                     className="relative aspect-square overflow-hidden cursor-pointer group"
@@ -333,9 +340,9 @@ export default function CatProfile() {
           )}
         </div>
 
-        <div className='text-center mt-20'>
+        <div className="text-center mt-20">
           <Link to="/">
-            <img src="/images/logo_title.png" alt="ロゴ" className='inline-block w-[160px]'/>
+            <img src="/images/logo_title.png" alt="ロゴ" className="inline-block w-[160px]" />
           </Link>
           <p className="text-xs text-gray-700 mt-2">©︎CAT LINK All Rights Reserved</p>
         </div>

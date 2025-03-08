@@ -1,10 +1,12 @@
-import { Helmet } from 'react-helmet';
 import { useQuery } from '@tanstack/react-query';
 import { InstagramIcon, X, ChevronDown } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import CatCard from '../components/CatCard';
-import AuthModal from '../components/auth/AuthModal';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+
+import AuthModal from '../components/auth/AuthModal';
+import CatCard from '../components/CatCard';
+import { supabase } from '../lib/supabase';
+
 import type { Cat } from '../types';
 
 export default function Home() {
@@ -30,7 +32,7 @@ export default function Home() {
         <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
         <link rel="canonical" href="https://cat-link.com/" />
       </Helmet>
-      
+
       {/* ヒーローセクション */}
       <section className="relative">
         <div className="bg-gradient-to-b from-pink-50 to-purple-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
@@ -45,7 +47,8 @@ export default function Home() {
                   src="/images/top/main.jpg"
                   alt="愛猫の写真"
                   className="w-full h-auto object-cover rounded-lg shadow-lg"
-                  decoding="async" loading="lazy"
+                  decoding="async"
+                  loading="lazy"
                 />
               </div>
 
@@ -68,30 +71,33 @@ export default function Home() {
 
                 <div className="flex w-full space-x-2">
                   <div className="w-[24%] aspect-square">
-                      <img
-                        src="/images/top/example3.jpg"
-                        alt="愛猫の写真１"
-                        className="w-full object-cover rounded-lg shadow-lg"
-                        decoding="async" loading="lazy"
-                      />
-                    </div>
+                    <img
+                      src="/images/top/example3.jpg"
+                      alt="愛猫の写真１"
+                      className="w-full object-cover rounded-lg shadow-lg"
+                      decoding="async"
+                      loading="lazy"
+                    />
+                  </div>
                   <div className="w-[50%] aspect-square">
-                      <img
-                        src="/images/top/example2.jpg"
-                        alt="愛猫の写真２"
-                        className="w-full object-cover rounded-lg shadow-lg"
-                        decoding="async" loading="lazy"
-                      />
+                    <img
+                      src="/images/top/example2.jpg"
+                      alt="愛猫の写真２"
+                      className="w-full object-cover rounded-lg shadow-lg"
+                      decoding="async"
+                      loading="lazy"
+                    />
                   </div>
-                    <div className="w-[24%] aspect-square">
-                      <img
-                        src="/images/top/example1.jpg"
-                        alt="愛猫の写真３"
-                        className="w-full object-cover rounded-lg shadow-lg"
-                        decoding="async" loading="lazy"
-                      />
-                    </div>
+                  <div className="w-[24%] aspect-square">
+                    <img
+                      src="/images/top/example1.jpg"
+                      alt="愛猫の写真３"
+                      className="w-full object-cover rounded-lg shadow-lg"
+                      decoding="async"
+                      loading="lazy"
+                    />
                   </div>
+                </div>
               </div>
             </div>
           </div>
@@ -100,10 +106,10 @@ export default function Home() {
 
       <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[0px]">
         <button
-              onClick={() => setIsAuthModalOpen(true)}
-              className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
-            >
-              今すぐ始める
+          onClick={() => setIsAuthModalOpen(true)}
+          className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+        >
+          今すぐ始める
         </button>
       </section>
 
@@ -118,9 +124,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cats?.map((cat) => (
-              <CatCard key={cat.id} cat={cat} />
-            ))}
+            {cats?.map(cat => <CatCard key={cat.id} cat={cat} />)}
           </div>
         )}
         {/* <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 my-4">
@@ -156,7 +160,8 @@ export default function Home() {
               src="/images/top/step2.png"
               alt="猫ちゃん情報の入力"
               className="w-full h-48 object-scale-down rounded-lg mb-4"
-              decoding="async" loading="lazy"
+              decoding="async"
+              loading="lazy"
             />
             <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               2
@@ -169,7 +174,8 @@ export default function Home() {
               src="/images/top/step3.png"
               alt="ページの公開"
               className="w-full h-48 object-scale-down rounded-lg mb-4"
-              decoding="async" loading="lazy"
+              decoding="async"
+              loading="lazy"
             />
             <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               3
@@ -199,7 +205,8 @@ export default function Home() {
               src="/images/top/feature1.png"
               alt="写真の追加"
               className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
-              decoding="async" loading="lazy"
+              decoding="async"
+              loading="lazy"
             />
             <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">写真の追加</h3>
@@ -211,7 +218,8 @@ export default function Home() {
               src="/images/top/feature2.png"
               alt="プロフィール編集"
               className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
-              decoding="async" loading="lazy"
+              decoding="async"
+              loading="lazy"
             />
             <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">プロフィール編集</h3>
@@ -223,7 +231,8 @@ export default function Home() {
               src="/images/top/feature3.png"
               alt="SNSシェア"
               className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
-              decoding="async" loading="lazy"
+              decoding="async"
+              loading="lazy"
             />
             <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">SNSシェア</h3>
@@ -243,18 +252,14 @@ export default function Home() {
 
       {/* よくある質問 */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
-          よくある質問
-        </h2>
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">よくある質問</h2>
         <div className="space-y-4">
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
               <span className="font-medium">CAT LINKの利用にお金はかかりますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
-            <p className="mt-4 text-gray-600">
-              いいえ、完全無料でご利用いただけます。
-            </p>
+            <p className="mt-4 text-gray-600">いいえ、完全無料でご利用いただけます。</p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
@@ -262,7 +267,8 @@ export default function Home() {
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
+              CAT
+              LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
             </p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
@@ -277,10 +283,7 @@ export default function Home() {
         </div>
       </section>
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );
 }

@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useForm } from 'react-hook-form';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
-import { v4 as uuidv4 } from 'uuid';
-import { Helmet } from 'react-helmet';
 
 interface CatFormData {
   name: string;
@@ -39,22 +40,23 @@ export default function EditCat() {
   const { user } = useAuthStore();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CatFormData>();
 
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
       if (!id) throw new Error('猫IDが見つかりません');
 
-      const { data, error } = await supabase
-        .from('cats')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('cats').select('*').eq('id', id).single();
 
       if (error) throw error;
       if (!data) throw new Error('猫が見つかりません');
-      
+
       // 自分の猫かチェック
       if (data.owner_id !== user?.id) {
         throw new Error('この猫の編集権限がありません');
@@ -63,8 +65,6 @@ export default function EditCat() {
       return data;
     },
   });
-
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CatFormData>();
 
   useEffect(() => {
     if (cat) {
@@ -81,7 +81,7 @@ export default function EditCat() {
         homepage_url: cat.homepage_url || '',
         gender: cat.gender || '',
       });
-      
+
       // cat.image_urlが存在する場合、プレビューURLとして設定
       if (cat.image_url) {
         setPreviewUrl(cat.image_url);
@@ -127,9 +127,11 @@ export default function EditCat() {
         console.log('Upload successful:', uploadData);
 
         // アップロードした画像のURLを取得
-        const { data: { publicUrl } } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
 
-        console.log('Public URL:', publicUrl); 
+        console.log('Public URL:', publicUrl);
 
         data.image_url = publicUrl;
       }
@@ -168,10 +170,7 @@ export default function EditCat() {
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">猫の情報を取得できませんでした</p>
-          <Link
-            to="/"
-            className="inline-flex items-center text-pink-500 hover:text-pink-600"
-          >
+          <Link to="/" className="inline-flex items-center text-pink-500 hover:text-pink-600">
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -184,16 +183,25 @@ export default function EditCat() {
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <Helmet>
         <title>{`${cat.name}のプロフィールを編集 | CAT LINK`}</title>
-        <meta name="description" content={`${cat.name}のプロフィール情報を編集します。名前、年齢、品種、写真などの情報を更新できます。`} />
-        <meta name="keywords" content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`} />
+        <meta
+          name="description"
+          content={`${cat.name}のプロフィール情報を編集します。名前、年齢、品種、写真などの情報を更新できます。`}
+        />
+        <meta
+          name="keywords"
+          content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`}
+        />
         <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
         <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}/edit`} />
         <meta property="og:image" content={cat.image_url} />
-        <meta property="og:description" content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`} />
+        <meta
+          property="og:description"
+          content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
+        />
         <meta name="robots" content="noindex, nofollow" />
         <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
       </Helmet>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
           <Link to={`/cats/${id}`} className="text-pink-500 hover:text-pink-600 mr-4">
@@ -202,26 +210,20 @@ export default function EditCat() {
           <h1 className="text-2xl font-bold text-gray-800">{cat.name}のプロフィールを編集</h1>
         </div>
 
-        <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="space-y-6">
+        <form onSubmit={handleSubmit(data => mutation.mutate(data))} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              名前
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">名前</label>
             <input
               type="text"
               {...register('name', { required: '名前は必須です' })}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              性別
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>
             <select
               {...register('gender')}
               defaultValue={cat?.gender || ''}
@@ -234,9 +236,7 @@ export default function EditCat() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              生年月日
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">生年月日</label>
             <input
               type="date"
               {...register('birthdate', { required: '生年月日は必須です' })}
@@ -259,24 +259,18 @@ export default function EditCat() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              品種
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">品種</label>
             <input
               type="text"
               {...register('breed', { required: '品種は必須です' })}
               className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
             />
-            {errors.breed && (
-              <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>
-            )}
+            {errors.breed && <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              ひとこと
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">ひとこと</label>
             <input
               type="text"
               {...register('catchphrase')}
@@ -287,9 +281,7 @@ export default function EditCat() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              紹介文
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
             <textarea
               {...register('description', { required: '紹介文は必須です' })}
               rows={4}
@@ -302,9 +294,7 @@ export default function EditCat() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              プロフィール写真
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">プロフィール写真</label>
             <input
               type="file"
               accept="image/*"
@@ -339,9 +329,7 @@ export default function EditCat() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              InstagramのURL
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">InstagramのURL</label>
             <input
               type="url"
               {...register('instagram_url')}
@@ -352,9 +340,7 @@ export default function EditCat() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              XのURL
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">XのURL</label>
             <input
               type="url"
               {...register('x_url')}

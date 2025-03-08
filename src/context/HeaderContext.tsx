@@ -1,8 +1,13 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 
-const HeaderContext = createContext(null);
+interface HeaderContextType {
+  isHeaderFooterVisible: boolean;
+  setHeaderFooterVisible: (value: boolean) => void;
+}
 
-export const HeaderProvider = ({ children }) => {
+const HeaderContext = createContext<HeaderContextType | null>(null);
+
+export const HeaderProvider = ({ children }: { children: ReactNode }) => {
   const [isHeaderFooterVisible, setHeaderFooterVisible] = useState(true);
 
   return (
@@ -12,6 +17,10 @@ export const HeaderProvider = ({ children }) => {
   );
 };
 
-export const useHeaderFooter = () => {
-  return useContext(HeaderContext);
-}; 
+export const useHeaderFooter = (): HeaderContextType => {
+  const context = useContext(HeaderContext);
+  if (!context) {
+    throw new Error('useHeaderFooter must be used within a HeaderProvider');
+  }
+  return context;
+};

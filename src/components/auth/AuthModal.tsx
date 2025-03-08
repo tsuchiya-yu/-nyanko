@@ -1,9 +1,10 @@
+import { X } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X } from 'lucide-react';
+
+import { useSessionRefresh } from '../../hooks/useSessionRefresh';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
-import { useSessionRefresh } from '../../hooks/useSessionRefresh';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -84,23 +85,27 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         >
           <X className="h-6 w-6" />
         </button>
-        
+
         <div className="p-6">
           <div className="flex space-x-4 mb-6">
             <button
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
-                ${mode === 'login' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                ${
+                  mode === 'login'
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
               onClick={() => setMode('login')}
             >
               ログイン
             </button>
             <button
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
-                ${mode === 'register' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                ${
+                  mode === 'register'
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
               onClick={() => setMode('register')}
             >
               新規登録
@@ -108,9 +113,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
-              {error}
-            </div>
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">{error}</div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -123,7 +126,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   type="text"
                   required
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={e => setName(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                   placeholder="猫田 太郎"
@@ -132,14 +135,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-               メールアドレス
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">メールアドレス</label>
               <input
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="example@email.com"
@@ -147,14 +148,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                パスワード
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">パスワード</label>
               <input
                 type="password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="••••••••"

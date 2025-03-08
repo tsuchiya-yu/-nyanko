@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
 
@@ -25,7 +26,12 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
   const [mode, setMode] = useState<'profile' | 'email' | 'password'>('profile');
-  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<ProfileFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<ProfileFormData>({
     defaultValues: {
       name: profile?.name || '',
       email: user?.email || '',
@@ -106,7 +112,10 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" style={{ marginTop: "0" }}>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+      style={{ marginTop: '0' }}
+    >
       <div className="bg-white rounded-2xl w-full max-w-md relative">
         <button
           onClick={onClose}
@@ -114,34 +123,40 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
         >
           <X className="h-6 w-6" />
         </button>
-        
+
         <div className="p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">アカウント設定</h2>
 
           <div className="flex space-x-4 mb-6">
             <button
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
-                ${mode === 'profile' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                ${
+                  mode === 'profile'
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
               onClick={() => setMode('profile')}
             >
               プロフィール
             </button>
             <button
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
-                ${mode === 'email' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                ${
+                  mode === 'email'
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
               onClick={() => setMode('email')}
             >
               メール
             </button>
             <button
               className={`flex-1 py-2 text-center rounded-full font-medium transition-colors
-                ${mode === 'password' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                ${
+                  mode === 'password'
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
               onClick={() => setMode('password')}
             >
               パスワード
@@ -166,9 +181,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-                )}
+                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
               </div>
             )}
 
@@ -242,7 +255,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                   <input
                     type="password"
                     {...register('confirmPassword', {
-                      validate: (value) =>
+                      validate: value =>
                         value === watch('newPassword') || 'パスワードが一致しません',
                     })}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-lg

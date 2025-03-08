@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, type ReactNode, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import { useAuthStore } from '../store/authStore';
 import AuthModal from './auth/AuthModal';
 import { useHeaderFooter } from '../context/HeaderContext';
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
@@ -16,11 +17,19 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-pink-50 to-purple-50">
       {isHeaderFooterVisible && (
-        <header className="fixed top-0 left-0 right-0 bg-white shadow z-40">
+        <header
+          className="fixed top-0 left-0 right-0 bg-white shadow z-40 w-full"
+          style={{ position: 'fixed', top: 0, left: 0, right: 0 }}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-12">
               <Link to="/" className="flex items-center">
-                <img src="/images/logo.png" alt="ロゴ" loading="lazy" className='inline-block w-[120px]'/>
+                <img
+                  src="/images/logo.png"
+                  alt="ロゴ"
+                  loading="lazy"
+                  className="inline-block w-[120px]"
+                />
               </Link>
               <div className="flex items-center space-x-4">
                 {user ? (
@@ -56,7 +65,7 @@ export default function Layout({ children }: LayoutProps) {
         </header>
       )}
 
-      <main className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'my-20' : 'my-2'}` }>
+      <main className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'mt-16 mb-4' : 'my-2'}`}>
         {children}
       </main>
 
@@ -78,10 +87,7 @@ export default function Layout({ children }: LayoutProps) {
         </footer>
       )}
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );
 }

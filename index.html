@@ -46,6 +46,22 @@
         margin: 0;
         padding: 0;
       }
+      
+      /* Safari用の三角形マーカーを非表示にする */
+      details summary::-webkit-details-marker,
+      details summary::marker {
+        display: none;
+      }
+      
+      /* iOS Safariでの余分なパディングを削除 */
+      details summary {
+        list-style: none;
+      }
+      
+      /* 開いた状態のdetailsのChevronアイコンを回転させる */
+      details[open] summary svg {
+        transform: rotate(180deg);
+      }
     </style>
   </head>
   <body>

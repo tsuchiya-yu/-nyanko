@@ -28,3 +28,8 @@ dist-ssr
 .env.*
 !.env.example
 .bolt/
+
+# Test coverage reports
+coverage
+coverage-*
+.nyc_output

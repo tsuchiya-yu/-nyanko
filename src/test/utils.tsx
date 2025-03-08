@@ -1,8 +1,8 @@
-import { render, RenderOptions } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { MemoryRouter } from 'react-router-dom';
 
 // テスト用のQueryClientを作成
 const createTestQueryClient = () =>
@@ -32,9 +32,7 @@ export const AllProviders = ({ children, initialEntries = ['/'] }: AllProvidersP
   return (
     <HelmetProvider>
       <QueryClientProvider client={testQueryClient}>
-        <MemoryRouter initialEntries={initialEntries}>
-          {children}
-        </MemoryRouter>
+        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
       </QueryClientProvider>
     </HelmetProvider>
   );
@@ -46,9 +44,9 @@ export const renderWithProviders = (
   options?: Omit<RenderOptions, 'wrapper'> & { initialEntries?: string[] }
 ) => {
   const { initialEntries, ...renderOptions } = options || {};
-  
+
   return render(ui, {
-    wrapper: (props) => <AllProviders {...props} initialEntries={initialEntries} />,
+    wrapper: props => <AllProviders {...props} initialEntries={initialEntries} />,
     ...renderOptions,
   });
 };
@@ -68,4 +66,4 @@ export const mockUser = {
   id: 'user-1',
   email: 'test@example.com',
   name: 'テストユーザー',
-}; 
+};

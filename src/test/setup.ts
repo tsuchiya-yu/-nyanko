@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
-import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 
 // React Routerの警告を抑制
 vi.mock('react-router-dom', async () => {
@@ -25,7 +25,7 @@ afterEach(() => {
 
 // MSWのサーバーをセットアップする場合
 // export const server = setupServer(...handlers);
-// 
+//
 // beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 // afterEach(() => server.resetHandlers());
-// afterAll(() => server.close()); 
+// afterAll(() => server.close());

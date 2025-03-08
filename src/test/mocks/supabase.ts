@@ -20,4 +20,4 @@ export const mockSupabaseClient = {
 // Supabaseモジュールのモック
 vi.mock('../lib/supabase', () => ({
   supabase: mockSupabaseClient,
-})); 
+}));

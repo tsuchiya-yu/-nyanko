@@ -87,10 +87,8 @@ export default function Privacy() {
           <p>
             本プライバシーポリシーに関するお問い合わせは、当サービスの問い合わせフォームよりご連絡ください。
           </p>
-          
-          <div className="text-right text-sm text-gray-600 mt-8">
-            制定日：2025年3月1日
-          </div>
+
+          <div className="text-right text-sm text-gray-600 mt-8">制定日：2025年3月1日</div>
         </div>
       </div>
     </div>

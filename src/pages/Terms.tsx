@@ -30,7 +30,7 @@ export default function Terms() {
         <div className="flex items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">利用規約</h1>
         </div>
-        
+
         <div className="prose max-w-none">
           <h2>1. はじめに</h2>
           <p>
@@ -99,10 +99,8 @@ export default function Terms() {
             本規約の解釈にあたっては、日本法を準拠法とします。
             本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
           </p>
-          
-          <div className="text-right text-sm text-gray-600 mt-8">
-            制定日：2025年3月1日
-          </div>
+
+          <div className="text-right text-sm text-gray-600 mt-8">制定日：2025年3月1日</div>
         </div>
       </div>
     </div>

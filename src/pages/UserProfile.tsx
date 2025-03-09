@@ -78,6 +78,7 @@ export default function UserProfile() {
             name="keywords"
             content={`${profile.name}, 猫, ペット, プロフィール, 写真, 愛猫家`}
           />
+          <meta name="robots" content="noindex" />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
           <meta property="og:url" content={`https://cat-link.com/profile/${id}`} />

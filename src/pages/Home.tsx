@@ -49,7 +49,7 @@ export default function Home() {
 
       {/* ヒーローセクション */}
       <section className="relative">
-        <div className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
+        <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-8">
               うちの猫を1ページに
@@ -73,14 +73,14 @@ export default function Home() {
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-4"
                 >
                   <InstagramIcon className="h-5 w-5 mr-2" />
-                  うちのコ日記 in Instagram
+                  うちのこ日記 in Instagram
                 </a>
                 <a
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-6"
                 >
                   <X className="h-5 w-5 mr-2" />
-                  うちのコ日記 in X
+                  うちのこ日記 in X
                 </a>
 
                 <div className="flex w-full space-x-2">
@@ -184,7 +184,7 @@ export default function Home() {
               2
             </div>
             <h3 className="text-lg font-medium text-gray-800 mb-2">猫ちゃん情報の入力</h3>
-            <p className="text-gray-600">名前や写真、プロフィールを登録</p>
+            <p className="text-gray-600">名前やプロフィール、写真を登録できます</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <img
@@ -198,7 +198,7 @@ export default function Home() {
               3
             </div>
             <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
-            <p className="text-gray-600">SNSで共有して思い出を残そう</p>
+            <p className="text-gray-600">SNSで共有してうちのこをドンドン紹介しよう</p>
           </div>
         </div>
         <div className="text-center mt-8">

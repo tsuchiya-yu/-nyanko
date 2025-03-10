@@ -162,7 +162,7 @@ export default function CatPhotos() {
             content={
               photos && photos.length > 0
                 ? photos[0].image_url
-                : 'https://cat-link.com/images/ogp.jpg'
+                : 'https://cat-link.com/images/ogp.png'
             }
           />
           <meta

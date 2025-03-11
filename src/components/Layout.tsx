@@ -90,7 +90,7 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
             </div>
             <div className="text-center text-gray-500">
-              <p>© 2024 CAT LINK All rights reserved.</p>
+              <p>© {new Date().getFullYear()} CAT LINK All rights reserved.</p>
             </div>
           </div>
         </footer>

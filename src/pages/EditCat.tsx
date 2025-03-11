@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
+import ImageEditor from '../components/ImageEditor';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 
@@ -40,12 +41,19 @@ export default function EditCat() {
   const { user } = useAuthStore();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [showImageEditor, setShowImageEditor] = useState(false);
+  const [editingImage, setEditingImage] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<CatFormData>();
+
+  // フォームの現在値を監視
+  const formValues = watch();
 
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
@@ -68,6 +76,7 @@ export default function EditCat() {
 
   useEffect(() => {
     if (cat) {
+      // フォームリセットでフィールドを初期化
       reset({
         name: cat.name,
         birthdate: cat.birthdate,
@@ -90,7 +99,7 @@ export default function EditCat() {
   }, [cat, reset]);
 
   useEffect(() => {
-    if (imageFile) {
+    if (imageFile && !showImageEditor) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
@@ -100,14 +109,41 @@ export default function EditCat() {
         console.error('画像の読み込みに失敗しました');
       };
       reader.readAsDataURL(imageFile);
-    } else {
-      setPreviewUrl(null);
     }
-  }, [imageFile]);
+  }, [imageFile, showImageEditor]);
+
+  // 編集した画像を保存する処理
+  const handleSaveEditedImage = (editedImageBlob: Blob) => {
+    // Blobからファイルを作成
+    const editedFile = new File([editedImageBlob], imageFile?.name || 'edited-image.jpg', {
+      type: editedImageBlob.type,
+    });
+
+    setImageFile(editedFile);
+    setShowImageEditor(false);
+
+    // 一時的な値を設定（フォーム送信時に実際のURLに置き換えられる）
+    setValue('image_url', 'temp_image_url');
+
+    // プレビュー用のURLを作成
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(editedFile);
+  };
+
+  // 画像編集をキャンセルする処理
+  const handleCancelEdit = () => {
+    setShowImageEditor(false);
+    if (!previewUrl) {
+      setImageFile(null);
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
-      // 画像をSupabase Storageにアップロード
+      // 編集した画像をSupabase Storageにアップロード
       if (imageFile) {
         const uniqueId = uuidv4();
         const sanitizedFileName = sanitizeFileName(imageFile.name);
@@ -134,15 +170,27 @@ export default function EditCat() {
         console.log('Public URL:', publicUrl);
 
         data.image_url = publicUrl;
+      } else if (previewUrl && previewUrl === cat?.image_url) {
+        // 既存の画像URLを使用
+        data.image_url = cat.image_url;
       }
 
-      console.log('data', data);
+      console.log('Form data before submit:', data);
 
       const { error } = await supabase
         .from('cats')
         .update({
-          ...data,
+          name: data.name,
+          birthdate: data.birthdate,
+          is_birthdate_estimated: data.is_birthdate_estimated,
+          breed: data.breed,
+          catchphrase: data.catchphrase,
+          description: data.description,
           image_url: data.image_url,
+          instagram_url: data.instagram_url || null,
+          x_url: data.x_url || null,
+          homepage_url: data.homepage_url || null,
+          gender: data.gender || null,
         })
         .eq('id', id);
 
@@ -204,176 +252,204 @@ export default function EditCat() {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
-          <Link to={`/cats/${id}`} className="text-gray-700 hover:text-gray-900 mr-4">
+          <Link
+            to={`/cats/${id}`}
+            className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <h1 className="text-2xl font-bold text-gray-800">{cat.name}のプロフィールを編集</h1>
         </div>
 
-        <form onSubmit={handleSubmit(data => mutation.mutate(data))} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">名前</label>
-            <input
-              type="text"
-              {...register('name', { required: '名前は必須です' })}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>
-            <select
-              {...register('gender')}
-              defaultValue={cat?.gender || ''}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            >
-              <option value="">不明</option>
-              <option value="男の子">男の子</option>
-              <option value="女の子">女の子</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">生年月日</label>
-            <input
-              type="date"
-              {...register('birthdate', { required: '生年月日は必須です' })}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-            {errors.birthdate && (
-              <p className="mt-1 text-sm text-red-600">{errors.birthdate.message}</p>
-            )}
-            <div className="mt-2">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  {...register('is_birthdate_estimated')}
-                  className="rounded border-gray-300 text-gray-500 focus:ring-gray-500"
-                />
-                <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">品種</label>
-            <input
-              type="text"
-              {...register('breed', { required: '品種は必須です' })}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-            {errors.breed && <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ひとこと</label>
-            <input
-              type="text"
-              {...register('catchphrase')}
-              placeholder="例：いつも元気いっぱい！甘えん坊な女の子♪"
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
-            <textarea
-              {...register('description', { required: '紹介文は必須です' })}
-              rows={4}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-            {errors.description && (
-              <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">プロフィール写真</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files && e.target.files[0]) {
-                  const file = e.target.files[0];
-                  setImageFile(file);
-
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    if (reader.result) {
-                      setPreviewUrl(reader.result.toString());
-                    }
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-
-            {/* プレビュー画像の表示 */}
-            {(previewUrl || cat?.image_url) && (
-              <img
-                src={previewUrl || cat?.image_url}
-                alt="プレビュー"
-                className="mt-2 max-w-[200px] h-auto"
-                decoding="async"
-                loading="lazy"
-              />
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">InstagramのURL</label>
-            <input
-              type="url"
-              {...register('instagram_url')}
-              placeholder="https://www.instagram.com/..."
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">XのURL</label>
-            <input
-              type="url"
-              {...register('x_url')}
-              placeholder="https://x.com/..."
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              その他ホームページのURL
-            </label>
-            <input
-              type="url"
-              {...register('homepage_url')}
-              placeholder="https://nekoneko.com/..."
-              className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={mutation.isPending}
-            className="w-full py-2 px-4 border border-transparent rounded-full
-              bg-gray-800 hover:bg-gray-700 text-white font-medium
-              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
-              transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        {showImageEditor && editingImage ? (
+          <ImageEditor
+            imageFile={editingImage}
+            onSave={handleSaveEditedImage}
+            onCancel={handleCancelEdit}
+            aspectRatio={1}
+          />
+        ) : (
+          <form
+            onSubmit={handleSubmit(data => {
+              console.log('提出するデータ:', data);
+              mutation.mutate(data);
+            })}
+            className="space-y-6"
           >
-            {mutation.isPending ? '更新中...' : '更新する'}
-          </button>
-        </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">名前</label>
+              <input
+                type="text"
+                {...register('name', { required: '名前は必須です' })}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+              {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>
+              <select
+                {...register('gender')}
+                defaultValue={cat?.gender || ''}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              >
+                <option value="">不明</option>
+                <option value="男の子">男の子</option>
+                <option value="女の子">女の子</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">生年月日</label>
+              <input
+                type="date"
+                {...register('birthdate', { required: '生年月日は必須です' })}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+              {errors.birthdate && (
+                <p className="mt-1 text-sm text-red-600">{errors.birthdate.message}</p>
+              )}
+              <div className="mt-2">
+                <label className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    {...register('is_birthdate_estimated')}
+                    className="rounded border-gray-300 text-gray-500 focus:ring-gray-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">品種</label>
+              <input
+                type="text"
+                {...register('breed', { required: '品種は必須です' })}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+              {errors.breed && <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">ひとこと</label>
+              <input
+                type="text"
+                {...register('catchphrase')}
+                placeholder="例：いつも元気いっぱい！甘えん坊な女の子♪"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
+              <textarea
+                {...register('description', { required: '紹介文は必須です' })}
+                rows={4}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+              {errors.description && (
+                <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィール写真
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    setEditingImage(file);
+                    setShowImageEditor(true);
+                  }
+                }}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+
+              {/* プレビュー画像の表示 */}
+              {(previewUrl || cat?.image_url) && (
+                <div className="mt-2">
+                  <img
+                    src={previewUrl || cat?.image_url}
+                    alt="プレビュー"
+                    className="max-w-[200px] h-auto rounded-lg shadow-sm"
+                    decoding="async"
+                    loading="lazy"
+                  />
+                  {/* 編集ボタンはファイルが選択されている場合のみ表示 */}
+                  {imageFile && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingImage(imageFile);
+                        setShowImageEditor(true);
+                      }}
+                      className="mt-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    >
+                      画像を再編集
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">InstagramのURL</label>
+              <input
+                type="url"
+                {...register('instagram_url')}
+                placeholder="https://www.instagram.com/..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">XのURL</label>
+              <input
+                type="url"
+                {...register('x_url')}
+                placeholder="https://x.com/..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                その他ホームページのURL
+              </label>
+              <input
+                type="url"
+                {...register('homepage_url')}
+                placeholder="https://nekoneko.com/..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={mutation.isPending}
+              className="w-full py-2 px-4 border border-transparent rounded-full
+                text-white bg-gray-800 hover:bg-gray-500 font-medium
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-500 
+                transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {mutation.isPending ? '更新中...' : '保存する'}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

@@ -3,6 +3,9 @@ import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
+// Hammer.jsの型定義
+type HammerManager = InstanceType<typeof Hammer>;
+
 interface ImageEditorProps {
   imageFile: File;
   onSave: (editedImageBlob: Blob) => void;

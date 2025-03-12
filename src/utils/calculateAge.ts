@@ -1,12 +1,28 @@
-export function calculateAge(birthdate: string): number {
+export function calculateAge(birthdate: string): { years: number; months: number; toString: () => string } {
   const birth = new Date(birthdate);
   const today = new Date();
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
+  let years = today.getFullYear() - birth.getFullYear();
+  let months = today.getMonth() - birth.getMonth();
 
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
+  if (months < 0) {
+    years--;
+    months += 12;
+  } else if (months === 0 && today.getDate() < birth.getDate()) {
+    years--;
+    months = 11;
   }
 
-  return age;
+  return {
+    years,
+    months,
+    toString: function() {
+      if (this.years < 0 || (this.years === 0 && this.months < 0)) {
+        return 'これから生まれる';
+      }
+      if (this.months === 0) {
+        return `${this.years}歳`;
+      }
+      return `${this.years}歳${this.months}ヶ月`;
+    }
+  };
 }

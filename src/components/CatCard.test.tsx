@@ -44,7 +44,11 @@ describe('CatCardコンポーネント', () => {
       toggleFavorite: vi.fn(),
     });
 
-    (calculateAge as any).mockReturnValue(3);
+    (calculateAge as any).mockReturnValue({
+      years: 3, 
+      months: 0,
+      toString: () => '3歳'
+    });
   });
 
   it('猫の情報が正しく表示されること', () => {

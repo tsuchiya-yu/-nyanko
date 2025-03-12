@@ -223,7 +223,7 @@ export default function CatProfile() {
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
           name="description"
-          content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
+          content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
         />
         <meta
           name="keywords"
@@ -235,7 +235,7 @@ export default function CatProfile() {
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
-          content={`${cat.name}は${age}歳の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
+          content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
         <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
@@ -280,7 +280,7 @@ export default function CatProfile() {
           <div className="pt-2.5 text-gray-700">
             <h1 className="text-sm font-bold ">{cat.name}</h1>
             <p className="text-xs">
-              {cat.breed} | {age}歳{cat.is_birthdate_estimated && ' (推定)'}{' '}
+              {cat.breed} | {age.toString()}{cat.is_birthdate_estimated && ' (推定)'}{' '}
               {cat.gender !== null ? ' | ' + cat.gender : ''}
             </p>
             {cat.catchphrase && <p className="my-2 text-base">{cat.catchphrase}</p>}

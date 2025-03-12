@@ -46,7 +46,7 @@ export default function CatCard({ cat }: CatCardProps) {
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-800">{cat.name}</h3>
           <p className="text-sm text-gray-600 mt-1">
-            {cat.breed} | {age}歳
+            {cat.breed} | {age.toString()}
           </p>
           <p className="text-sm text-gray-700 mt-2 line-clamp-2">{cat.description}</p>
         </div>

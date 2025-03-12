@@ -280,7 +280,8 @@ export default function CatProfile() {
           <div className="pt-2.5 text-gray-700">
             <h1 className="text-sm font-bold ">{cat.name}</h1>
             <p className="text-xs">
-              {cat.breed} | {age.toString()}{cat.is_birthdate_estimated && ' (推定)'}{' '}
+              {cat.breed} | {age.toString()}
+              {cat.is_birthdate_estimated && ' (推定)'}{' '}
               {cat.gender !== null ? ' | ' + cat.gender : ''}
             </p>
             {cat.catchphrase && <p className="my-2 text-base">{cat.catchphrase}</p>}

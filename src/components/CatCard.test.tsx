@@ -45,9 +45,9 @@ describe('CatCardコンポーネント', () => {
     });
 
     (calculateAge as any).mockReturnValue({
-      years: 3, 
+      years: 3,
       months: 0,
-      toString: () => '3歳'
+      toString: () => '3歳',
     });
   });
 

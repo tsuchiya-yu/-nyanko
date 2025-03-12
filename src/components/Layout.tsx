@@ -82,12 +82,15 @@ export default function Layout({ children }: LayoutProps) {
         <footer className="bg-white mt-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-center space-x-8 mb-4">
-              <Link to="/terms" className="text-gray-600 hover:text-gray-800">
+              <Link to="/terms" className="text-gray-600 hover:text-gray-800 text-sm">
                 利用規約
               </Link>
-              <Link to="/privacy" className="text-gray-600 hover:text-gray-800">
+              <Link to="/privacy" className="text-gray-600 hover:text-gray-800 text-sm">
                 プライバシーポリシー
               </Link>
+              <a href="https://forms.gle/jdkm3kf7DJ49sEuDA" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-sm">
+                お問い合わせ
+              </a>
             </div>
             <div className="text-center text-gray-500">
               <p>© {new Date().getFullYear()} CAT LINK All rights reserved.</p>

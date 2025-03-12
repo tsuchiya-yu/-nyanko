@@ -92,7 +92,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
         </button>
 
         <div className="p-6 text-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">{catName}／CAT LINK</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{catName} | CAT LINK</h3>
           <div className="mb-4">
             <div className="flex justify-center mb-4">
               <div className="border border-gray-300 rounded-md p-4 inline-block">

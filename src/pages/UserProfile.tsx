@@ -15,13 +15,13 @@ import type { Cat } from '../types';
 const getGreetingMessage = () => {
   const hour = new Date().getHours();
   if (hour >= 5 && hour < 12) {
-    return 'おはようニャ！朝ごはんまだかニャ';
+    return 'おはようにゃ！';
   } else if (hour >= 12 && hour < 17) {
-    return 'こんニャちは！お昼寝の時間かニャ？';
+    return 'こんにゃちは！';
   } else if (hour >= 17 && hour < 22) {
-    return 'こんばんは！夜ご飯の時間ニャ！';
+    return 'こんばんにゃ！';
   } else {
-    return 'こんな遅くまでニャんの用？';
+    return '遅くまでおつかれさにゃ！';
   }
 };
 

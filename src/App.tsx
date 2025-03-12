@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/Layout';
@@ -15,6 +16,12 @@ import UserProfile from './pages/UserProfile';
 
 export default function App() {
   useSessionRefresh();
+  const location = useLocation();
+
+  // ルート変更時に画面トップにスクロール
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <HeaderProvider>

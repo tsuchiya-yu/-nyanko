@@ -12,6 +12,11 @@ export function calculateAge(birthdate: string): { years: number; months: number
     months = 11;
   }
 
+  // 月の経過が1ヶ月未満の場合（前月の同日以降の誕生日）
+  if (today.getDate() < birth.getDate() && months === 1) {
+    months = 0;
+  }
+
   return {
     years,
     months,

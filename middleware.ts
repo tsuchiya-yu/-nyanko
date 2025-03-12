@@ -19,7 +19,8 @@ export default function middleware(request: Request) {
   return new Response("Basic認証が必要です", {
     status: 401,
     headers: {
-      "WWW-Authenticate": 'Basic realm="猫アプリ専用エリア"',
+      "WWW-Authenticate": "Basic",
+      "Content-Type": "text/plain"
     },
   });
 } 

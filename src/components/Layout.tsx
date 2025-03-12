@@ -88,7 +88,12 @@ export default function Layout({ children }: LayoutProps) {
               <Link to="/privacy" className="text-gray-600 hover:text-gray-800 text-sm">
                 プライバシーポリシー
               </Link>
-              <a href="https://forms.gle/jdkm3kf7DJ49sEuDA" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-sm">
+              <a
+                href="https://forms.gle/jdkm3kf7DJ49sEuDA"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-gray-800 text-sm"
+              >
                 お問い合わせ
               </a>
             </div>

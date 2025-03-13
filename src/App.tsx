@@ -5,6 +5,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/Layout';
 import { HeaderProvider } from './context/HeaderContext';
 import { useSessionRefresh } from './hooks/useSessionRefresh';
+import { initGA, trackPageView } from './lib/analytics';
 import CatPhotos from './pages/CatPhotos';
 import CatProfile from './pages/CatProfile';
 import EditCat from './pages/EditCat';
@@ -18,10 +19,16 @@ export default function App() {
   useSessionRefresh();
   const location = useLocation();
 
-  // ルート変更時に画面トップにスクロール
+  // Google Analytics初期化
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  // ルート変更時に画面トップにスクロールとページビュートラッキング
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+    trackPageView(location.pathname + location.search);
+  }, [location.pathname, location.search]);
 
   return (
     <HeaderProvider>

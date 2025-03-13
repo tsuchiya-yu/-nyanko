@@ -7,4 +7,19 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        },
+      },
+    },
+  },
+  define: {
+    'process.env': process.env,
+  },
+  server: {
+    port: 3000,
+  },
 });

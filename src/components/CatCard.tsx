@@ -1,4 +1,5 @@
 import { Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import { useFavorites } from '../hooks/useFavorites';
 import { useAuthStore } from '../store/authStore';
@@ -17,7 +18,7 @@ export default function CatCard({ cat }: CatCardProps) {
   const isFav = isFavorite(cat.id);
 
   return (
-    <a href={`/cats/${cat.id}`} target="_blank" rel="noopener noreferrer" className="block">
+    <Link to={`/cats/${cat.id}`} className="block">
       <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:scale-[1.02]">
         <div className="relative h-48">
           <img
@@ -51,6 +52,6 @@ export default function CatCard({ cat }: CatCardProps) {
           <p className="text-sm text-gray-700 mt-2 line-clamp-2">{cat.description}</p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

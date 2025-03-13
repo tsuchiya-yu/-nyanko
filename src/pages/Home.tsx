@@ -44,7 +44,7 @@ export default function Home() {
     <div className="space-y-16 pb-12">
       <Helmet>
         <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
-        <link rel="canonical" href="https://cat-link.com/" />
+        <link rel="canonical" href="https://cat-link.catnote.tokyo/" />
       </Helmet>
 
       {/* ヒーローセクション */}

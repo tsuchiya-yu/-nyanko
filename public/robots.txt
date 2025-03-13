@@ -1,0 +1,6 @@
+# CAT LINK robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://cat-link.catnote.tokyo/sitemap.xml 

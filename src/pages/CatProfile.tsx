@@ -231,14 +231,14 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}`} />
+        <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
           content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
-        <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
+        <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
       </Helmet>
 
       <div className="text-center mt-6">

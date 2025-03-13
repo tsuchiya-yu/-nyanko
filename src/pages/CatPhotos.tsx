@@ -196,13 +196,13 @@ export default function CatPhotos() {
             content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`}
           />
           <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
-          <meta property="og:url" content={`https://cat-link.com/cats/${id}/photos`} />
+          <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${id}/photos`} />
           <meta
             property="og:image"
             content={
               photos && photos.length > 0
                 ? photos[0].image_url
-                : 'https://cat-link.com/images/ogp.png'
+                : 'https://cat-link.catnote.tokyo/images/ogp.png'
             }
           />
           <meta
@@ -210,7 +210,7 @@ export default function CatPhotos() {
             content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`}
           />
           <meta name="robots" content="noindex, follow" />
-          <link rel="canonical" href={`https://cat-link.com/cats/${id}`} />
+          <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${id}`} />
         </Helmet>
       )}
 

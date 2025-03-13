@@ -81,17 +81,17 @@ export default function UserProfile() {
           <meta name="robots" content="noindex" />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
-          <meta property="og:url" content={`https://cat-link.com/profile/${id}`} />
+          <meta property="og:url" content={`https://cat-link.catnote.tokyo/profile/${id}`} />
           <meta
             property="og:image"
-            content={profile.avatar_url || 'https://cat-link.com/images/default-avatar.jpg'}
+            content={profile.avatar_url || 'https://cat-link.catnote.tokyo/images/default-avatar.jpg'}
           />
           <meta
             property="og:description"
             content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
           />
           <meta property="profile:username" content={profile.name} />
-          <link rel="canonical" href={`https://cat-link.com/profile/${id}`} />
+          <link rel="canonical" href={`https://cat-link.catnote.tokyo/profile/${id}`} />
         </Helmet>
       )}
 

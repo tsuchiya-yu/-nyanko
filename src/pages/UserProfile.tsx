@@ -84,7 +84,9 @@ export default function UserProfile() {
           <meta property="og:url" content={`https://cat-link.catnote.tokyo/profile/${id}`} />
           <meta
             property="og:image"
-            content={profile.avatar_url || 'https://cat-link.catnote.tokyo/images/default-avatar.jpg'}
+            content={
+              profile.avatar_url || 'https://cat-link.catnote.tokyo/images/default-avatar.jpg'
+            }
           />
           <meta
             property="og:description"

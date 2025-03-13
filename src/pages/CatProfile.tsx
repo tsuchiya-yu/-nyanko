@@ -278,7 +278,7 @@ export default function CatProfile() {
             </button>
           </div>
           <div className="pt-2.5 text-gray-700">
-            <h1 className="text-sm font-bold ">{cat.name}</h1>
+            <h1 className="text-base font-bold pb-0">{cat.name}</h1>
             <p className="text-xs">
               {cat.breed} | {age.toString()}
               {cat.is_birthdate_estimated && ' (推定)'}{' '}
@@ -343,7 +343,7 @@ export default function CatProfile() {
           {photos && photos.length > 0 && (
             <div className="mt4">
               <div className="flex justify-between items-center mb-4"></div>
-              <div className="grid grid-cols-2 sm:grid-cols-3" style={{ gap: '1px' }}>
+              <div className="grid grid-cols-3" style={{ gap: '1px' }}>
                 {photos.map(photo => (
                   <div
                     key={photo.id}

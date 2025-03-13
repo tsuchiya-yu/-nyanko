@@ -218,7 +218,7 @@ export default function CatPhotos() {
         {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
       </h1>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md p-6 mb-4">
         {showImageEditor && editingImage ? (
           <ImageEditor
             imageFile={editingImage}
@@ -227,78 +227,81 @@ export default function CatPhotos() {
             aspectRatio={16 / 9}
           />
         ) : (
-          <form
-            onSubmit={handleSubmit(data => {
-              if (!imageFile) {
-                alert('画像を選択してください');
-                return;
-              }
-              addPhoto.mutate({ comment: data.comment });
-            })}
-            className="space-y-4"
-          >
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">写真</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={e => {
-                  if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
-                    setEditingImage(file);
-                    setShowImageEditor(true);
-                  }
-                }}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-              />
-              {!imageFile && !previewUrl && (
-                <p className="mt-1 text-sm text-red-600">写真は必須です</p>
-              )}
-              {previewUrl && (
-                <div className="mt-2">
-                  <img
-                    src={previewUrl}
-                    alt="プレビュー"
-                    className="mt-2 max-w-[200px] h-auto rounded-lg shadow-sm"
-                  />
-                  {imageFile && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEditingImage(imageFile);
-                        setShowImageEditor(true);
-                      }}
-                      className="mt-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
-                    >
-                      画像を再編集
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">コメント</label>
-              <textarea
-                {...register('comment')}
-                rows={2}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={addPhoto.isPending || isUploading}
-              className="w-full py-2 px-4 border border-transparent rounded-full
-                text-white bg-gray-800 hover:bg-gray-500 font-medium
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-500 
-                transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          <>
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">写真の追加</h2>
+            <form
+              onSubmit={handleSubmit(data => {
+                if (!imageFile) {
+                  alert('画像を選択してください');
+                  return;
+                }
+                addPhoto.mutate({ comment: data.comment });
+              })}
+              className="space-y-4"
             >
-              {addPhoto.isPending || isUploading ? '追加中...' : '写真を追加'}
-            </button>
-          </form>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">写真</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => {
+                    if (e.target.files && e.target.files[0]) {
+                      const file = e.target.files[0];
+                      setEditingImage(file);
+                      setShowImageEditor(true);
+                    }
+                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                />
+                {!imageFile && !previewUrl && (
+                  <p className="mt-1 text-sm text-red-600">写真は必須です</p>
+                )}
+                {previewUrl && (
+                  <div className="mt-2">
+                    <img
+                      src={previewUrl}
+                      alt="プレビュー"
+                      className="mt-2 max-w-[200px] h-auto rounded-lg shadow-sm"
+                    />
+                    {imageFile && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingImage(imageFile);
+                          setShowImageEditor(true);
+                        }}
+                        className="mt-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
+                      >
+                        画像を再編集
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">コメント</label>
+                <textarea
+                  {...register('comment')}
+                  rows={2}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={addPhoto.isPending || isUploading}
+                className="w-full py-2 px-4 border border-transparent rounded-full
+                  text-white bg-gray-800 hover:bg-gray-500 font-medium
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-500 
+                  transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {addPhoto.isPending || isUploading ? '追加中...' : '写真を追加'}
+              </button>
+            </form>
+          </>
         )}
       </div>
 
@@ -307,29 +310,32 @@ export default function CatPhotos() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {photos?.map(photo => (
-            <div key={photo.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="relative">
-                <img
-                  src={photo.image_url}
-                  alt=""
-                  className="w-full h-48 object-cover"
-                  decoding="async"
-                  loading="lazy"
-                />
-                <button
-                  onClick={() => deletePhoto.mutate(photo.id)}
-                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full
-                    hover:bg-red-600 transition-colors"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+        <>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">登録済みの写真</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {photos?.map(photo => (
+              <div key={photo.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="relative">
+                  <img
+                    src={photo.image_url}
+                    alt=""
+                    className="w-full h-48 object-cover"
+                    decoding="async"
+                    loading="lazy"
+                  />
+                  <button
+                    onClick={() => deletePhoto.mutate(photo.id)}
+                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full
+                      hover:bg-red-600 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                {photo.comment && <p className="p-4 text-sm text-gray-600">{photo.comment}</p>}
               </div>
-              {photo.comment && <p className="p-4 text-sm text-gray-600">{photo.comment}</p>}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

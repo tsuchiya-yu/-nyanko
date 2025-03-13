@@ -3,7 +3,7 @@ import ReactGA from 'react-ga4';
 // Google Analytics初期化
 export const initGA = (): void => {
   const trackingId = import.meta.env.VITE_GA_TRACKING_ID;
-  
+
   if (trackingId) {
     ReactGA.initialize(trackingId);
     console.log('GA initialized successfully');
@@ -28,6 +28,6 @@ export const trackEvent = (
     category,
     action,
     label,
-    value
+    value,
   });
-}; 
+};

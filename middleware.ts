@@ -5,6 +5,7 @@ export const config = {
 };
 
 export default function middleware(request: Request) {
+  return next();
   const authorizationHeader = request.headers.get("authorization");
 
   if (authorizationHeader) {

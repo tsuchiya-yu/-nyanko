@@ -57,15 +57,18 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row w-full mx-auto mb-6">
               {/* 画像部分 */}
               <div className="w-full sm:w-1/2">
-                <img
-                  src="/images/top/main.jpg"
-                  alt="愛猫の写真"
-                  className="w-full h-auto object-cover rounded-lg shadow-lg"
-                  width="600"
-                  height="400"
-                  decoding="async"
-                  loading="lazy"
-                />
+                <picture>
+                  <source srcSet="/images/top/main.webp" type="image/webp" />
+                  <img
+                    src="/images/top/main.jpg"
+                    alt="愛猫の写真"
+                    className="w-full h-auto object-cover rounded-lg shadow-lg"
+                    width="600"
+                    height="400"
+                    decoding="async"
+                    loading="eager"
+                  />
+                </picture>
               </div>
 
               {/* ソーシャルリンク＆画像ギャラリー */}
@@ -81,37 +84,46 @@ export default function Home() {
 
                 <div className="flex w-full space-x-2">
                   <div className="w-[24%] aspect-square">
-                    <img
-                      src="/images/top/example3.jpg"
-                      alt="愛猫の写真１"
-                      className="w-full object-cover rounded-lg shadow-lg"
-                      width="120"
-                      height="120"
-                      decoding="async"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <source srcSet="/images/top/example3.webp" type="image/webp" />
+                      <img
+                        src="/images/top/example3.jpg"
+                        alt="愛猫の写真１"
+                        className="w-full object-cover rounded-lg shadow-lg"
+                        width="120"
+                        height="120"
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </picture>
                   </div>
                   <div className="w-[50%] aspect-square">
-                    <img
-                      src="/images/top/example2.jpg"
-                      alt="愛猫の写真２"
-                      className="w-full object-cover rounded-lg shadow-lg"
-                      width="250"
-                      height="250"
-                      decoding="async"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <source srcSet="/images/top/example2.webp" type="image/webp" />
+                      <img
+                        src="/images/top/example2.jpg"
+                        alt="愛猫の写真２"
+                        className="w-full object-cover rounded-lg shadow-lg"
+                        width="250"
+                        height="250"
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </picture>
                   </div>
                   <div className="w-[24%] aspect-square">
-                    <img
-                      src="/images/top/example1.jpg"
-                      alt="愛猫の写真３"
-                      className="w-full object-cover rounded-lg shadow-lg"
-                      width="120"
-                      height="120"
-                      decoding="async"
-                      loading="lazy"
-                    />
+                    <picture>
+                      <source srcSet="/images/top/example1.webp" type="image/webp" />
+                      <img
+                        src="/images/top/example1.jpg"
+                        alt="愛猫の写真３"
+                        className="w-full object-cover rounded-lg shadow-lg"
+                        width="120"
+                        height="120"
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </picture>
                   </div>
                 </div>
               </div>
@@ -163,13 +175,16 @@ export default function Home() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <img
-              src="/images/top/step1.png"
-              alt="会員登録"
-              className="w-full h-48 object-scale-down rounded-lg mb-4"
-              width="300"
-              height="192"
-            />
+            <picture>
+              <source srcSet="/images/top/step1.webp" type="image/webp" />
+              <img
+                src="/images/top/step1.png"
+                alt="会員登録"
+                className="w-full h-48 object-scale-down rounded-lg mb-4"
+                width="300"
+                height="192"
+              />
+            </picture>
             <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               1
             </div>
@@ -177,15 +192,18 @@ export default function Home() {
             <p className="text-gray-600">メールアドレスで簡単に登録できます</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <img
-              src="/images/top/step2.png"
-              alt="猫ちゃん情報の入力"
-              className="w-full h-48 object-scale-down rounded-lg mb-4"
-              width="300"
-              height="192"
-              decoding="async"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/top/step2.webp" type="image/webp" />
+              <img
+                src="/images/top/step2.png"
+                alt="猫ちゃん情報の入力"
+                className="w-full h-48 object-scale-down rounded-lg mb-4"
+                width="300"
+                height="192"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
             <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               2
             </div>
@@ -193,15 +211,18 @@ export default function Home() {
             <p className="text-gray-600">名前やプロフィール、写真を登録できます</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <img
-              src="/images/top/step3.png"
-              alt="ページの公開"
-              className="w-full h-48 object-scale-down rounded-lg mb-4"
-              width="300"
-              height="192"
-              decoding="async"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/top/step3.webp" type="image/webp" />
+              <img
+                src="/images/top/step3.png"
+                alt="ページの公開"
+                className="w-full h-48 object-scale-down rounded-lg mb-4"
+                width="300"
+                height="192"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
             <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               3
             </div>
@@ -226,45 +247,54 @@ export default function Home() {
         </h2>
         <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4 scrollbar-none sm:space-x-0 sm:space-y-6 sm:flex-col sm:overflow-x-visible">
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
-            <img
-              src="/images/top/feature1.png"
-              alt="写真の追加"
-              className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
-              width="192"
-              height="128"
-              decoding="async"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/top/feature1.webp" type="image/webp" />
+              <img
+                src="/images/top/feature1.png"
+                alt="写真の追加"
+                className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+                width="192"
+                height="128"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
             <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">写真の追加</h3>
               <p className="text-gray-600">スマホで撮影した写真をすぐにアップロード</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
-            <img
-              src="/images/top/feature2.png"
-              alt="プロフィール編集"
-              className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
-              width="192"
-              height="128"
-              decoding="async"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/top/feature2.webp" type="image/webp" />
+              <img
+                src="/images/top/feature2.png"
+                alt="プロフィール編集"
+                className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+                width="192"
+                height="128"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
             <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">プロフィール編集</h3>
               <p className="text-gray-600">いつでもどこでも情報を更新できます</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
-            <img
-              src="/images/top/feature3.png"
-              alt="SNSシェア"
-              className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
-              width="192"
-              height="128"
-              decoding="async"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/top/feature3.webp" type="image/webp" />
+              <img
+                src="/images/top/feature3.png"
+                alt="SNSシェア"
+                className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+                width="192"
+                height="128"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
             <div className="w-full">
               <h3 className="text-lg font-medium text-gray-800 mb-2">SNSシェア</h3>
               <p className="text-gray-600">InstagramやXへ簡単に共有</p>

@@ -243,12 +243,7 @@ export default function CatProfile() {
 
       <div className="text-center mt-6">
         <Link to="/">
-          <img
-            src="/images/logo_title.png"
-            alt="ロゴ"
-            loading="lazy"
-            className="inline-block w-[160px]"
-          />
+          <img src="/images/logo_title.png" alt="ロゴ" width="160" height="20" className="inline-block w-[160px]" />
         </Link>
       </div>
       <div className="overflow-hidden">
@@ -366,7 +361,7 @@ export default function CatProfile() {
 
         <div className="text-center mt-20">
           <Link to="/">
-            <img src="/images/logo_title.png" alt="ロゴ" className="inline-block w-[160px]" />
+            <img src="/images/logo_title.png" alt="ロゴ" width="160" height="20" className="inline-block w-[160px]" />
           </Link>
           <p className="text-xs text-gray-700 mt-2">©︎CAT LINK All Rights Reserved</p>
         </div>

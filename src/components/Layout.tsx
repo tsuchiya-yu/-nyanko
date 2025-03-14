@@ -39,6 +39,8 @@ export default function Layout({ children }: LayoutProps) {
                   src="/images/logo.png"
                   alt="ロゴ"
                   loading="lazy"
+                  width="120"
+                  height="37"
                   className="inline-block w-[120px]"
                 />
               </Link>

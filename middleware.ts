@@ -1,7 +1,7 @@
 import { next } from "@vercel/edge";
 
 export const config = {
-  matcher: "/(.*)",  // すべてのルートに適用
+  matcher: "/((?!_next|static|.*\\.(js|css|png|jpg|jpeg|webp|svg|ico)).*)",  // 静的ファイルを除外
 };
 
 export default function middleware(request: Request) {

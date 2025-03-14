@@ -1,13 +1,7 @@
 import { next } from "@vercel/edge";
 
 export const config = {
-  matcher: [
-    // 認証が必要なルート（フロントページとアプリケーションのページ）
-    '/',
-    '/profile/:path*',
-    '/cats/:path*',
-    '/auth/:path*'
-  ]
+  matcher: "/(.*)",  // すべてのルートに適用
 };
 
 export default function middleware(request: Request) {

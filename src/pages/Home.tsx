@@ -68,20 +68,18 @@ export default function Home() {
 
               {/* ソーシャルリンク＆画像ギャラリー */}
               <div className="w-full sm:w-1/2 flex flex-col items-center p-4 sm:pt-0">
-                <a
-                  rel="noopener noreferrer"
+                <p
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-4"
                 >
                   <InstagramIcon className="h-5 w-5 mr-2" />
                   うちのこ日記 in Instagram
-                </a>
-                <a
-                  rel="noopener noreferrer"
+                </p>
+                <p
                   className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-6"
                 >
                   <X className="h-5 w-5 mr-2" />
                   うちのこ日記 in X
-                </a>
+                </p>
 
                 <div className="flex w-full space-x-2">
                   <div className="w-[24%] aspect-square">

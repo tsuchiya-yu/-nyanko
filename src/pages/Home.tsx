@@ -58,7 +58,7 @@ export default function Home() {
               {/* 画像部分 */}
               <div className="w-full sm:w-1/2">
                 <picture>
-                  <source srcSet="/images/top/main.webp" type="image/webp" />
+                  <source srcSet="/images/top/webp/main.webp" type="image/webp" />
                   <img
                     src="/images/top/main.jpg"
                     alt="愛猫の写真"
@@ -85,7 +85,7 @@ export default function Home() {
                 <div className="flex w-full space-x-2">
                   <div className="w-[24%] aspect-square">
                     <picture>
-                      <source srcSet="/images/top/example3.webp" type="image/webp" />
+                      <source srcSet="/images/top/webp/example3.webp" type="image/webp" />
                       <img
                         src="/images/top/example3.jpg"
                         alt="愛猫の写真１"
@@ -99,7 +99,7 @@ export default function Home() {
                   </div>
                   <div className="w-[50%] aspect-square">
                     <picture>
-                      <source srcSet="/images/top/example2.webp" type="image/webp" />
+                      <source srcSet="/images/top/webp/example2.webp" type="image/webp" />
                       <img
                         src="/images/top/example2.jpg"
                         alt="愛猫の写真２"
@@ -113,7 +113,7 @@ export default function Home() {
                   </div>
                   <div className="w-[24%] aspect-square">
                     <picture>
-                      <source srcSet="/images/top/example1.webp" type="image/webp" />
+                      <source srcSet="/images/top/webp/example1.webp" type="image/webp" />
                       <img
                         src="/images/top/example1.jpg"
                         alt="愛猫の写真３"
@@ -176,7 +176,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <picture>
-              <source srcSet="/images/top/step1.webp" type="image/webp" />
+              <source srcSet="/images/top/webp/step1.webp" type="image/webp" />
               <img
                 src="/images/top/step1.png"
                 alt="会員登録"
@@ -193,7 +193,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <picture>
-              <source srcSet="/images/top/step2.webp" type="image/webp" />
+              <source srcSet="/images/top/webp/step2.webp" type="image/webp" />
               <img
                 src="/images/top/step2.png"
                 alt="猫ちゃん情報の入力"
@@ -212,7 +212,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <picture>
-              <source srcSet="/images/top/step3.webp" type="image/webp" />
+              <source srcSet="/images/top/webp/step3.webp" type="image/webp" />
               <img
                 src="/images/top/step3.png"
                 alt="ページの公開"
@@ -248,7 +248,7 @@ export default function Home() {
         <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4 scrollbar-none sm:space-x-0 sm:space-y-6 sm:flex-col sm:overflow-x-visible">
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <picture>
-              <source srcSet="/images/top/feature1.webp" type="image/webp" />
+              <source srcSet="/images/top/webp/feature1.webp" type="image/webp" />
               <img
                 src="/images/top/feature1.png"
                 alt="写真の追加"
@@ -266,7 +266,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <picture>
-              <source srcSet="/images/top/feature2.webp" type="image/webp" />
+              <source srcSet="/images/top/webp/feature2.webp" type="image/webp" />
               <img
                 src="/images/top/feature2.png"
                 alt="プロフィール編集"
@@ -284,7 +284,7 @@ export default function Home() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <picture>
-              <source srcSet="/images/top/feature3.webp" type="image/webp" />
+              <source srcSet="/images/top/webp/feature3.webp" type="image/webp" />
               <img
                 src="/images/top/feature3.png"
                 alt="SNSシェア"

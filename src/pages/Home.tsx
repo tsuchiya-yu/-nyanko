@@ -45,10 +45,10 @@ export default function Home() {
       <Helmet>
         <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
         <link rel="canonical" href="https://cat-link.catnote.tokyo/" />
-        <link 
-          rel="preload" 
-          href="/images/top/webp/main.webp" 
-          as="image" 
+        <link
+          rel="preload"
+          href="/images/top/webp/main.webp"
+          as="image"
           type="image/webp"
           fetchPriority="high"
         />

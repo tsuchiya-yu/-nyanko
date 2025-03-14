@@ -66,7 +66,7 @@ describe('CatCardコンポーネント', () => {
     // 猫の画像が表示されていることを確認
     const image = screen.getByAltText(mockCat.name);
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', mockCat.image_url);
+    expect(image).toHaveAttribute('src', `${mockCat.image_url}?width=400&height=300&resize=fill`);
   });
 
   it('ユーザーがログインしていない場合、いいねボタンが表示されないこと', () => {

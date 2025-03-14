@@ -1,7 +1,13 @@
 import { next } from "@vercel/edge";
 
 export const config = {
-  matcher: "/((?!_next|static|.*\\.(js|css|png|jpg|jpeg|webp|svg|ico)).*)",  // 静的ファイルを除外
+  matcher: [
+    // 認証が必要なルート（フロントページとアプリケーションのページ）
+    '/',
+    '/profile/:path*',
+    '/cats/:path*',
+    '/auth/:path*'
+  ]
 };
 
 export default function middleware(request: Request) {

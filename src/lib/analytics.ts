@@ -10,13 +10,13 @@ export const initGA = (): void => {
         cookieFlags: 'SameSite=None;Secure',
         cookieDomain: window.location.hostname,
         debug_mode: false, // デバッグモードを無効化
-        storage: 'none' // ファーストパーティストレージを使用
+        storage: 'none', // ファーストパーティストレージを使用
       },
       gtagOptions: {
         debug_mode: false, // gtagでもデバッグモードを無効化
         cookie_update: false, // cookieの自動更新を無効化
-        anonymize_ip: true // IPアドレスを匿名化
-      }
+        anonymize_ip: true, // IPアドレスを匿名化
+      },
     });
     console.log('GA initialized successfully');
   } else {

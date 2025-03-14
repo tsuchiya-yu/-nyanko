@@ -64,7 +64,7 @@ export default function Home() {
                     alt="愛猫の写真"
                     className="w-full h-auto object-cover rounded-lg shadow-lg"
                     width="600"
-                    height="400"
+                    height="600"
                     decoding="async"
                     loading="eager"
                   />

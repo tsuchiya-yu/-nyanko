@@ -22,11 +22,13 @@ export default function CatCard({ cat }: CatCardProps) {
       <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:scale-[1.02]">
         <div className="relative h-48">
           <img
-            src={cat.image_url}
+            src={`${cat.image_url}?width=400&height=300&resize=fill`}
             alt={cat.name}
             className="w-full h-full object-cover"
             decoding="async"
             loading="lazy"
+            width="400"
+            height="300"
           />
           {user && (
             <button

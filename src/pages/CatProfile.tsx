@@ -63,7 +63,13 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
         >
           ×
         </button>
-        <img src={photo?.image_url} alt="" className="w-full h-auto rounded-lg mb-4" />
+        <img 
+          src={`${photo?.image_url}?width=600&height=800&resize=contain`} 
+          alt="" 
+          className="w-full h-auto rounded-lg mb-4"
+          width="600"
+          height="800"
+        />
         {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
       </div>
     </div>
@@ -232,7 +238,7 @@ export default function CatProfile() {
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
-        <meta property="og:image" content={cat.image_url} />
+        <meta property="og:image" content={`${cat.image_url}?width=1200&height=630&resize=contain`} />
         <meta
           property="og:description"
           content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
@@ -264,9 +270,11 @@ export default function CatProfile() {
           </div>
           <div className="relative">
             <img
-              src={cat.image_url}
+              src={`${cat.image_url}?width=88&height=88&resize=fill`}
               alt={cat.name}
               className="w-[88px] h-[88px] rounded-full object-cover"
+              width="88"
+              height="88"
             />
             <button
               onClick={handleFavoriteClick}
@@ -352,10 +360,12 @@ export default function CatProfile() {
                     onClick={() => openModal(photo)}
                   >
                     <img
-                      src={photo.image_url}
+                      src={`${photo.image_url}?width=150&height=150&resize=fill`}
                       alt={`${cat.name} の画像`}
                       loading="lazy"
                       className="w-full h-full object-cover"
+                      width="150"
+                      height="150"
                     />
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-200"></div>
                   </div>

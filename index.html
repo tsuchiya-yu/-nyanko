@@ -5,8 +5,17 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- リソースの事前接続 -->
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <!-- Supabaseへの事前接続 -->
+    <link rel="preconnect" href="https://mypvypmyjcrxiovdejqj.supabase.co" crossorigin>
+    <link rel="dns-prefetch" href="https://mypvypmyjcrxiovdejqj.supabase.co">
+    
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://*.supabase.co; img-src 'self' data: https://www.google-analytics.com https://*.supabase.co; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self';">
     
     <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
     <meta name="description" content="CAT LINK|愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。" />
@@ -19,20 +28,24 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       
-      // Cookieを使用しない設定
+      // Cookieを完全に無効化する設定
       gtag('config', '%VITE_GA_TRACKING_ID%', {
         'client_storage': 'none',
         'debug_mode': false,
         'anonymize_ip': true,
-        'cookie_flags': 'SameSite=None;Secure',
         'cookie_domain': 'none',
-        'cookie_expires': 0
+        'cookie_expires': 0,
+        'cookie_flags': 'SameSite=None;Secure',
+        'send_page_view': false // 初期ページビューを送信しない（重複を避けるため）
       });
       
-      // Consent Mode
+      // Consent Mode - Cookieを使用しない設定
       gtag('consent', 'default', {
         'analytics_storage': 'denied',
         'ad_storage': 'denied',
+        'functionality_storage': 'denied', // 機能的なストレージも拒否
+        'personalization_storage': 'denied', // パーソナライズストレージも拒否
+        'security_storage': 'granted', // セキュリティのみ許可
         'wait_for_update': 500
       });
       setTimeout(function() {

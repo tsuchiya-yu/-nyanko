@@ -61,6 +61,8 @@ export default function Home() {
                   src="/images/top/main.jpg"
                   alt="愛猫の写真"
                   className="w-full h-auto object-cover rounded-lg shadow-lg"
+                  width="600"
+                  height="400"
                   decoding="async"
                   loading="lazy"
                 />
@@ -83,6 +85,8 @@ export default function Home() {
                       src="/images/top/example3.jpg"
                       alt="愛猫の写真１"
                       className="w-full object-cover rounded-lg shadow-lg"
+                      width="120"
+                      height="120"
                       decoding="async"
                       loading="lazy"
                     />
@@ -92,6 +96,8 @@ export default function Home() {
                       src="/images/top/example2.jpg"
                       alt="愛猫の写真２"
                       className="w-full object-cover rounded-lg shadow-lg"
+                      width="250"
+                      height="250"
                       decoding="async"
                       loading="lazy"
                     />
@@ -101,6 +107,8 @@ export default function Home() {
                       src="/images/top/example1.jpg"
                       alt="愛猫の写真３"
                       className="w-full object-cover rounded-lg shadow-lg"
+                      width="120"
+                      height="120"
                       decoding="async"
                       loading="lazy"
                     />
@@ -159,6 +167,8 @@ export default function Home() {
               src="/images/top/step1.png"
               alt="会員登録"
               className="w-full h-48 object-scale-down rounded-lg mb-4"
+              width="300"
+              height="192"
             />
             <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
               1
@@ -171,6 +181,8 @@ export default function Home() {
               src="/images/top/step2.png"
               alt="猫ちゃん情報の入力"
               className="w-full h-48 object-scale-down rounded-lg mb-4"
+              width="300"
+              height="192"
               decoding="async"
               loading="lazy"
             />
@@ -185,6 +197,8 @@ export default function Home() {
               src="/images/top/step3.png"
               alt="ページの公開"
               className="w-full h-48 object-scale-down rounded-lg mb-4"
+              width="300"
+              height="192"
               decoding="async"
               loading="lazy"
             />
@@ -216,6 +230,8 @@ export default function Home() {
               src="/images/top/feature1.png"
               alt="写真の追加"
               className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+              width="192"
+              height="128"
               decoding="async"
               loading="lazy"
             />
@@ -229,6 +245,8 @@ export default function Home() {
               src="/images/top/feature2.png"
               alt="プロフィール編集"
               className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+              width="192"
+              height="128"
               decoding="async"
               loading="lazy"
             />
@@ -242,6 +260,8 @@ export default function Home() {
               src="/images/top/feature3.png"
               alt="SNSシェア"
               className="w-48 h-32 object-cover rounded-lg mb-4 sm:mb-0 sm:mr-6"
+              width="192"
+              height="128"
               decoding="async"
               loading="lazy"
             />

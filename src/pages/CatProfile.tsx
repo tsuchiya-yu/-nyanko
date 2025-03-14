@@ -63,9 +63,9 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
         >
           ×
         </button>
-        <img 
-          src={`${photo?.image_url}?width=600&height=800&resize=contain`} 
-          alt="" 
+        <img
+          src={`${photo?.image_url}?width=600&height=800&resize=contain`}
+          alt=""
           className="w-full h-auto rounded-lg mb-4"
           width="600"
           height="800"
@@ -238,7 +238,10 @@ export default function CatProfile() {
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
-        <meta property="og:image" content={`${cat.image_url}?width=1200&height=630&resize=contain`} />
+        <meta
+          property="og:image"
+          content={`${cat.image_url}?width=1200&height=630&resize=contain`}
+        />
         <meta
           property="og:description"
           content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}

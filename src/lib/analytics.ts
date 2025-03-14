@@ -1,32 +1,17 @@
-import ReactGA from 'react-ga4';
-
 // Google Analytics初期化
 export const initGA = (): void => {
-  const trackingId = import.meta.env.VITE_GA_TRACKING_ID;
-
-  if (trackingId) {
-    ReactGA.initialize(trackingId, {
-      gaOptions: {
-        cookieFlags: 'SameSite=None;Secure',
-        cookieDomain: window.location.hostname,
-        debug_mode: false, // デバッグモードを無効化
-        storage: 'none', // ファーストパーティストレージを使用
-      },
-      gtagOptions: {
-        debug_mode: false, // gtagでもデバッグモードを無効化
-        cookie_update: false, // cookieの自動更新を無効化
-        anonymize_ip: true, // IPアドレスを匿名化
-      },
-    });
-    console.log('GA initialized successfully');
-  } else {
-    console.warn('GA tracking ID not provided');
-  }
+  // HTMLのhead内にGTAGが直接設定されているため、ここでの初期化はスキップ
+  console.log('GA already initialized via HTML script tag');
 };
 
 // ページビューをトラッキング
 export const trackPageView = (path: string): void => {
-  ReactGA.send({ hitType: 'pageview', page: path });
+  // グローバルのgtagを使用
+  if (window.gtag) {
+    window.gtag('event', 'page_view', {
+      page_path: path,
+    });
+  }
 };
 
 // イベントをトラッキング
@@ -36,10 +21,26 @@ export const trackEvent = (
   label?: string,
   value?: number
 ): void => {
-  ReactGA.event({
-    category,
-    action,
-    label,
-    value,
-  });
+  // グローバルのgtagを使用
+  if (window.gtag) {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+    });
+  }
 };
+
+// TypeScriptのためのgtagの型定義
+declare global {
+  interface Window {
+    gtag: (
+      command: string,
+      action: string,
+      params?: {
+        [key: string]: any;
+      }
+    ) => void;
+    dataLayer: any[];
+  }
+}

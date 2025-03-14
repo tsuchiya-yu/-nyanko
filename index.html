@@ -3,17 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline';">
+    
     <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
     <meta name="description" content="CAT LINK|愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。" />
     <meta name="keywords" content="猫, プロフィール, ペット, 写真, ギャラリー, 猫写真, 愛猫, 猫好き, 猫コミュニティ" />
     
-    <!-- Google Consent Mode V2 -->
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_TRACKING_ID%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      
+      // Cookieを使用しない設定
+      gtag('config', '%VITE_GA_TRACKING_ID%', {
+        'client_storage': 'none',
+        'debug_mode': false,
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure',
+        'cookie_domain': 'none',
+        'cookie_expires': 0
+      });
+      
+      // Consent Mode
       gtag('consent', 'default', {
         'analytics_storage': 'denied',
         'ad_storage': 'denied',

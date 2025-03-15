@@ -21,3 +21,30 @@ img {
 @font-face {
   font-display: swap;
 }
+
+/* CLS対策用追加スタイル */
+body {
+  overflow-x: hidden;
+}
+
+/* フッター固定サイズ */
+.text-center.mt-20 {
+  min-height: 80px;
+  height: 80px;
+}
+
+/* メインコンテンツエリア安定化 */
+main {
+  min-height: calc(100vh - 100px);
+  contain: layout paint;
+}
+
+/* ローディング表示の安定化 */
+.text-center.py-12 {
+  min-height: calc(100vh - 200px);
+}
+
+/* 画像のアスペクト比保持 */
+img[width][height] {
+  aspect-ratio: attr(width) / attr(height);
+}

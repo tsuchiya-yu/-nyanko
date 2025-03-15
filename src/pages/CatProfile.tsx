@@ -259,6 +259,63 @@ export default function CatProfile() {
         />
         <meta property="profile:first_name" content={cat.name} />
         <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Animal',
+            'name': cat.name,
+            'image': cat.image_url,
+            'description': cat.description,
+            'species': '猫',
+            'breed': cat.breed,
+            'gender': cat.gender,
+            'birthDate': cat.birthdate,
+            'additionalProperty': [
+              {
+                '@type': 'PropertyValue',
+                'name': '年齢',
+                'value': age.toString()
+              },
+              {
+                '@type': 'PropertyValue',
+                'name': '推定誕生日',
+                'value': cat.is_birthdate_estimated ? 'はい' : 'いいえ'
+              },
+              cat.catchphrase ? {
+                '@type': 'PropertyValue',
+                'name': 'キャッチフレーズ',
+                'value': cat.catchphrase
+              } : null
+            ].filter(Boolean),
+            'subjectOf': {
+              '@type': 'WebPage',
+              'url': `https://cat-link.catnote.tokyo/cats/${cat.id}`
+            },
+            'mainEntityOfPage': {
+              '@type': 'WebPage',
+              '@id': `https://cat-link.catnote.tokyo/cats/${cat.id}`
+            },
+            'owner': {
+              '@type': 'Person',
+              'name': cat.profiles.name
+            },
+            'sameAs': [
+              cat.instagram_url,
+              cat.x_url,
+              cat.homepage_url
+            ].filter(Boolean),
+            'hasPart': photos && photos.length > 0 ? {
+              '@type': 'ImageGallery',
+              'name': `${cat.name}の写真ギャラリー`,
+              'image': photos.map(photo => ({
+                '@type': 'ImageObject',
+                'contentUrl': photo.image_url,
+                'description': photo.comment || `${cat.name}の写真`,
+                'caption': photo.comment || ''
+              }))
+            } : undefined
+          })}
+        </script>
       </Helmet>
 
       <div className="text-center mt-6">

@@ -45,6 +45,110 @@ export default function Home() {
       <Helmet>
         <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
         <link rel="canonical" href="https://cat-link.catnote.tokyo/" />
+        <meta name="description" content="CAT LINKで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。" />
+        <meta name="keywords" content="猫, ペット, プロフィール, 写真, 共有, SNS, 無料" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'WebSite',
+                '@id': 'https://cat-link.catnote.tokyo/#website',
+                'url': 'https://cat-link.catnote.tokyo/',
+                'name': 'CAT LINK',
+                'description': '愛猫のプロフィールページを簡単に作成・共有',
+                'potentialAction': {
+                  '@type': 'SearchAction',
+                  'target': 'https://cat-link.catnote.tokyo/search?q={search_term_string}',
+                  'query-input': 'required name=search_term_string'
+                }
+              },
+              {
+                '@type': 'Organization',
+                '@id': 'https://cat-link.catnote.tokyo/#organization',
+                'name': 'CAT LINK',
+                'url': 'https://cat-link.catnote.tokyo/',
+                'logo': {
+                  '@type': 'ImageObject',
+                  'url': 'https://cat-link.catnote.tokyo/images/logo_title.png',
+                  'width': 160,
+                  'height': 20
+                },
+                'description': '愛猫のプロフィールページを簡単に作成・共有するサービス'
+              },
+              {
+                '@type': 'SoftwareApplication',
+                'name': 'CAT LINK',
+                'operatingSystem': 'All',
+                'applicationCategory': 'LifestyleApplication',
+                'offers': {
+                  '@type': 'Offer',
+                  'price': '0',
+                  'priceCurrency': 'JPY'
+                },
+                'description': '愛猫のプロフィールページを簡単に作成・共有できるウェブアプリ',
+                'screenshot': 'https://cat-link.catnote.tokyo/images/top/main.jpg',
+                'featureList': [
+                  '愛猫のプロフィールページ作成',
+                  '写真ギャラリー',
+                  'SNSへの共有機能',
+                  'スマホでかんたん操作'
+                ]
+              },
+              {
+                '@type': 'FAQPage',
+                'mainEntity': [
+                  {
+                    '@type': 'Question',
+                    'name': 'CAT LINKの利用にお金はかかりますか？',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'いいえ、完全無料でご利用いただけます。'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'CAT LINKを利用することでどんなことができますか？',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': '会員登録をするとどんなメリットがありますか？',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': '会員登録をすると、猫ちゃんに「いいね！」をすることができます。さらに、猫ちゃんのプロフィールページを作成することができます。プロフィールページは、SNSで共有することができます。'
+                    }
+                  }
+                ]
+              }
+            ]
+          })}
+        </script>
+        {cats && cats.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              'itemListElement': cats.map((cat, index) => ({
+                '@type': 'ListItem',
+                'position': index + 1,
+                'item': {
+                  '@type': 'Animal',
+                  'name': cat.name,
+                  'image': cat.image_url,
+                  'mainEntityOfPage': {
+                    '@type': 'WebPage',
+                    '@id': `https://cat-link.catnote.tokyo/cats/${cat.id}`
+                  },
+                  'url': `https://cat-link.catnote.tokyo/cats/${cat.id}`
+                }
+              }))
+            })}
+          </script>
+        )}
       </Helmet>
 
       {/* ヒーローセクション */}

@@ -36,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex justify-between h-12">
               <Link to="/" className="flex items-center">
                 <picture>
-                  <source srcSet="/images/logo.webp" type="image/webp" />
+                  <source srcSet="/images/webp/logo.webp" type="image/webp" />
                   <img
                     src="/images/logo.png"
                     alt="ロゴ"

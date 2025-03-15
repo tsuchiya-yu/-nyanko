@@ -263,16 +263,19 @@ export default function CatProfile() {
 
       <div className="text-center mt-6">
         <Link to="/">
-          <img
-            src="/images/logo_title.png"
-            alt="ロゴ"
-            width="160"
-            height="20"
-            className="inline-block w-[160px]"
-            loading="eager"
-            decoding="async"
-            style={{ aspectRatio: '160/20', height: '20px' }}
-          />
+          <picture>
+            <source srcSet="/images/webp/logo_title.webp" type="image/webp" />
+            <img
+              src="/images/logo_title.png"
+              alt="ロゴ"
+              width="160"
+              height="20"
+              className="inline-block w-[160px]"
+              loading="eager"
+              decoding="async"
+              style={{ aspectRatio: '160/20', height: '20px' }}
+            />
+          </picture>
         </Link>
       </div>
       <div className="overflow-hidden">

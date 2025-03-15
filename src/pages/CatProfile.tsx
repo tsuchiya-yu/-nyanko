@@ -66,10 +66,13 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
         </button>
         <img
           src={`${photo?.image_url}?width=600&height=800&resize=contain`}
+          srcSet={`${photo?.image_url}?width=600&height=800&resize=contain 1x, ${photo?.image_url}?width=1200&height=1600&resize=contain 2x`}
           alt=""
           className="w-full h-auto rounded-lg mb-4"
           width="600"
           height="800"
+          loading="eager"
+          decoding="async"
         />
         {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
       </div>
@@ -115,7 +118,7 @@ export default function CatProfile() {
 
         return data as CatWithOwner;
       } catch (error) {
-        await handleApiError(error);
+        await handleApiError(error as Error);
         throw error;
       }
     },
@@ -276,10 +279,13 @@ export default function CatProfile() {
           <div className="relative">
             <img
               src={`${cat.image_url}?width=88&height=88&resize=fill`}
+              srcSet={`${cat.image_url}?width=88&height=88&resize=fill 1x, ${cat.image_url}?width=176&height=176&resize=fill 2x`}
               alt={cat.name}
               className="w-[88px] h-[88px] rounded-full object-cover"
               width="88"
               height="88"
+              loading="eager"
+              decoding="async"
             />
             <button
               onClick={handleFavoriteClick}
@@ -366,11 +372,13 @@ export default function CatProfile() {
                   >
                     <img
                       src={`${photo.image_url}?width=150&height=150&resize=fill`}
+                      srcSet={`${photo.image_url}?width=150&height=150&resize=fill 1x, ${photo.image_url}?width=300&height=300&resize=fill 2x`}
                       alt={`${cat.name} の画像`}
                       loading="lazy"
                       className="w-full h-full object-cover"
                       width="150"
                       height="150"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-200"></div>
                   </div>

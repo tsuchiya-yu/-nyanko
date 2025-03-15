@@ -203,7 +203,10 @@ export default function CatProfile() {
 
   if (isLoading) {
     return (
-      <div className="text-center py-12 min-h-[calc(100vh-200px)] flex items-center justify-center" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 calc(100vh - 200px)' }}>
+      <div
+        className="text-center py-12 min-h-[calc(100vh-200px)] flex items-center justify-center"
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 calc(100vh - 200px)' }}
+      >
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
       </div>
     );
@@ -211,7 +214,10 @@ export default function CatProfile() {
 
   if (error || !cat) {
     return (
-      <div className="max-w-4xl mx-auto py-12 min-h-[calc(100vh-200px)]" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 calc(100vh - 200px)' }}>
+      <div
+        className="max-w-4xl mx-auto py-12 min-h-[calc(100vh-200px)]"
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 calc(100vh - 200px)' }}
+      >
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">
             {error instanceof Error ? error.message : '猫の情報を取得できませんでした'}
@@ -391,7 +397,10 @@ export default function CatProfile() {
           )}
         </div>
 
-        <div className="text-center mt-20 h-[80px] min-h-[80px] flex flex-col items-center justify-center" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 80px' }}>
+        <div
+          className="text-center mt-20 h-[80px] min-h-[80px] flex flex-col items-center justify-center"
+          style={{ contentVisibility: 'auto', containIntrinsicSize: '0 80px' }}
+        >
           <Link to="/">
             <img
               src="/images/logo_title.png"

@@ -317,9 +317,12 @@ export default function CatPhotos() {
               <div key={photo.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="relative">
                   <img
-                    src={photo.image_url}
+                    src={`${photo.image_url}?width=400&height=300&resize=fill`}
+                    srcSet={`${photo.image_url}?width=400&height=300&resize=fill 1x, ${photo.image_url}?width=800&height=600&resize=fill 2x`}
                     alt=""
                     className="w-full h-48 object-cover"
+                    width="400"
+                    height="300"
                     decoding="async"
                     loading="lazy"
                   />

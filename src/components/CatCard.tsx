@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import OptimizedImage from './OptimizedImage';
 import { useFavorites } from '../hooks/useFavorites';
 import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
@@ -21,14 +22,15 @@ export default function CatCard({ cat }: CatCardProps) {
     <Link to={`/cats/${cat.id}`} className="block">
       <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:scale-[1.02]">
         <div className="relative h-48">
-          <img
-            src={`${cat.image_url}?width=400&height=300&resize=fill`}
+          <OptimizedImage
+            src={cat.image_url}
             alt={cat.name}
+            width={400}
+            height={300}
             className="w-full h-full object-cover"
             decoding="async"
             loading="lazy"
-            width="400"
-            height="300"
+            options={{ resize: 'fill', quality: 80 }}
           />
           {user && (
             <button

@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
+import OptimizedImage from '../components/OptimizedImage';
 import ShareModal from '../components/ShareModal';
 import { useHeaderFooter } from '../context/HeaderContext';
 import { handleApiError } from '../lib/api';
@@ -64,15 +65,15 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
         >
           ×
         </button>
-        <img
-          src={`${photo?.image_url}?width=600&height=800&resize=contain`}
-          srcSet={`${photo?.image_url}?width=600&height=800&resize=contain 1x, ${photo?.image_url}?width=1200&height=1600&resize=contain 2x`}
+        <OptimizedImage
+          src={photo?.image_url || ''}
           alt=""
+          width={600}
+          height={800}
           className="w-full h-auto rounded-lg mb-4"
-          width="600"
-          height="800"
           loading="eager"
           decoding="async"
+          options={{ resize: 'contain', quality: 85 }}
         />
         {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
       </div>
@@ -286,15 +287,15 @@ export default function CatProfile() {
             </button>
           </div>
           <div className="relative">
-            <img
-              src={`${cat.image_url}?width=88&height=88&resize=fill`}
-              srcSet={`${cat.image_url}?width=88&height=88&resize=fill 1x, ${cat.image_url}?width=176&height=176&resize=fill 2x`}
+            <OptimizedImage
+              src={cat.image_url}
               alt={cat.name}
+              width={88}
+              height={88}
               className="w-[88px] h-[88px] rounded-full object-cover"
-              width="88"
-              height="88"
               loading="eager"
               decoding="async"
+              options={{ resize: 'fill', quality: 85 }}
             />
             <button
               onClick={handleFavoriteClick}
@@ -379,15 +380,15 @@ export default function CatProfile() {
                     className="relative aspect-square overflow-hidden cursor-pointer group"
                     onClick={() => openModal(photo)}
                   >
-                    <img
-                      src={`${photo.image_url}?width=150&height=150&resize=fill`}
-                      srcSet={`${photo.image_url}?width=150&height=150&resize=fill 1x, ${photo.image_url}?width=300&height=300&resize=fill 2x`}
+                    <OptimizedImage
+                      src={photo.image_url}
                       alt={`${cat.name} の画像`}
-                      loading="lazy"
+                      width={150}
+                      height={150}
                       className="w-full h-full object-cover"
-                      width="150"
-                      height="150"
+                      loading="lazy"
                       decoding="async"
+                      options={{ resize: 'fill', quality: 80 }}
                     />
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-200"></div>
                   </div>

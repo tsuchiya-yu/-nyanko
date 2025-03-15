@@ -76,7 +76,9 @@ export default function Layout({ children }: LayoutProps) {
         </header>
       )}
 
-      <main className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'mt-16 mb-4' : 'my-2'} min-h-[calc(100vh-100px)]`}>
+      <main
+        className={`flex-grow mx-2 ${isHeaderFooterVisible ? 'mt-16 mb-4' : 'my-2'} min-h-[calc(100vh-100px)]`}
+      >
         {children}
       </main>
 

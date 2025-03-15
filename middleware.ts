@@ -16,11 +16,27 @@ export default function middleware(request: Request) {
     }
   }
 
-  return new Response("Basic認証が必要です", {
+  // 認証失敗時はHTML形式で返す
+  return new Response(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>認証が必要です</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+    h1 { color: #333; }
+  </style>
+</head>
+<body>
+  <h1>Basic認証が必要です</h1>
+  <p>このページにアクセスするには認証が必要です。</p>
+</body>
+</html>`, {
     status: 401,
     headers: {
       "WWW-Authenticate": "Basic",
-      "Content-Type": "text/plain"
+      "Content-Type": "text/html; charset=utf-8"
     },
   });
 } 

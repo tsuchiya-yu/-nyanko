@@ -60,15 +60,19 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
         <button
           onClick={onClose}
           className="absolute top-[-30px] right-[-20px] text-gray-600 text-3xl"
+          aria-label="閉じる"
         >
           ×
         </button>
         <img
           src={`${photo?.image_url}?width=600&height=800&resize=contain`}
+          srcSet={`${photo?.image_url}?width=600&height=800&resize=contain 1x, ${photo?.image_url}?width=1200&height=1600&resize=contain 2x`}
           alt=""
           className="w-full h-auto rounded-lg mb-4"
           width="600"
           height="800"
+          loading="eager"
+          decoding="async"
         />
         {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
       </div>
@@ -114,7 +118,7 @@ export default function CatProfile() {
 
         return data as CatWithOwner;
       } catch (error) {
-        await handleApiError(error);
+        await handleApiError(error as Error);
         throw error;
       }
     },
@@ -200,7 +204,7 @@ export default function CatProfile() {
   if (isLoading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
       </div>
     );
   }
@@ -224,7 +228,7 @@ export default function CatProfile() {
   const age = calculateAge(cat.birthdate);
 
   return (
-    <div className="max-w-[480px] mx-auto space-y-6 relative">
+    <div className="max-w-[480px] mx-auto space-y-6 relative min-h-screen">
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
@@ -267,6 +271,7 @@ export default function CatProfile() {
             <button
               onClick={() => setIsShareModalOpen(true)}
               className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
+              aria-label="シェアする"
             >
               <Share2 className="h-6 w-6" />
             </button>
@@ -274,10 +279,13 @@ export default function CatProfile() {
           <div className="relative">
             <img
               src={`${cat.image_url}?width=88&height=88&resize=fill`}
+              srcSet={`${cat.image_url}?width=88&height=88&resize=fill 1x, ${cat.image_url}?width=176&height=176&resize=fill 2x`}
               alt={cat.name}
               className="w-[88px] h-[88px] rounded-full object-cover"
               width="88"
               height="88"
+              loading="eager"
+              decoding="async"
             />
             <button
               onClick={handleFavoriteClick}
@@ -353,9 +361,9 @@ export default function CatProfile() {
           </div>
 
           {photos && photos.length > 0 && (
-            <div className="mt4">
+            <div className="mt-4">
               <div className="flex justify-between items-center mb-4"></div>
-              <div className="grid grid-cols-3" style={{ gap: '1px' }}>
+              <div className="grid grid-cols-3 min-h-[150px]" style={{ gap: '1px' }}>
                 {photos.map(photo => (
                   <div
                     key={photo.id}
@@ -364,11 +372,13 @@ export default function CatProfile() {
                   >
                     <img
                       src={`${photo.image_url}?width=150&height=150&resize=fill`}
+                      srcSet={`${photo.image_url}?width=150&height=150&resize=fill 1x, ${photo.image_url}?width=300&height=300&resize=fill 2x`}
                       alt={`${cat.name} の画像`}
                       loading="lazy"
                       className="w-full h-full object-cover"
                       width="150"
                       height="150"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-200"></div>
                   </div>
@@ -378,7 +388,7 @@ export default function CatProfile() {
           )}
         </div>
 
-        <div className="text-center mt-20">
+        <div className="text-center mt-20 h-[80px] min-h-[80px]">
           <Link to="/">
             <img
               src="/images/logo_title.png"
@@ -386,6 +396,8 @@ export default function CatProfile() {
               width="160"
               height="20"
               className="inline-block w-[160px]"
+              loading="eager"
+              decoding="async"
             />
           </Link>
           <p className="text-xs text-gray-700 mt-2">©︎CAT LINK All Rights Reserved</p>

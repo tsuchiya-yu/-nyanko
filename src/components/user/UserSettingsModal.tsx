@@ -120,6 +120,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
         <button
           onClick={onClose}
           className="absolute right-[-10px] top-[-30px] text-gray-400 hover:text-gray-600"
+          aria-label="閉じる"
         >
           <X className="h-6 w-6" />
         </button>

@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -39,6 +39,7 @@ export default function EditCat() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
@@ -200,6 +201,8 @@ export default function EditCat() {
       }
     },
     onSuccess: () => {
+      // キャッシュを無効化して新しいデータを取得できるようにする
+      queryClient.invalidateQueries({ queryKey: ['cat', id] });
       alert('猫ちゃんの情報を更新しました');
       navigate(`/cats/${id}`);
     },

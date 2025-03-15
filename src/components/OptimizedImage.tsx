@@ -1,10 +1,6 @@
 import { ReactElement } from 'react';
 
-import { 
-  ImageSize, 
-  ImageTransformOptions, 
-  getOptimizedImageUrl
-} from '../utils/imageUtils';
+import { ImageSize, ImageTransformOptions, getOptimizedImageUrl } from '../utils/imageUtils';
 
 interface OptimizedImageProps {
   /** 元の画像URL */
@@ -40,33 +36,33 @@ export default function OptimizedImage({
   options = {
     resize: 'fill',
     format: 'webp',
-    quality: 80
-  }
+    quality: 80,
+  },
 }: OptimizedImageProps): ReactElement {
   if (!src) {
     return (
-      <div 
-        className={`bg-gray-200 ${className}`} 
+      <div
+        className={`bg-gray-200 ${className}`}
         style={{ width: `${width}px`, height: `${height}px` }}
         role="img"
         aria-label={alt}
       />
     );
   }
-  
+
   const size: ImageSize = { width, height };
   const retinaSize: ImageSize = { width: width * 2, height: height * 2 };
-  
+
   // WebP版のURL
   const webpOptions = { ...options, format: 'webp' as const };
   const webpSrc = getOptimizedImageUrl(src, size, webpOptions);
   const webpSrcSet = `${webpSrc} 1x, ${getOptimizedImageUrl(src, retinaSize, webpOptions)} 2x`;
-  
+
   // 元のフォーマット（フォールバック用）
   const originalOptions = { ...options, format: 'original' as const };
   const originalSrc = getOptimizedImageUrl(src, size, originalOptions);
   const originalSrcSet = `${originalSrc} 1x, ${getOptimizedImageUrl(src, retinaSize, originalOptions)} 2x`;
-  
+
   return (
     <picture>
       <source srcSet={webpSrcSet} type="image/webp" />
@@ -82,4 +78,4 @@ export default function OptimizedImage({
       />
     </picture>
   );
-} 
+}

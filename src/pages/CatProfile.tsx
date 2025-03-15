@@ -228,7 +228,7 @@ export default function CatProfile() {
   const age = calculateAge(cat.birthdate);
 
   return (
-    <div className="max-w-[480px] mx-auto space-y-6 relative">
+    <div className="max-w-[480px] mx-auto space-y-6 relative min-h-screen">
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
@@ -361,9 +361,9 @@ export default function CatProfile() {
           </div>
 
           {photos && photos.length > 0 && (
-            <div className="mt4">
+            <div className="mt-4">
               <div className="flex justify-between items-center mb-4"></div>
-              <div className="grid grid-cols-3" style={{ gap: '1px' }}>
+              <div className="grid grid-cols-3 min-h-[150px]" style={{ gap: '1px' }}>
                 {photos.map(photo => (
                   <div
                     key={photo.id}
@@ -388,7 +388,7 @@ export default function CatProfile() {
           )}
         </div>
 
-        <div className="text-center mt-20">
+        <div className="text-center mt-20 h-[80px] min-h-[80px]">
           <Link to="/">
             <img
               src="/images/logo_title.png"
@@ -396,6 +396,8 @@ export default function CatProfile() {
               width="160"
               height="20"
               className="inline-block w-[160px]"
+              loading="eager"
+              decoding="async"
             />
           </Link>
           <p className="text-xs text-gray-700 mt-2">©︎CAT LINK All Rights Reserved</p>

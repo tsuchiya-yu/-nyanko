@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* レイアウトシフト防止のためのスタイル */
+html {
+  scroll-behavior: smooth;
+}
+
+/* コンテンツが読み込まれる前にスペースを確保 */
+.content-placeholder {
+  min-height: 100vh;
+}
+
+/* 画像読み込み前に適切なスペースを確保 */
+img {
+  transition: opacity 0.3s;
+}
+
+/* フォントファイルのプリロード設定 */
+@font-face {
+  font-display: swap;
+}

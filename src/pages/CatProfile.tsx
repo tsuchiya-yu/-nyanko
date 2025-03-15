@@ -60,6 +60,7 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
         <button
           onClick={onClose}
           className="absolute top-[-30px] right-[-20px] text-gray-600 text-3xl"
+          aria-label="閉じる"
         >
           ×
         </button>
@@ -267,6 +268,7 @@ export default function CatProfile() {
             <button
               onClick={() => setIsShareModalOpen(true)}
               className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
+              aria-label="シェアする"
             >
               <Share2 className="h-6 w-6" />
             </button>

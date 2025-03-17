@@ -37,7 +37,9 @@ describe('useSessionRefresh', () => {
     });
 
     // supabase.auth.onAuthStateChangeのモック
-    (supabase.auth.onAuthStateChange as { mockImplementation: (callback: MockCallback) => unknown }).mockImplementation(callback => {
+    (
+      supabase.auth.onAuthStateChange as { mockImplementation: (callback: MockCallback) => unknown }
+    ).mockImplementation(callback => {
       // コールバック関数を保存して後でテストから呼び出せるようにする
       authCallback = callback;
 

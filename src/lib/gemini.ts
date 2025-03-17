@@ -1,7 +1,7 @@
 /**
  * 猫の気持ちを取得する関数
  * 指定された画像URLをGemini APIに送信し、猫の気持ちを取得します
- * 
+ *
  * @param imageUrl - 分析する猫の画像のURL
  * @returns 猫の気持ちのテキスト、エラー時はnull
  */
@@ -29,10 +29,10 @@ export async function getCatMood(imageUrl: string): Promise<string | null> {
     if (data.success && data.catMood) {
       return data.catMood;
     }
-    
+
     return null;
   } catch (error) {
     console.error('猫の気持ち取得エラー:', error);
     return null;
   }
-} 
+}

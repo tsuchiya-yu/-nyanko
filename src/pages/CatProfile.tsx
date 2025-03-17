@@ -51,38 +51,40 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/70 z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black/70 z-50 p-4 overflow-y-auto"
       style={{ marginTop: '0' }}
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-4 max-w-md mx-auto relative"
+        className="bg-white rounded-lg p-0 max-w-md mx-auto relative max-h-[90vh] overflow-visible"
         onClick={e => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-[-30px] right-[-20px] text-gray-600 text-3xl"
+          className="absolute top-[-16px] right-[-16px] bg-white rounded-full w-8 h-8 flex items-center justify-center text-gray-600 z-50 shadow-md border border-gray-200"
           aria-label="閉じる"
         >
           ×
         </button>
-        <OptimizedImage
-          src={photo?.image_url || ''}
-          alt=""
-          width={600}
-          height={800}
-          className="w-full h-auto rounded-lg mb-4"
-          loading="eager"
-          decoding="async"
-          options={{ resize: 'contain', quality: 85 }}
-        />
-        {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
-        {photo?.cat_mood && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <h3 className="text-gray-800 font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
-            <p className="text-gray-700 text-sm whitespace-pre-line">{photo.cat_mood}</p>
-          </div>
-        )}
+        <div className="px-2 pt-4 pb-4 overflow-y-auto max-h-[90vh]">
+          <OptimizedImage
+            src={photo?.image_url || ''}
+            alt=""
+            width={600}
+            height={800}
+            className="w-full h-auto rounded-lg mb-4 max-h-[70vh] object-contain"
+            loading="eager"
+            decoding="async"
+            options={{ resize: 'contain', quality: 85 }}
+          />
+          {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
+          {photo?.cat_mood && (
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <h3 className="text-gray-800 font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
+              <p className="text-gray-700 text-sm whitespace-pre-line">{photo.cat_mood}</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

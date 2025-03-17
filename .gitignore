@@ -33,3 +33,6 @@ dist-ssr
 coverage
 coverage-*
 .nyc_output
+
+# Supabase
+supabase/.temp/cli-latest

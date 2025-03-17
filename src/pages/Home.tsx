@@ -47,9 +47,9 @@ export default function Home() {
         <link rel="canonical" href="https://cat-link.catnote.tokyo/" />
         <meta
           name="description"
-          content="CAT LINKで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。"
+          content="CAT LINKで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。AIが猫の気持ちを分析する「ねこのひとこと」機能も搭載！"
         />
-        <meta name="keywords" content="猫, ペット, プロフィール, 写真, 共有, SNS, 無料" />
+        <meta name="keywords" content="猫, ペット, プロフィール, 写真, 共有, SNS, 無料, AI, ねこのひとこと, 猫の気持ち" />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -89,13 +89,14 @@ export default function Home() {
                   price: '0',
                   priceCurrency: 'JPY',
                 },
-                description: '愛猫のプロフィールページを簡単に作成・共有できるウェブアプリ',
+                description: '愛猫のプロフィールページを簡単に作成・共有できるウェブアプリ。AIで猫の気持ちを分析する「ねこのひとこと」機能搭載。',
                 screenshot: 'https://cat-link.catnote.tokyo/images/top/main.jpg',
                 featureList: [
                   '愛猫のプロフィールページ作成',
                   '写真ギャラリー',
                   'SNSへの共有機能',
                   'スマホでかんたん操作',
+                  'AIによる「ねこのひとこと」機能',
                 ],
               },
               {
@@ -114,7 +115,7 @@ export default function Home() {
                     name: 'CAT LINKを利用することでどんなことができますか？',
                     acceptedAnswer: {
                       '@type': 'Answer',
-                      text: 'CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。',
+                      text: 'CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。また、AIが猫の気持ちを分析する「ねこのひとこと」機能も利用できます。',
                     },
                   },
                   {
@@ -347,6 +348,83 @@ export default function Home() {
         </div>
       </section>
 
+      {/* AIが猫の気持ちを代弁 - 新しいセクション */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl my-16">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">AIが猫の気持ちを代弁</h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            写真をアップロードすると、AIが猫の気持ちを分析して教えてくれる「ねこのひとこと」機能を搭載！
+          </p>
+        </div>
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mt-8">
+          <div className="w-full lg:w-1/2 max-w-md">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <picture className="flex justify-center">
+                <source srcSet="/images/top/webp/example2.webp" type="image/webp" />
+                <img
+                  src="/images/top/example2.jpg"
+                  alt="猫の写真"
+                  className="w-[180px] h-[180px] object-cover rounded-lg mb-4 mx-auto"
+                  width="180"
+                  height="180"
+                  decoding="async"
+                  loading="lazy"
+                />
+              </picture>
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <h3 className="text-gray-800 font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
+                <p className="text-gray-700 text-sm italic">
+                  窓の外を見ていると、鳥さんたちが遊んでるのが見えるニャ。私も外に出たいけど、ここからじっと見守るのも悪くないにゃ〜。
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="w-full lg:w-1/2 max-w-md space-y-4">
+            <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
+              <div className="bg-pink-100 rounded-full p-2 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-800">最新のAI技術を活用</h3>
+                <p className="text-gray-600 text-sm">最新のAI画像認識技術で、猫の表情や姿勢から気持ちを分析</p>
+              </div>
+            </div>
+            <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
+              <div className="bg-pink-100 rounded-full p-2 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-800">猫の気持ちを理解</h3>
+                <p className="text-gray-600 text-sm">愛猫の表情や仕草から、今どんな気持ちなのかを教えてくれます</p>
+              </div>
+            </div>
+            <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
+              <div className="bg-pink-100 rounded-full p-2 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-800">猫視点のストーリー</h3>
+                <p className="text-gray-600 text-sm">まるで猫が話しているかのような一人称の語り口で楽しめます</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="text-center mt-8">
+          <button
+            onClick={handleAuthAction}
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+          >
+            「ねこのひとこと」を試してみる
+          </button>
+        </div>
+      </section>
+
       {/* スマホ操作説明 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
@@ -446,6 +524,15 @@ export default function Home() {
             </summary>
             <p className="mt-4 text-gray-600">
               会員登録をすると、猫ちゃんに「いいね！」をすることができます。さらに、猫ちゃんのプロフィールページを作成することができます。プロフィールページは、SNSで共有することができます。
+            </p>
+          </details>
+          <details className="bg-white p-6 rounded-lg shadow-md">
+            <summary className="flex justify-between items-center cursor-pointer">
+              <span className="font-medium">「ねこのひとこと」機能とは何ですか？</span>
+              <ChevronDown className="h-5 w-5 text-gray-500" />
+            </summary>
+            <p className="mt-4 text-gray-600">
+              「ねこのひとこと」は、アップロードした猫の写真をAIが分析して、猫の気持ちする機能です。写真をアップロードするだけで自動的に設定され、完全無料でご利用いただけます。まるで猫が話しているような一人称の語り口で、愛猫の気持ちをより深く理解するお手伝いをします。
             </p>
           </details>
         </div>

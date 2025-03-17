@@ -49,7 +49,10 @@ export default function Home() {
           name="description"
           content="CAT LINKで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。AIが猫の気持ちを分析する「ねこのひとこと」機能も搭載！"
         />
-        <meta name="keywords" content="猫, ペット, プロフィール, 写真, 共有, SNS, 無料, AI, ねこのひとこと, 猫の気持ち" />
+        <meta
+          name="keywords"
+          content="猫, ペット, プロフィール, 写真, 共有, SNS, 無料, AI, ねこのひとこと, 猫の気持ち"
+        />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -89,7 +92,8 @@ export default function Home() {
                   price: '0',
                   priceCurrency: 'JPY',
                 },
-                description: '愛猫のプロフィールページを簡単に作成・共有できるウェブアプリ。AIで猫の気持ちを分析する「ねこのひとこと」機能搭載。',
+                description:
+                  '愛猫のプロフィールページを簡単に作成・共有できるウェブアプリ。AIで猫の気持ちを分析する「ねこのひとこと」機能搭載。',
                 screenshot: 'https://cat-link.catnote.tokyo/images/top/main.jpg',
                 featureList: [
                   '愛猫のプロフィールページ作成',
@@ -382,35 +386,74 @@ export default function Home() {
           <div className="w-full lg:w-1/2 max-w-md space-y-4">
             <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
               <div className="bg-pink-100 rounded-full p-2 mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-pink-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
                 </svg>
               </div>
               <div>
                 <h3 className="font-medium text-gray-800">最新のAI技術を活用</h3>
-                <p className="text-gray-600 text-sm">最新のAI画像認識技術で、猫の表情や姿勢から気持ちを分析</p>
+                <p className="text-gray-600 text-sm">
+                  最新のAI画像認識技術で、猫の表情や姿勢から気持ちを分析
+                </p>
               </div>
             </div>
             <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
               <div className="bg-pink-100 rounded-full p-2 mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-pink-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
               <div>
                 <h3 className="font-medium text-gray-800">猫の気持ちを理解</h3>
-                <p className="text-gray-600 text-sm">愛猫の表情や仕草から、今どんな気持ちなのかを教えてくれます</p>
+                <p className="text-gray-600 text-sm">
+                  愛猫の表情や仕草から、今どんな気持ちなのかを教えてくれます
+                </p>
               </div>
             </div>
             <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
               <div className="bg-pink-100 rounded-full p-2 mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-pink-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
                 </svg>
               </div>
               <div>
                 <h3 className="font-medium text-gray-800">猫視点のストーリー</h3>
-                <p className="text-gray-600 text-sm">まるで猫が話しているかのような一人称の語り口で楽しめます</p>
+                <p className="text-gray-600 text-sm">
+                  まるで猫が話しているかのような一人称の語り口で楽しめます
+                </p>
               </div>
             </div>
           </div>

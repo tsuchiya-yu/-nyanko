@@ -10,6 +10,7 @@ import ImageEditor from '../components/ImageEditor';
 import OptimizedImage from '../components/OptimizedImage';
 import { getCatMood } from '../lib/gemini';
 import { supabase } from '../lib/supabase';
+import { optimizeImageForUpload } from '../utils/imageUtils';
 
 interface PhotoFormData {
   imageFile: File | null;
@@ -86,22 +87,41 @@ export default function CatPhotos() {
     }
   }, [imageFile, showImageEditor]);
 
-  // 編集した画像を保存する処理
-  const handleSaveEditedImage = (editedImageBlob: Blob) => {
-    // Blobからファイルを作成
-    const editedFile = new File([editedImageBlob], editingImage?.name || 'edited-image.jpg', {
-      type: editedImageBlob.type,
-    });
+  // 画像が編集されて保存されたときの処理
+  const handleSaveEditedImage = async (editedImageBlob: Blob) => {
+    try {
+      // Blobからファイルを作成
+      const editedFile = new File([editedImageBlob], editingImage?.name || 'edited-image.jpg', {
+        type: editedImageBlob.type,
+      });
 
-    setImageFile(editedFile);
-    setShowImageEditor(false);
+      // 画像をアップロード前に最適化
+      const optimizedFile = await optimizeImageForUpload(editedFile);
+      
+      setImageFile(optimizedFile);
+      setShowImageEditor(false);
 
-    // プレビュー用のURLを作成
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewUrl(reader.result as string);
-    };
-    reader.readAsDataURL(editedFile);
+      // プレビュー用のURLを作成
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(optimizedFile);
+    } catch (error) {
+      console.error('画像の最適化エラー:', error);
+      // エラー時は元の画像を使用
+      const editedFile = new File([editedImageBlob], editingImage?.name || 'edited-image.jpg', {
+        type: editedImageBlob.type,
+      });
+      setImageFile(editedFile);
+      setShowImageEditor(false);
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(editedFile);
+    }
   };
 
   // 画像編集をキャンセルする処理
@@ -230,7 +250,6 @@ export default function CatPhotos() {
             imageFile={editingImage}
             onSave={handleSaveEditedImage}
             onCancel={handleCancelEdit}
-            aspectRatio={16 / 9}
           />
         ) : (
           <>

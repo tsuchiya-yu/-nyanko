@@ -5,7 +5,8 @@
  * @param imageUrl - 分析する猫の画像のURL
  * @returns 猫の気持ちのテキスト、エラー時はnull
  */
-import { fetch } from 'cross-fetch';
+// cross-fetchのインポートを削除し、グローバルfetchを使用する
+// import { fetch } from 'cross-fetch';
 
 export async function getCatMood(imageUrl: string): Promise<string | null> {
   console.log('[getCatMood] 開始: 画像URL =', imageUrl?.substring(0, 100) + '...');
@@ -16,6 +17,7 @@ export async function getCatMood(imageUrl: string): Promise<string | null> {
     const requestBody = JSON.stringify({ imageUrl });
     console.log('[getCatMood] リクエストボディ:', requestBody.substring(0, 100) + '...');
 
+    // グローバルのfetch関数を使用
     const response = await fetch(
       'https://mypvypmyjcrxiovdejqj.supabase.co/functions/v1/image-to-gemini',
       {

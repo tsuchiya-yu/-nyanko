@@ -43,27 +43,21 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
 }
 
 // 初期のクロップ状態を作成する関数
-function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number) {
-  return centerCrop(
-    makeAspectCrop(
-      {
-        unit: '%',
-        width: 90,
-      },
-      aspect,
-      mediaWidth,
-      mediaHeight
-    ),
-    mediaWidth,
-    mediaHeight
-  );
+function centerAspectCrop(mediaWidth: number, mediaHeight: number): Crop {
+  // アスペクト比を指定せず、自由なクロップを許可
+  return {
+    unit: '%' as const,
+    x: 5,
+    y: 5,
+    width: 90,
+    height: 90,
+  };
 }
 
 export default function ImageEditor({
   imageFile,
   onSave,
   onCancel,
-  aspectRatio = 1,
 }: ImageEditorProps) {
   const [imgSrc, setImgSrc] = useState('');
   const imgRef = useRef<HTMLImageElement>(null);
@@ -87,9 +81,9 @@ export default function ImageEditor({
 
   // 画像がロードされたときの処理
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-    if (aspectRatio && imgRef.current) {
+    if (imgRef.current) {
       const { width, height } = e.currentTarget;
-      setCrop(centerAspectCrop(width, height, aspectRatio));
+      setCrop(centerAspectCrop(width, height));
       setIsImageLoaded(true);
     }
   }
@@ -219,7 +213,6 @@ export default function ImageEditor({
               crop={crop}
               onChange={c => setCrop(c)}
               onComplete={c => setCompletedCrop(c)}
-              aspect={aspectRatio}
             >
               <img
                 ref={imgRef}

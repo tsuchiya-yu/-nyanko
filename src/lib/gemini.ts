@@ -5,6 +5,8 @@
  * @param imageUrl - 分析する猫の画像のURL
  * @returns 猫の気持ちのテキスト、エラー時はnull
  */
+import { fetch } from 'cross-fetch';
+
 export async function getCatMood(imageUrl: string): Promise<string | null> {
   try {
     const response = await fetch(

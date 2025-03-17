@@ -5,6 +5,9 @@ import { useSessionRefresh } from './useSessionRefresh';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 
+// グローバルオブジェクトの型定義
+type MockCallback = (event: string, session: unknown) => Promise<void>;
+
 // モックの設定
 vi.mock('../lib/supabase', () => ({
   supabase: {
@@ -22,19 +25,21 @@ describe('useSessionRefresh', () => {
   // モックのセットアップ
   const mockSetUser = vi.fn();
   const mockUnsubscribe = vi.fn();
+  // グローバルスコープに保存するコールバック
+  let authCallback: MockCallback;
 
   beforeEach(() => {
     vi.clearAllMocks();
 
     // useAuthStoreのモック
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as { mockReturnValue: (value: unknown) => void }).mockReturnValue({
       setUser: mockSetUser,
     });
 
     // supabase.auth.onAuthStateChangeのモック
-    (supabase.auth.onAuthStateChange as any).mockImplementation(callback => {
+    (supabase.auth.onAuthStateChange as { mockImplementation: (callback: MockCallback) => unknown }).mockImplementation(callback => {
       // コールバック関数を保存して後でテストから呼び出せるようにする
-      (global as any).authCallback = callback;
+      authCallback = callback;
 
       return {
         data: {
@@ -48,7 +53,7 @@ describe('useSessionRefresh', () => {
 
   afterEach(() => {
     // グローバル変数のクリーンアップ
-    delete (global as any).authCallback;
+    authCallback = undefined as unknown as MockCallback;
   });
 
   it('初期化時にsupabase.auth.onAuthStateChangeが呼ばれること', () => {
@@ -64,7 +69,7 @@ describe('useSessionRefresh', () => {
     const mockSession = { user: mockUser };
 
     // 保存したコールバック関数を呼び出してSIGNED_INイベントをシミュレート
-    await (global as any).authCallback('SIGNED_IN', mockSession);
+    await authCallback('SIGNED_IN', mockSession);
 
     expect(mockSetUser).toHaveBeenCalledWith(mockUser);
   });
@@ -73,7 +78,7 @@ describe('useSessionRefresh', () => {
     renderHook(() => useSessionRefresh());
 
     // 保存したコールバック関数を呼び出してSIGNED_OUTイベントをシミュレート
-    await (global as any).authCallback('SIGNED_OUT', null);
+    await authCallback('SIGNED_OUT', null);
 
     expect(mockSetUser).toHaveBeenCalledWith(null);
   });

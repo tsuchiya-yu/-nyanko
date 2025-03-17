@@ -122,7 +122,7 @@ export function optimizeImageForUpload(file: File, options: {
   return new Promise((resolve, reject) => {
     // デフォルト値の設定
     const quality = options.quality || 0.75;
-    const format = options.format || 'webp';
+    const format = options.format || 'jpeg'; // WebPはファイルサイズが大きくなる可能性があるため、JPEGをデフォルトに
     
     const img = new Image();
     const reader = new FileReader();
@@ -140,25 +140,32 @@ export function optimizeImageForUpload(file: File, options: {
           
           // キャンバスの作成
           const canvas = document.createElement('canvas');
-          canvas.width = optimalSize.width;
-          canvas.height = optimalSize.height;
           
-          const ctx = canvas.getContext('2d');
+          // 元のサイズが最適サイズより小さい場合は、元のサイズを使用
+          canvas.width = img.width <= optimalSize.width ? img.width : optimalSize.width;
+          canvas.height = img.height <= optimalSize.height ? img.height : optimalSize.height;
+          
+          const ctx = canvas.getContext('2d', {
+            alpha: false, // アルファチャンネルを無効化してサイズを削減
+            willReadFrequently: false // パフォーマンス最適化
+          });
+          
           if (!ctx) {
             reject(new Error('Canvas contextの取得に失敗しました'));
             return;
           }
           
-          // 画像の描画
-          ctx.drawImage(img, 0, 0, optimalSize.width, optimalSize.height);
+          // 背景を白で塗りつぶし（JPEGの透過部分対策）
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          // 画像の描画（高品質な縮小を実現）
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
           // 画像のエクスポート
-          let mimeType = 'image/jpeg';
-          if (format === 'webp' && typeof canvas.toBlob === 'function') {
-            mimeType = 'image/webp';
-          } else if (format === 'png') {
-            mimeType = 'image/png';
-          }
+          const mimeType = `image/${format}`;
           
           canvas.toBlob(
             (blob) => {
@@ -168,7 +175,7 @@ export function optimizeImageForUpload(file: File, options: {
               }
               
               // 元のファイル名を維持しつつ、拡張子を変更
-              const fileName = file.name.replace(/\.[^/.]+$/, '') + '.' + mimeType.split('/')[1];
+              const fileName = file.name.replace(/\.[^/.]+$/, '') + '.' + format;
               
               // 新しいFileオブジェクトを作成
               const optimizedFile = new File([blob], fileName, {

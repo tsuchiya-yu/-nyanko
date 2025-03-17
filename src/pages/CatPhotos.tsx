@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import ImageEditor from '../components/ImageEditor';
 import OptimizedImage from '../components/OptimizedImage';
+import { getCatMood } from '../lib/gemini';
 import { supabase } from '../lib/supabase';
 
 interface PhotoFormData {
@@ -140,11 +141,15 @@ export default function CatPhotos() {
         data: { publicUrl },
       } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
 
+      // 猫の気持ちを取得
+      const catMood = await getCatMood(publicUrl);
+
       // データベースに保存
       const { error: dbError } = await supabase.from('cat_photos').insert({
         cat_id: id,
         image_url: publicUrl,
         comment: data.comment,
+        cat_mood: catMood, // 猫の気持ちを保存
       });
 
       if (dbError) {

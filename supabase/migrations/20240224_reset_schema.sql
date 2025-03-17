@@ -47,6 +47,7 @@ create table public.cat_photos (
     cat_id uuid references public.cats(id) on delete cascade not null,
     image_url text not null,
     comment text,
+    cat_mood text,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 

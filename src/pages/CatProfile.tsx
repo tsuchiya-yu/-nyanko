@@ -36,6 +36,7 @@ interface CatPhoto {
   id: string;
   image_url: string;
   comment: string;
+  cat_mood?: string | null;
 }
 
 interface ModalProps {
@@ -76,6 +77,12 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
           options={{ resize: 'contain', quality: 85 }}
         />
         {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
+        {photo?.cat_mood && (
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <h3 className="text-gray-800 font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
+            <p className="text-gray-700 text-sm whitespace-pre-line">{photo.cat_mood}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -106,7 +113,7 @@ export default function CatProfile() {
           .select(
             `
             *,
-            profiles (
+            profiles:owner_id (
               name
             )
           `
@@ -299,7 +306,7 @@ export default function CatProfile() {
             },
             owner: {
               '@type': 'Person',
-              name: cat.profiles.name,
+              name: cat.profiles?.name || '飼い主',
             },
             sameAs: [cat.instagram_url, cat.x_url, cat.homepage_url].filter(Boolean),
             hasPart:

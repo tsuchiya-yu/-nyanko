@@ -75,13 +75,8 @@ serve(async (req) => {
     // Initialize Gemini API
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     
-    // 利用可能なモデルを表示（デバッグ用）
-    try {
-      const models = await genAI.getModels();
-      console.log("利用可能なモデル:", models);
-    } catch (error) {
-      console.error("モデル一覧取得エラー:", error);
-    }
+    // getModelsメソッドは廃止されたため削除
+    console.log("Gemini API 初期化完了。モデル: gemini-1.5-flash");
     
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash"

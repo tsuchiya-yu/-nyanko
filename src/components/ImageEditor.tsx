@@ -22,22 +22,43 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
     throw new Error('Canvas context not available');
   }
 
-  // キャンバスのサイズを設定
-  canvas.width = crop.width;
-  canvas.height = crop.height;
-
-  // スケールを考慮した座標計算
+  // 元の画像のスケール比率を計算
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
 
-  // スケールを考慮した描画座標とサイズを計算
-  const sourceX = (crop.x * scaleX) / scale;
-  const sourceY = (crop.y * scaleY) / scale;
-  const sourceWidth = (crop.width * scaleX) / scale;
-  const sourceHeight = (crop.height * scaleY) / scale;
+  // 元の画像の解像度を維持するようにキャンバスサイズを設定
+  canvas.width = Math.floor(crop.width * scaleX);
+  canvas.height = Math.floor(crop.height * scaleY);
 
-  // 画像を描画
-  ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, crop.width, crop.height);
+  // ディスプレイのピクセル比を考慮
+  const pixelRatio = window.devicePixelRatio || 1;
+  if (pixelRatio > 1) {
+    canvas.width *= pixelRatio;
+    canvas.height *= pixelRatio;
+  }
+
+  // 元の画像のクロップ領域の実際のピクセル座標を計算
+  const sourceX = crop.x * scaleX;
+  const sourceY = crop.y * scaleY;
+  const sourceWidth = crop.width * scaleX;
+  const sourceHeight = crop.height * scaleY;
+
+  // 画像を描画（スケールファクターで調整）
+  ctx.drawImage(
+    image,
+    sourceX / scale,
+    sourceY / scale,
+    sourceWidth / scale,
+    sourceHeight / scale,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  // 高品質のリサイズを行うための設定
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
 
   return canvas;
 }

@@ -107,7 +107,7 @@ export function calculateOptimalSize(originalWidth: number, originalHeight: numb
  * 画像をアップロード前に最適化します
  * - サイズをInstagramの推奨サイズに調整
  * - 画質を0.75に設定
- * - WebPフォーマットに変換（サポートされていれば）
+ * - JPEGフォーマットに変換
  * 
  * @param file 元の画像ファイル
  * @param options 追加のオプション
@@ -122,85 +122,134 @@ export function optimizeImageForUpload(file: File, options: {
   return new Promise((resolve, reject) => {
     // デフォルト値の設定
     const quality = options.quality || 0.75;
-    const format = options.format || 'jpeg'; // WebPはファイルサイズが大きくなる可能性があるため、JPEGをデフォルトに
+    const format = options.format || 'jpeg';
     
     const img = new Image();
     const reader = new FileReader();
     
-    reader.onload = (e) => {
+    // 画像の読み込みを最適化
+    img.decoding = 'async';
+    img.loading = 'eager'; // 優先的に読み込む
+    
+    reader.onload = async (e) => {
       if (!e.target?.result) {
         reject(new Error('画像の読み込みに失敗しました'));
         return;
       }
       
-      img.onload = () => {
-        try {
-          // 最適なサイズを計算
-          const optimalSize = calculateOptimalSize(img.width, img.height);
+      try {
+        // 画像の非同期デコード
+        img.src = e.target.result as string;
+        
+        // 画像の読み込みと非同期デコードを並列実行
+        await Promise.all([
+          new Promise<void>((resolve) => {
+            img.onload = () => resolve();
+          }),
+          img.decode()
+        ]);
+        
+        // 最適なサイズを計算
+        const optimalSize = calculateOptimalSize(img.width, img.height);
+        
+        // キャンバスの作成
+        const canvas = document.createElement('canvas');
+        
+        // 元のサイズが最適サイズより小さい場合は、元のサイズを使用
+        canvas.width = img.width <= optimalSize.width ? img.width : optimalSize.width;
+        canvas.height = img.height <= optimalSize.height ? img.height : optimalSize.height;
+        
+        const ctx = canvas.getContext('2d', {
+          alpha: false,
+          willReadFrequently: false,
+          desynchronized: true // GPUアクセラレーションを有効化
+        });
+        
+        if (!ctx) {
+          throw new Error('Canvas contextの取得に失敗しました');
+        }
+        
+        // 背景を白で塗りつぶし
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 画像の描画（品質とパフォーマンスのバランスを調整）
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'medium';
+        
+        // 大きな画像の場合は段階的にリサイズ
+        if (img.width > optimalSize.width * 2 || img.height > optimalSize.height * 2) {
+          // 段階的なリサイズのステップ数を計算
+          const steps = Math.min(2, Math.floor(Math.log2(Math.max(
+            img.width / optimalSize.width,
+            img.height / optimalSize.height
+          ))));
           
-          // キャンバスの作成
-          const canvas = document.createElement('canvas');
+          let currentWidth = img.width;
+          let currentHeight = img.height;
+          let currentImage: HTMLImageElement | HTMLCanvasElement = img;
           
-          // 元のサイズが最適サイズより小さい場合は、元のサイズを使用
-          canvas.width = img.width <= optimalSize.width ? img.width : optimalSize.width;
-          canvas.height = img.height <= optimalSize.height ? img.height : optimalSize.height;
-          
-          const ctx = canvas.getContext('2d', {
-            alpha: false, // アルファチャンネルを無効化してサイズを削減
-            willReadFrequently: false // パフォーマンス最適化
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d', { 
+            alpha: false,
+            desynchronized: true
           });
           
-          if (!ctx) {
-            reject(new Error('Canvas contextの取得に失敗しました'));
-            return;
+          for (let i = 0; i < steps; i++) {
+            currentWidth = Math.max(currentWidth / 2, optimalSize.width);
+            currentHeight = Math.max(currentHeight / 2, optimalSize.height);
+            
+            tempCanvas.width = currentWidth;
+            tempCanvas.height = currentHeight;
+            
+            if (tempCtx) {
+              tempCtx.imageSmoothingEnabled = true;
+              tempCtx.imageSmoothingQuality = 'medium';
+              tempCtx.drawImage(currentImage, 0, 0, currentWidth, currentHeight);
+              currentImage = tempCanvas;
+            }
           }
           
-          // 背景を白で塗りつぶし（JPEGの透過部分対策）
-          ctx.fillStyle = '#FFFFFF';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          
-          // 画像の描画（高品質な縮小を実現）
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
+          // 最終サイズに描画
+          ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+        } else {
+          // 小さな画像は直接描画
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          
-          // 画像のエクスポート
-          const mimeType = `image/${format}`;
-          
+        }
+        
+        // 画像のエクスポート
+        const mimeType = `image/${format}`;
+        
+        const blob = await new Promise<Blob | null>((resolveBlob) => {
           canvas.toBlob(
-            (blob) => {
-              if (!blob) {
-                reject(new Error('Blobの生成に失敗しました'));
-                return;
-              }
-              
-              // 元のファイル名を維持しつつ、拡張子を変更
-              const fileName = file.name.replace(/\.[^/.]+$/, '') + '.' + format;
-              
-              // 新しいFileオブジェクトを作成
-              const optimizedFile = new File([blob], fileName, {
-                type: mimeType,
-                lastModified: new Date().getTime()
-              });
-              
-              resolve(optimizedFile);
-            },
+            (result) => resolveBlob(result),
             mimeType,
             quality
           );
-        } catch (error) {
-          reject(error);
+        });
+        
+        if (!blob) {
+          throw new Error('Blobの生成に失敗しました');
         }
-      };
-      
-      img.onerror = () => {
-        reject(new Error('画像の処理中にエラーが発生しました'));
-      };
-      
-      img.src = e.target.result as string;
+        
+        // 元のファイル名を維持しつつ、拡張子を変更
+        const fileName = file.name.replace(/\.[^/.]+$/, '') + '.' + format;
+        
+        // 新しいFileオブジェクトを作成
+        const optimizedFile = new File([blob], fileName, {
+          type: mimeType,
+          lastModified: new Date().getTime()
+        });
+        
+        resolve(optimizedFile);
+      } catch (error) {
+        console.error('画像最適化エラー:', error);
+        reject(error);
+      }
     };
     
     reader.onerror = (error) => {
+      console.error('FileReader エラー:', error);
       reject(error);
     };
     

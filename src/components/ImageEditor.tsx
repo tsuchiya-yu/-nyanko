@@ -88,6 +88,7 @@ export default function ImageEditor({
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [scale, setScale] = useState(1);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // ファイルからURLを生成
   useEffect(() => {
@@ -139,8 +140,6 @@ export default function ImageEditor({
       setScale(newScale);
     });
 
-    console.log('Hammer.js initialized');
-
     return () => {
       if (hammerInstanceRef.current) {
         hammerInstanceRef.current.destroy();
@@ -165,23 +164,30 @@ export default function ImageEditor({
     const element = cropAreaRef.current;
     element.addEventListener('wheel', handleWheel, { passive: false });
 
-    console.log('Wheel event listener added');
-
     return () => {
       element.removeEventListener('wheel', handleWheel);
     };
   }, [isImageLoaded, scale]);
 
   // 編集した画像を保存
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!imgRef.current || !completedCrop) return;
-
-    const canvas = toCanvas(imgRef.current, completedCrop, scale);
-    canvas.toBlob(blob => {
+    
+    setIsSaving(true);
+    try {
+      const canvas = toCanvas(imgRef.current, completedCrop, scale);
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(blob => resolve(blob));
+      });
+      
       if (blob) {
-        onSave(blob);
+        await onSave(blob);
       }
-    });
+    } catch (error) {
+      console.error('画像の保存中にエラーが発生しました:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // 画像の周りをクリックしたときにピンチモードを有効化するためのハンドラー
@@ -193,7 +199,17 @@ export default function ImageEditor({
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg">
+    <div className="bg-white p-4 rounded-lg shadow-lg relative">
+      {/* ローディングオーバーレイ */}
+      {isSaving && (
+        <div className="absolute inset-0 bg-gray-500/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white/90 rounded-lg p-4 flex flex-col items-center gap-3 shadow-lg">
+            <div className="w-10 h-10 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-gray-800 font-medium">画像を保存中...</p>
+          </div>
+        </div>
+      )}
+
       <h2 className="text-xl font-bold mb-4">画像編集</h2>
 
       {imgSrc && (
@@ -204,6 +220,7 @@ export default function ImageEditor({
                 type="button"
                 onClick={() => setScale(Math.max(0.5, scale - 0.1))}
                 className="px-2 py-1 border border-gray-300 rounded text-sm"
+                disabled={isSaving}
               >
                 -
               </button>
@@ -211,6 +228,7 @@ export default function ImageEditor({
                 type="button"
                 onClick={() => setScale(Math.min(2, scale + 0.1))}
                 className="px-2 py-1 border border-gray-300 rounded text-sm"
+                disabled={isSaving}
               >
                 +
               </button>
@@ -218,6 +236,7 @@ export default function ImageEditor({
                 type="button"
                 onClick={() => setScale(1)}
                 className="px-2 py-1 border border-gray-300 rounded text-sm"
+                disabled={isSaving}
               >
                 リセット
               </button>
@@ -234,6 +253,7 @@ export default function ImageEditor({
               crop={crop}
               onChange={c => setCrop(c)}
               onComplete={c => setCompletedCrop(c)}
+              disabled={isSaving}
             >
               <img
                 ref={imgRef}
@@ -257,14 +277,16 @@ export default function ImageEditor({
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+          className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isSaving}
         >
           キャンセル
         </button>
         <button
           type="button"
           onClick={handleSave}
-          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700"
+          disabled={isSaving}
+          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           保存
         </button>

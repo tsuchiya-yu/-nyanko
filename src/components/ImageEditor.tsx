@@ -16,51 +16,72 @@ interface ImageEditorProps {
 // 画像をキャンバスに描画する関数
 function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
   const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', {
+    alpha: false,
+    willReadFrequently: false,
+    desynchronized: true
+  });
 
   if (!ctx) {
     throw new Error('Canvas context not available');
   }
 
-  // 元の画像のスケール比率を計算
-  const scaleX = image.naturalWidth / image.width;
-  const scaleY = image.naturalHeight / image.height;
+  try {
+    // 元の画像のスケール比率を計算
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
 
-  // 元の画像の解像度を維持するようにキャンバスサイズを設定
-  canvas.width = Math.floor(crop.width * scaleX);
-  canvas.height = Math.floor(crop.height * scaleY);
+    // 元の画像の解像度を維持するようにキャンバスサイズを設定
+    canvas.width = Math.floor(crop.width * scaleX);
+    canvas.height = Math.floor(crop.height * scaleY);
 
-  // ディスプレイのピクセル比を考慮
-  const pixelRatio = window.devicePixelRatio || 1;
-  if (pixelRatio > 1) {
-    canvas.width *= pixelRatio;
-    canvas.height *= pixelRatio;
+    // ディスプレイのピクセル比を考慮
+    const pixelRatio = window.devicePixelRatio || 1;
+    if (pixelRatio > 1) {
+      canvas.width *= pixelRatio;
+      canvas.height *= pixelRatio;
+    }
+
+    // メモリ使用量を抑えるため、最大サイズを制限
+    const MAX_SIZE = 4096; // モバイルデバイスでの制限を考慮
+    if (canvas.width > MAX_SIZE || canvas.height > MAX_SIZE) {
+      const ratio = Math.min(MAX_SIZE / canvas.width, MAX_SIZE / canvas.height);
+      canvas.width = Math.floor(canvas.width * ratio);
+      canvas.height = Math.floor(canvas.height * ratio);
+    }
+
+    // 背景を白で塗りつぶし
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 元の画像のクロップ領域の実際のピクセル座標を計算
+    const sourceX = crop.x * scaleX;
+    const sourceY = crop.y * scaleY;
+    const sourceWidth = crop.width * scaleX;
+    const sourceHeight = crop.height * scaleY;
+
+    // 画像を描画（スケールファクターで調整）
+    ctx.drawImage(
+      image,
+      sourceX / scale,
+      sourceY / scale,
+      sourceWidth / scale,
+      sourceHeight / scale,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    // 高品質のリサイズを行うための設定
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    return canvas;
+  } catch (error) {
+    console.error('Canvas処理エラー:', error);
+    throw error;
   }
-
-  // 元の画像のクロップ領域の実際のピクセル座標を計算
-  const sourceX = crop.x * scaleX;
-  const sourceY = crop.y * scaleY;
-  const sourceWidth = crop.width * scaleX;
-  const sourceHeight = crop.height * scaleY;
-
-  // 画像を描画（スケールファクターで調整）
-  ctx.drawImage(
-    image,
-    sourceX / scale,
-    sourceY / scale,
-    sourceWidth / scale,
-    sourceHeight / scale,
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  // 高品質のリサイズを行うための設定
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-
-  return canvas;
 }
 
 // 初期のクロップ状態を作成する関数
@@ -90,14 +111,44 @@ export default function ImageEditor({
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  // コンポーネントのクリーンアップ
+  useEffect(() => {
+    return () => {
+      // URLを解放
+      if (imgSrc.startsWith('blob:')) {
+        URL.revokeObjectURL(imgSrc);
+      }
+      // Hammer.jsのインスタンスを解放
+      if (hammerInstanceRef.current) {
+        hammerInstanceRef.current.destroy();
+        hammerInstanceRef.current = null;
+      }
+    };
+  }, [imgSrc]);
+
   // ファイルからURLを生成
   useEffect(() => {
     if (imageFile) {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        setImgSrc(reader.result?.toString() || '');
-      });
-      reader.readAsDataURL(imageFile);
+      // 既存のURLを解放
+      if (imgSrc) {
+        setImgSrc('');
+        // 少し待ってから新しい画像を設定
+        setTimeout(() => {
+          const reader = new FileReader();
+          reader.addEventListener('load', () => {
+            const result = reader.result?.toString() || '';
+            setImgSrc(result);
+          });
+          reader.readAsDataURL(imageFile);
+        }, 100);
+      } else {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+          const result = reader.result?.toString() || '';
+          setImgSrc(result);
+        });
+        reader.readAsDataURL(imageFile);
+      }
     }
   }, [imageFile]);
 
@@ -105,8 +156,15 @@ export default function ImageEditor({
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     if (imgRef.current) {
       const { width, height } = e.currentTarget;
-      setCrop(centerAspectCrop(width, height));
-      setIsImageLoaded(true);
+      
+      // Safari/iOSでの画像の安定性を向上
+      e.currentTarget.style.display = 'block';
+      e.currentTarget.decode().then(() => {
+        setCrop(centerAspectCrop(width, height));
+        setIsImageLoaded(true);
+      }).catch(() => {
+        console.error('画像のデコードに失敗しました');
+      });
     }
   }
 
@@ -175,9 +233,23 @@ export default function ImageEditor({
     
     setIsSaving(true);
     try {
+      // 現在の画像を一時的に非表示
+      if (imgRef.current) {
+        imgRef.current.style.display = 'none';
+      }
+
       const canvas = toCanvas(imgRef.current, completedCrop, scale);
       const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob(blob => resolve(blob));
+        canvas.toBlob(
+          (result) => {
+            // Canvasを明示的に解放
+            canvas.width = 0;
+            canvas.height = 0;
+            resolve(result);
+          },
+          'image/jpeg',
+          0.75
+        );
       });
       
       if (blob) {
@@ -186,6 +258,10 @@ export default function ImageEditor({
     } catch (error) {
       console.error('画像の保存中にエラーが発生しました:', error);
     } finally {
+      // 画像を再表示
+      if (imgRef.current) {
+        imgRef.current.style.display = 'block';
+      }
       setIsSaving(false);
     }
   };
@@ -264,9 +340,12 @@ export default function ImageEditor({
                   transformOrigin: 'center',
                   maxWidth: '100%',
                   transition: 'transform 0.1s',
+                  willChange: 'transform',
+                  display: 'block'
                 }}
                 onLoad={onImageLoad}
                 className="max-w-full"
+                crossOrigin="anonymous"
               />
             </ReactCrop>
           </div>

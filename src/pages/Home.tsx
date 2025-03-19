@@ -158,9 +158,9 @@ export default function Home() {
 
       {/* ヒーローセクション */}
       <section className="relative">
-        <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-16 lg:py-20">
+        <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-8 sm:mt-2 mt-8">
           <div className="max-w-7xl mx-auto text-center space-y-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-8">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-12">
               うちの猫を1ページに
             </h1>
             <div className="flex flex-col sm:flex-row w-full mx-auto mb-6">

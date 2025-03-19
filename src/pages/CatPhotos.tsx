@@ -253,7 +253,7 @@ export default function CatPhotos() {
           />
         ) : (
           <>
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">写真の追加</h2>
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">写真を追加する</h2>
             <form
               onSubmit={handleSubmit(data => {
                 if (!imageFile) {

@@ -66,7 +66,7 @@ export default function UserProfile() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-5xl mx-auto px-2 sm:px-6 lg:px-8">
       {profile && (
         <Helmet>
           <title>{`${profile.name}のプロフィール | CAT LINK`}</title>
@@ -97,7 +97,7 @@ export default function UserProfile() {
         </Helmet>
       )}
 
-      <div className="bg-white rounded-2xl shadow-sm p-8 mb-8">
+      <div className="bg-white rounded-2xl shadow-sm mb-8 p-2">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
           <div>
             <div className="flex items-center gap-4">
@@ -183,7 +183,7 @@ export default function UserProfile() {
       </div>
 
       {isOwnProfile && favoriteCats && favoriteCats.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="bg-white rounded-2xl shadow-sm p-2">
           <h2 className="text-lg font-medium text-gray-800 mb-6 flex items-center">
             いいねした猫ちゃん
           </h2>

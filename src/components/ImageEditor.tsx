@@ -27,23 +27,23 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
   }
 
   try {
-    // 元の画像のスケール比率を計算
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
+    // 表示サイズに対する実際のサイズの比率を計算
+    const displayRatio = image.naturalWidth / image.width;
+    
+    // クロップ座標を実際のサイズに変換
+    const actualCrop = {
+      x: Math.floor(crop.x * displayRatio),
+      y: Math.floor(crop.y * displayRatio),
+      width: Math.floor(crop.width * displayRatio),
+      height: Math.floor(crop.height * displayRatio)
+    };
 
-    // 元の画像の解像度を維持するようにキャンバスサイズを設定
-    canvas.width = Math.floor(crop.width * scaleX);
-    canvas.height = Math.floor(crop.height * scaleY);
-
-    // ディスプレイのピクセル比を考慮
-    const pixelRatio = window.devicePixelRatio || 1;
-    if (pixelRatio > 1) {
-      canvas.width *= pixelRatio;
-      canvas.height *= pixelRatio;
-    }
+    // キャンバスサイズを設定
+    canvas.width = actualCrop.width;
+    canvas.height = actualCrop.height;
 
     // メモリ使用量を抑えるため、最大サイズを制限
-    const MAX_SIZE = 4096; // モバイルデバイスでの制限を考慮
+    const MAX_SIZE = 4096;
     if (canvas.width > MAX_SIZE || canvas.height > MAX_SIZE) {
       const ratio = Math.min(MAX_SIZE / canvas.width, MAX_SIZE / canvas.height);
       canvas.width = Math.floor(canvas.width * ratio);
@@ -54,19 +54,13 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 元の画像のクロップ領域の実際のピクセル座標を計算
-    const sourceX = crop.x * scaleX;
-    const sourceY = crop.y * scaleY;
-    const sourceWidth = crop.width * scaleX;
-    const sourceHeight = crop.height * scaleY;
-
-    // 画像を描画（スケールファクターで調整）
+    // 画像を描画
     ctx.drawImage(
       image,
-      sourceX / scale,
-      sourceY / scale,
-      sourceWidth / scale,
-      sourceHeight / scale,
+      actualCrop.x,
+      actualCrop.y,
+      actualCrop.width,
+      actualCrop.height,
       0,
       0,
       canvas.width,
@@ -155,12 +149,31 @@ export default function ImageEditor({
   // 画像がロードされたときの処理
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     if (imgRef.current) {
-      const { width, height } = e.currentTarget;
+      const { naturalWidth, naturalHeight } = e.currentTarget;
       
       // Safari/iOSでの画像の安定性を向上
       e.currentTarget.style.display = 'block';
       e.currentTarget.decode().then(() => {
-        setCrop(centerAspectCrop(width, height));
+        // 画像の初期表示サイズを設定
+        const maxDisplayWidth = 752; // 表示領域の最大幅
+        const displayScale = maxDisplayWidth / naturalWidth;
+        const displayWidth = Math.floor(naturalWidth * displayScale);
+        const displayHeight = Math.floor(naturalHeight * displayScale);
+
+        // imgRef.currentのスタイルを更新
+        if (imgRef.current) {
+          imgRef.current.width = displayWidth;
+          imgRef.current.height = displayHeight;
+        }
+
+        // 初期クロップ範囲を設定
+        setCrop({
+          unit: 'px',
+          x: 0,
+          y: 0,
+          width: displayWidth,
+          height: displayHeight
+        });
         setIsImageLoaded(true);
       }).catch(() => {
         console.error('画像のデコードに失敗しました');
@@ -330,6 +343,7 @@ export default function ImageEditor({
               onChange={c => setCrop(c)}
               onComplete={c => setCompletedCrop(c)}
               disabled={isSaving}
+              keepSelection
             >
               <img
                 ref={imgRef}

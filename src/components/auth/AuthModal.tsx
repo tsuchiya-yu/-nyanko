@@ -1,10 +1,11 @@
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useSessionRefresh } from '../../hooks/useSessionRefresh';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import { useAuthModalStore } from '../Layout';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -16,12 +17,20 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
   useSessionRefresh();
   const navigate = useNavigate();
   const { setUser, fetchProfile } = useAuthStore();
-  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const { mode } = useAuthModalStore();
+  const [localMode, setLocalMode] = useState<'login' | 'register'>(mode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // モーダルが開かれるたびにグローバルなモード設定を適用
+  useEffect(() => {
+    if (isOpen) {
+      setLocalMode(mode);
+    }
+  }, [isOpen, mode]);
 
   const handleSuccess = async (userId: string) => {
     await fetchProfile(userId);
@@ -29,7 +38,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     if (onSuccess) {
       onSuccess();
     }
-    console.log(mode === 'login' ? 'ログインしました' : 'アカウントを作成しました');
+    console.log(localMode === 'login' ? 'ログインしました' : 'アカウントを作成しました');
     navigate(`/profile/${userId}`);
   };
 
@@ -39,7 +48,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     setError(null);
 
     try {
-      if (mode === 'register') {
+      if (localMode === 'register') {
         const { data: authData, error: authError } = await supabase.auth.signUp({
           email,
           password,
@@ -89,29 +98,29 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
         <div className="p-8">
           <h2 className="text-center font-medium text-2xl text-gray-800 mb-6">
-            {mode === 'login' ? 'おかえりなさい' : '新しい飼い主さん、ようこそ'}
+            {localMode === 'login' ? 'おかえりなさい' : '新しい飼い主さん！ようこそ'}
           </h2>
 
           <div className="flex space-x-2 mb-8">
             <button
               className={`flex-1 py-2 text-center rounded-lg text-sm font-medium transition-colors
                 ${
-                  mode === 'login'
-                    ? 'bg-pink-50 text-pink-600'
+                  localMode === 'login'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
                 }`}
-              onClick={() => setMode('login')}
+              onClick={() => setLocalMode('login')}
             >
               ログイン
             </button>
             <button
               className={`flex-1 py-2 text-center rounded-lg text-sm font-medium transition-colors
                 ${
-                  mode === 'register'
-                    ? 'bg-pink-50 text-pink-600'
+                  localMode === 'register'
+                    ? 'bg-gray-800 text-white'
                     : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
                 }`}
-              onClick={() => setMode('register')}
+              onClick={() => setLocalMode('register')}
             >
               新規登録
             </button>
@@ -122,12 +131,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           )}
 
           <form
-            id={mode === 'login' ? 'login-form' : 'register-form'}
+            id={localMode === 'login' ? 'login-form' : 'register-form'}
             onSubmit={handleSubmit}
             className="space-y-5"
             autoComplete="on"
           >
-            {mode === 'register' && (
+            {localMode === 'register' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
                   飼い主さんのニックネーム
@@ -138,7 +147,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   value={name}
                   onChange={e => setName(e.target.value)}
                   className="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-                    focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-400 transition-all"
+                    focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all"
                   placeholder="猫田 太郎"
                   autoComplete="name"
                 />
@@ -153,7 +162,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-                  focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-400 transition-all"
+                  focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all"
                 placeholder="example@email.com"
                 autoComplete="email"
                 name="email"
@@ -168,9 +177,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-                  focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-400 transition-all"
+                  focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all"
                 placeholder="••••••••"
-                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                autoComplete={localMode === 'login' ? 'current-password' : 'new-password'}
                 name="password"
               />
             </div>
@@ -179,11 +188,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               type="submit"
               disabled={loading}
               className="w-full py-3 px-4 mt-4 rounded-xl
-                text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 font-medium
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
+                text-white bg-gray-800 hover:bg-gray-900 font-medium
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700
                 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? '処理中...' : mode === 'login' ? 'ログイン' : 'アカウントを作成'}
+              {loading ? '処理中...' : localMode === 'login' ? 'ログイン' : 'アカウントを作成'}
             </button>
           </form>
         </div>

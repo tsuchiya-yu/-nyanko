@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-import AuthModal from '../components/auth/AuthModal';
 import CatCard from '../components/CatCard';
+import { handleAuthAction } from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 
@@ -26,18 +26,15 @@ export default function Home() {
     },
   });
 
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleAuthAction = () => {
-    if (user) {
-      // ユーザーがログイン済みの場合はUserProfileページに遷移
-      navigate(`/profile/${user.id}`);
-    } else {
-      // 未ログインの場合は認証モーダルを表示
-      setIsAuthModalOpen(true);
-    }
+  const handleStartAction = () => {
+    handleAuthAction(user, navigate, 'register');
+  };
+
+  const handleTryAIAction = () => {
+    handleAuthAction(user, navigate, 'register');
   };
 
   return (
@@ -249,7 +246,7 @@ export default function Home() {
 
       <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[0px]">
         <button
-          onClick={handleAuthAction}
+          onClick={handleStartAction}
           className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
         >
           今すぐ始める
@@ -278,6 +275,15 @@ export default function Home() {
             もっと見る
           </Link>
         </section> */}
+      </section>
+
+      <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[40px]">
+        <button
+          onClick={handleStartAction}
+          className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+        >
+          ページをつくる
+        </button>
       </section>
 
       {/* 3ステップ */}
@@ -344,7 +350,7 @@ export default function Home() {
         </div>
         <div className="text-center mt-8">
           <button
-            onClick={handleAuthAction}
+            onClick={handleStartAction}
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
             無料で始める
@@ -460,7 +466,7 @@ export default function Home() {
         </div>
         <div className="text-center mt-8">
           <button
-            onClick={handleAuthAction}
+            onClick={handleTryAIAction}
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
             「ねこのひとこと」を試してみる
@@ -531,7 +537,7 @@ export default function Home() {
         </div>
         <div className="text-center mt-8">
           <button
-            onClick={handleAuthAction}
+            onClick={handleStartAction}
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
             今すぐ始める
@@ -580,8 +586,6 @@ export default function Home() {
           </details>
         </div>
       </section>
-
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );
 }

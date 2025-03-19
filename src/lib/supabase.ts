@@ -16,4 +16,11 @@ try {
   throw new Error('Invalid Supabase URL');
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    storageKey: 'cat-profile-auth',
+    storage: window.localStorage
+  }
+});

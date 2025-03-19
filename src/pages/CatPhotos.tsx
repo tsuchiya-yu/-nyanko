@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { X } from 'lucide-react';
+import { X, ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import ImageEditor from '../components/ImageEditor';
@@ -44,7 +44,7 @@ export default function CatPhotos() {
     queryFn: async () => {
       if (!id) throw new Error('猫IDが見つかりません');
 
-      const { data, error } = await supabase.from('cats').select('name').eq('id', id).single();
+      const { data, error } = await supabase.from('cats').select('name, owner_id').eq('id', id).single();
 
       if (error) throw error;
       return data;
@@ -240,7 +240,13 @@ export default function CatPhotos() {
         </Helmet>
       )}
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+        <Link
+          to={`/profile/${cat?.owner_id}`}
+          className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
         {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
       </h1>
 

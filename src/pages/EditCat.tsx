@@ -256,7 +256,7 @@ export default function EditCat() {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
           <Link
-            to={`/cats/${id}`}
+            to={`/profile/${cat.owner_id}`}
             className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />

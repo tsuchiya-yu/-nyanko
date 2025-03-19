@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
+import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import ImageEditor from '../components/ImageEditor';
@@ -174,7 +175,15 @@ export default function RegisterCat() {
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">新しい猫ちゃんを登録</h1>
+        <div className="flex items-center mb-6">
+          <Link
+            to={`/profile/${user?.id}`}
+            className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-800">新しい猫ちゃんを登録</h1>
+        </div>
 
         {showImageEditor && editingImage ? (
           <ImageEditor

@@ -1,5 +1,6 @@
 import { Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 import OptimizedImage from './OptimizedImage';
 import { useFavorites } from '../hooks/useFavorites';
@@ -10,17 +11,23 @@ import type { Cat } from '../types';
 
 interface CatCardProps {
   cat: Cat;
+  actions?: ReactNode;
 }
 
-export default function CatCard({ cat }: CatCardProps) {
+export default function CatCard({ cat, actions }: CatCardProps) {
   const age = calculateAge(cat.birthdate);
   const { user } = useAuthStore();
   const { isFavorite, toggleFavorite } = useFavorites();
   const isFav = isFavorite(cat.id);
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/cats/${cat.id}`);
+  };
 
   return (
-    <Link to={`/cats/${cat.id}`} className="block">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:scale-[1.02]">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:scale-[1.02]">
+      <div onClick={handleCardClick} className="cursor-pointer">
         <div className="relative h-48">
           <OptimizedImage
             src={cat.image_url}
@@ -56,6 +63,11 @@ export default function CatCard({ cat }: CatCardProps) {
           <p className="text-sm text-gray-700 mt-2 line-clamp-2">{cat.description}</p>
         </div>
       </div>
-    </Link>
+      {actions && (
+        <div className="px-4 pb-4 pt-0 flex gap-2 justify-between">
+          {actions}
+        </div>
+      )}
+    </div>
   );
 }

@@ -59,14 +59,14 @@ export default function UserProfile() {
 
   if (profileLoading || catsLoading || favoritesLoading) {
     return (
-      <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mx-auto"></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       {profile && (
         <Helmet>
           <title>{`${profile.name}のプロフィール | CAT LINK`}</title>
@@ -97,98 +97,124 @@ export default function UserProfile() {
         </Helmet>
       )}
 
-      <div className="space-y-8">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800">
-            {profile?.name}さん、{getGreetingMessage()}
-          </h1>
-        </div>
-        <div className="">
+      <div className="bg-white rounded-2xl shadow-sm p-8 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+          <div>
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">
+                  {profile?.name || '飼い主'} さん
+                </h1>
+                <p className="text-gray-500 mt-1">{getGreetingMessage()}</p>
+              </div>
+            </div>
+          </div>
+
           {isOwnProfile && (
-            <div className="inline-flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-wrap gap-3">
               <Link
                 to="/register-cat"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="flex items-center px-5 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 font-medium text-sm"
               >
-                <Plus className="h-5 w-5 mr-2 animate-pulse" />
+                <Plus className="h-4 w-4 mr-2" />
                 新しい猫ちゃんを登録
               </Link>
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="flex items-center px-5 py-2.5 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 font-medium text-sm"
               >
-                <Settings className="h-5 w-5 mr-2" />
+                <Settings className="h-4 w-4 mr-2" />
                 アカウント設定
               </button>
             </div>
           )}
         </div>
 
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-800">登録している猫ちゃん</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cats?.map(cat => (
-              <div key={cat.id} className="relative">
-                <CatCard cat={cat} />
-                {isOwnProfile && (
-                  <>
-                    <Link
-                      to={`/cats/${cat.id}/photos`}
-                      className="absolute top-3 left-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
-                    >
-                      <Image className="h-5 w-5 text-pink-500" />
-                    </Link>
-                    <Link
-                      to={`/cats/${cat.id}/edit`}
-                      className="absolute top-3 left-14 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
-                    >
-                      <Edit className="h-5 w-5 text-pink-500" />
-                    </Link>
-                  </>
-                )}
+        <div className="border-t border-gray-100 pt-8">
+          <h2 className="text-lg font-medium text-gray-800 mb-6 flex items-center">
+            登録している猫ちゃん
+          </h2>
+          
+          {cats?.length === 0 ? (
+            <div className="bg-gray-50 rounded-xl p-8 text-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Image className="h-6 w-6 text-gray-400" />
               </div>
-            ))}
-          </div>
-          {cats?.length === 0 && (
-            <div className="text-center py-12 bg-white rounded-lg shadow-md">
-              <p className="text-gray-600">まだ猫ちゃんが登録されていません。</p>
+              <p className="text-gray-500 text-sm">まだ猫ちゃんが登録されていません。</p>
+              {isOwnProfile && (
+                <Link
+                  to="/register-cat"
+                  className="inline-block mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 text-sm font-medium"
+                >
+                  猫ちゃんを登録する
+                </Link>
+              )}
             </div>
-          )}
-        </div>
-
-        {isOwnProfile && favoriteCats && favoriteCats.length > 0 && (
-          <div className="space-y-6 mt-12">
-            <div className="flex items-center">
-              <Heart className="h-5 w-5 text-pink-500 mr-2 fill-pink-500" />
-              <h2 className="text-xl font-semibold text-gray-800">いいねした猫ちゃん</h2>
-            </div>
+          ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favoriteCats.map(cat => (
-                <div key={cat.id} className="relative">
-                  <CatCard cat={cat} />
+              {cats?.map(cat => (
+                <div key={cat.id} className="group relative">
+                  <CatCard
+                    cat={cat}
+                    actions={
+                      isOwnProfile && (
+                        <>
+                          <Link
+                            to={`/cats/${cat.id}/photos`}
+                            className="flex-1 px-3 py-2 bg-gray-800 text-white rounded-lg hover:bg-black transition-all text-sm font-medium text-center"
+                          >
+                            写真を追加
+                          </Link>
+                          <Link
+                            to={`/cats/${cat.id}/edit`}
+                            className="flex-1 px-3 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
+                          >
+                            編集する
+                          </Link>
+                        </>
+                      )
+                    }
+                  />
                 </div>
               ))}
             </div>
+          )}
+        </div>
+      </div>
+
+      {isOwnProfile && favoriteCats && favoriteCats.length > 0 && (
+        <div className="bg-white rounded-2xl shadow-sm p-8">
+          <h2 className="text-lg font-medium text-gray-800 mb-6 flex items-center">
+            いいねした猫ちゃん
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {favoriteCats.map(cat => (
+              <div key={cat.id} className="relative">
+                <CatCard cat={cat} />
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {isOwnProfile && (
-          <UserSettingsModal
-            isOpen={isSettingsOpen}
-            onClose={() => setIsSettingsOpen(false)}
-            profile={profile}
-          />
-        )}
-
-        <div className="w-full text-right">
+      {isOwnProfile && (
+        <UserSettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          profile={profile}
+        />
+      )}
+      
+      {isOwnProfile && (
+        <div className="mt-8 text-right">
           <button
             onClick={handleSignOut}
-            className="px-4 py-2 rounded transition-colors mb-2 text-gray-400"
+            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
           >
             ログアウト
           </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }

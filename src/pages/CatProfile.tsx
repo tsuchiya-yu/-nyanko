@@ -104,6 +104,7 @@ export default function CatProfile() {
     data: cat,
     isLoading,
     error,
+    isError
   } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
@@ -128,11 +129,14 @@ export default function CatProfile() {
 
         return data as CatWithOwner;
       } catch (error) {
+        console.error('Error fetching cat data:', error);
         await handleApiError(error as Error);
         throw error;
       }
     },
-    retry: false,
+    retry: 3,
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
+    staleTime: 1000 * 60 * 0.5, // 30秒はキャッシュを使用
   });
 
   const { data: photos } = useQuery({
@@ -213,21 +217,15 @@ export default function CatProfile() {
 
   if (isLoading) {
     return (
-      <div
-        className="text-center py-12 min-h-[calc(100vh-200px)] flex items-center justify-center"
-        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 calc(100vh - 200px)' }}
-      >
+      <div className="text-center py-12 min-h-[calc(100vh-200px)] flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
       </div>
     );
   }
 
-  if (error || !cat) {
+  if (isError || !cat) {
     return (
-      <div
-        className="max-w-4xl mx-auto py-12 min-h-[calc(100vh-200px)]"
-        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 calc(100vh - 200px)' }}
-      >
+      <div className="max-w-4xl mx-auto py-12 min-h-[calc(100vh-200px)]">
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">
             {error instanceof Error ? error.message : '猫の情報を取得できませんでした'}
@@ -241,7 +239,7 @@ export default function CatProfile() {
     );
   }
 
-  const age = calculateAge(cat.birthdate);
+  const age = cat ? calculateAge(cat.birthdate) : null;
 
   return (
     <div className="max-w-[480px] mx-auto space-y-6 relative min-h-screen">
@@ -249,7 +247,7 @@ export default function CatProfile() {
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
           name="description"
-          content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
+          content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
         />
         <meta
           name="keywords"
@@ -264,7 +262,7 @@ export default function CatProfile() {
         />
         <meta
           property="og:description"
-          content={`${cat.name}は${age.toString()}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
+          content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
         <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
@@ -283,7 +281,7 @@ export default function CatProfile() {
               {
                 '@type': 'PropertyValue',
                 name: '年齢',
-                value: age.toString(),
+                value: age?.toString(),
               },
               {
                 '@type': 'PropertyValue',
@@ -380,7 +378,7 @@ export default function CatProfile() {
           <div className="pt-2.5 text-gray-700">
             <h1 className="text-base font-bold pb-0">{cat.name}</h1>
             <p className="text-xs">
-              {cat.breed} | {age.toString()}
+              {cat.breed} | {age?.toString()}
               {cat.is_birthdate_estimated && ' (推定)'}{' '}
               {cat.gender !== null ? ' | ' + cat.gender : ''}
             </p>

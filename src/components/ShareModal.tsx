@@ -2,6 +2,7 @@ import { X, Check, Copy, Instagram, Twitter, MessageCircle } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 
 import { useAuthStore } from '../store/authStore';
 import AuthModal from './auth/AuthModal';
@@ -78,12 +79,15 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-      style={{ marginTop: '0' }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[9999]"
+      onClick={onClose}
     >
-      <div className="bg-white rounded-2xl w-full max-w-md relative">
+      <div 
+        className="bg-white rounded-2xl w-full max-w-md relative"
+        onClick={e => e.stopPropagation()}
+      >
         <button
           onClick={onClose}
           className="absolute right-[-10px] top-[-30px] text-gray-400 hover:text-gray-600"
@@ -143,7 +147,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
           <p className="text-sm text-gray-600 mb-2">自分の猫ちゃんのページをつくる</p>
           <button
             onClick={handleRegister}
-            className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="w-full py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-500 transition-colors"
           >
             登録する
           </button>
@@ -159,6 +163,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
           }
         }}
       />
-    </div>
+    </div>,
+    document.body
   );
 }

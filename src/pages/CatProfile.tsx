@@ -3,6 +3,7 @@ import { Share2, ArrowLeft, Instagram, Twitter, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import OptimizedImage from '../components/OptimizedImage';
@@ -49,19 +50,18 @@ interface ModalProps {
 const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/70 z-50 p-4 overflow-y-auto"
-      style={{ marginTop: '0' }}
+      className="fixed inset-0 flex items-center justify-center bg-black/70 z-[9999] p-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-0 max-w-md mx-auto relative max-h-[90vh] overflow-visible"
+        className="bg-white rounded-lg p-0 w-full max-w-2xl mx-auto relative max-h-[90vh] overflow-visible"
         onClick={e => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-[-16px] right-[-16px] bg-white rounded-full w-8 h-8 flex items-center justify-center text-gray-600 z-50 shadow-md border border-gray-200"
+          className="absolute top-[-16px] right-[-16px] bg-white rounded-full w-8 h-8 flex items-center justify-center text-gray-600 z-50 shadow-md border border-gray-200 hover:bg-gray-50"
           aria-label="閉じる"
         >
           ×
@@ -86,7 +86,8 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

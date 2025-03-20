@@ -221,8 +221,19 @@ export default function EditCat() {
       }
       
       // 全体的な猫リストも無効化
-      queryClient.invalidateQueries({ queryKey: ['cats'] });
+      queryClient.invalidateQueries({ 
+        queryKey: ['cats'],
+        refetchType: 'all'
+      });
       
+      // すべてのクエリキャッシュを無効化し、強制的に最新データを取得
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ['cat', id] });
+        if (cat && cat.owner_id) {
+          queryClient.refetchQueries({ queryKey: ['user-cats', cat.owner_id] });
+        }
+      }, 100);
+
       alert('猫ちゃんの情報を更新しました');
       navigate(`/cats/${id}`);
     },

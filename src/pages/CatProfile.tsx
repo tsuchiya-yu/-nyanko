@@ -376,7 +376,7 @@ export default function CatProfile() {
             </button>
           </div>
           <div className="pt-2.5 text-gray-700">
-            <h1 className="text-base font-bold pb-0">{cat.name}</h1>
+            <h1 className="text-lg font-bold pb-0 mb-1">{cat.name}</h1>
             <p className="text-xs">
               {cat.breed} | {age?.toString()}
               {cat.is_birthdate_estimated && ' (推定)'}{' '}
@@ -396,7 +396,7 @@ export default function CatProfile() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-gray-500 hover:text-gray-600"
                 >
-                  <Instagram className="h-8 w-8 mr-2" />
+                  <Instagram className="h-6 w-6 mr-2" />
                 </a>
               )}
               {cat.x_url && (
@@ -406,7 +406,7 @@ export default function CatProfile() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-gray-500 hover:text-gray-600"
                 >
-                  <Twitter className="h-8 w-8 mr-2" />
+                  <Twitter className="h-6 w-6 mr-2" />
                 </a>
               )}
               {cat.homepage_url && (
@@ -418,7 +418,7 @@ export default function CatProfile() {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 mr-2"
+                    className="h-6 w-6 mr-2"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -439,7 +439,7 @@ export default function CatProfile() {
           </div>
 
           {photos && photos.length > 0 && (
-            <div className="mt-4">
+            <div className="">
               <div className="flex justify-between items-center mb-4"></div>
               <div className="grid grid-cols-3 min-h-[150px]" style={{ gap: '1px' }}>
                 {photos.map(photo => (

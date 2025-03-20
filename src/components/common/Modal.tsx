@@ -1,6 +1,6 @@
+import { X } from 'lucide-react';
 import { ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -45,9 +45,7 @@ export default function Modal({
 
   return createPortal(
     <div className="fixed inset-0 bg-black/50 z-[9999] p-4 overflow-y-auto">
-      <div 
-        className="min-h-full flex items-center justify-center"
-      >
+      <div className="min-h-full flex items-center justify-center">
         <div className="bg-white rounded-2xl w-full max-w-md shadow-lg z-[10000] relative">
           {closeButtonPosition === 'top-right' && (
             <button

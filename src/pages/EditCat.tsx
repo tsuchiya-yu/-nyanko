@@ -199,10 +199,30 @@ export default function EditCat() {
         console.error('Update error:', error); // デバッグログ
         throw error;
       }
+      
+      // 更新されたデータを返す（キャッシュ更新に使用）
+      return {
+        ...data,
+        id
+      };
     },
-    onSuccess: () => {
-      // キャッシュを無効化して新しいデータを取得できるようにする
+    onSuccess: (updatedData) => {
+      // 個別の猫情報キャッシュを直接更新
+      queryClient.setQueryData(['cat', id], (oldData: any) => {
+        return { ...oldData, ...updatedData };
+      });
+      
+      // 関連するすべてのキャッシュを無効化
       queryClient.invalidateQueries({ queryKey: ['cat', id] });
+      
+      // プロフィールページの猫一覧キャッシュを無効化
+      if (cat && cat.owner_id) {
+        queryClient.invalidateQueries({ queryKey: ['user-cats', cat.owner_id] });
+      }
+      
+      // 全体的な猫リストも無効化
+      queryClient.invalidateQueries({ queryKey: ['cats'] });
+      
       alert('猫ちゃんの情報を更新しました');
       navigate(`/cats/${id}`);
     },

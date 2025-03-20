@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -38,6 +38,7 @@ function sanitizeFileName(fileName: string): string {
 export default function RegisterCat() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -141,6 +142,9 @@ export default function RegisterCat() {
       });
 
       if (error) throw error;
+
+      // ユーザーの猫リストキャッシュを無効化
+      await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
       // 登録成功
       navigate(`/profile/${user?.id}`);

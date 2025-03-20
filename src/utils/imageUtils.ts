@@ -1,6 +1,8 @@
 /**
  * 画像のリサイズタイプ
  */
+/* global Image */
+
 export type ResizeType = 'fill' | 'contain' | 'cover';
 
 /**

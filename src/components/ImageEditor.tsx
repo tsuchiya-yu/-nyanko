@@ -27,15 +27,20 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
   }
 
   try {
-    // 表示サイズに対する実際のサイズの比率を計算
-    const displayRatio = image.naturalWidth / image.width;
+    // 画像の実際の表示サイズを取得（width/heightプロパティが設定されていない場合はclientWidth/Heightを使用）
+    const displayWidth = image.width || image.clientWidth;
+    const displayHeight = image.height || image.clientHeight;
     
-    // クロップ座標を実際のサイズに変換
+    // 実際の画像サイズと表示サイズの比率を計算
+    const widthRatio = image.naturalWidth / displayWidth;
+    const heightRatio = image.naturalHeight / displayHeight;
+
+    // クロップ座標を実際の画像サイズに変換
     const actualCrop = {
-      x: Math.floor(crop.x * displayRatio),
-      y: Math.floor(crop.y * displayRatio),
-      width: Math.floor(crop.width * displayRatio),
-      height: Math.floor(crop.height * displayRatio)
+      x: Math.round(crop.x * widthRatio),
+      y: Math.round(crop.y * heightRatio),
+      width: Math.round(crop.width * widthRatio),
+      height: Math.round(crop.height * heightRatio)
     };
 
     // キャンバスサイズを設定
@@ -79,8 +84,21 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
 }
 
 // 初期のクロップ状態を作成する関数
-function centerAspectCrop(mediaWidth: number, mediaHeight: number): Crop {
-  // アスペクト比を指定せず、自由なクロップを許可
+function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number | undefined): Crop {
+  // アスペクト比が指定されている場合はそれに合わせる
+  if (aspect) {
+    return makeAspectCrop(
+      {
+        unit: '%',
+        width: 90,
+      },
+      aspect,
+    mediaWidth,
+    mediaHeight
+  );
+  }
+  
+  // アスペクト比が指定されていない場合は自由なクロップを許可
   return {
     unit: '%' as const,
     x: 5,
@@ -94,6 +112,7 @@ export default function ImageEditor({
   imageFile,
   onSave,
   onCancel,
+  aspectRatio,
 }: ImageEditorProps) {
   const [imgSrc, setImgSrc] = useState('');
   const imgRef = useRef<HTMLImageElement>(null);
@@ -136,12 +155,12 @@ export default function ImageEditor({
           reader.readAsDataURL(imageFile);
         }, 100);
       } else {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
           const result = reader.result?.toString() || '';
           setImgSrc(result);
-        });
-        reader.readAsDataURL(imageFile);
+      });
+      reader.readAsDataURL(imageFile);
       }
     }
   }, [imageFile]);
@@ -155,25 +174,71 @@ export default function ImageEditor({
       e.currentTarget.style.display = 'block';
       e.currentTarget.decode().then(() => {
         // 画像の初期表示サイズを設定
-        const maxDisplayWidth = 752; // 表示領域の最大幅
+        // コンテナの実際の幅に基づいて計算
+        const container = cropAreaRef.current;
+        const maxDisplayWidth = container ? container.clientWidth : 528;
         const displayScale = maxDisplayWidth / naturalWidth;
         const displayWidth = Math.floor(naturalWidth * displayScale);
         const displayHeight = Math.floor(naturalHeight * displayScale);
 
         // imgRef.currentのスタイルを更新
         if (imgRef.current) {
+          // 重要: widthとheightプロパティを実際の表示サイズに設定
           imgRef.current.width = displayWidth;
           imgRef.current.height = displayHeight;
+          // 明示的にスタイルも設定
+          imgRef.current.style.width = `${displayWidth}px`;
+          imgRef.current.style.height = `${displayHeight}px`;
         }
 
-        // 初期クロップ範囲を設定
-        setCrop({
-          unit: 'px',
-          x: 0,
-          y: 0,
-          width: displayWidth,
-          height: displayHeight
-        });
+        // アスペクト比に基づいて初期クロップ範囲を設定
+        if (aspectRatio) {
+          // アスペクト比に基づいてクロップを調整
+          const aspectCrop = makeAspectCrop(
+            {
+              unit: '%',
+              width: 90, // 少し余白を持たせる
+            },
+            aspectRatio,
+            displayWidth,
+            displayHeight
+          );
+          
+          // センタリング
+          const centeredCrop = centerCrop(aspectCrop, displayWidth, displayHeight);
+          
+          setCrop(centeredCrop);
+          
+          // ピクセル単位のクロップも設定
+          if (centeredCrop.width && centeredCrop.height) {
+            const pixelCrop: PixelCrop = {
+              unit: 'px',
+              x: Math.round(displayWidth * (centeredCrop.x / 100)),
+              y: Math.round(displayHeight * (centeredCrop.y / 100)),
+              width: Math.round(displayWidth * (centeredCrop.width / 100)),
+              height: Math.round(displayHeight * (centeredCrop.height / 100))
+            };
+            setCompletedCrop(pixelCrop);
+          }
+        } else {
+          // アスペクト比の制約がない場合は全体を選択
+          setCrop({
+            unit: 'px',
+            x: 0,
+            y: 0,
+            width: displayWidth,
+            height: displayHeight
+          });
+          
+          setCompletedCrop({
+            unit: 'px',
+            x: 0,
+            y: 0,
+            width: displayWidth,
+            height: displayHeight
+          });
+        }
+        
         setIsImageLoaded(true);
       }).catch(() => {
         console.error('画像のデコードに失敗しました');
@@ -261,12 +326,14 @@ export default function ImageEditor({
             resolve(result);
           },
           'image/jpeg',
-          0.75
+          0.85 // 高画質設定
         );
       });
       
       if (blob) {
         await onSave(blob);
+      } else {
+        throw new Error('画像の生成に失敗しました');
       }
     } catch (error) {
       console.error('画像の保存中にエラーが発生しました:', error);
@@ -340,10 +407,12 @@ export default function ImageEditor({
           >
             <ReactCrop
               crop={crop}
-              onChange={c => setCrop(c)}
-              onComplete={c => setCompletedCrop(c)}
+              onChange={(c) => setCrop(c)}
+              onComplete={(c) => setCompletedCrop(c)}
               disabled={isSaving}
               keepSelection
+              aspect={aspectRatio}
+              ruleOfThirds
             >
               <img
                 ref={imgRef}

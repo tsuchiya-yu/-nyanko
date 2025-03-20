@@ -1,8 +1,8 @@
 import { X, Check, Copy, Instagram, Twitter, MessageCircle } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '../store/authStore';
 import AuthModal from './auth/AuthModal';
@@ -84,7 +84,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
       className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[9999]"
       onClick={onClose}
     >
-      <div 
+      <div
         className="bg-white rounded-2xl w-full max-w-md relative"
         onClick={e => e.stopPropagation()}
       >

@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Share2, ArrowLeft, Instagram, Twitter, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
-import { createPortal } from 'react-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import OptimizedImage from '../components/OptimizedImage';

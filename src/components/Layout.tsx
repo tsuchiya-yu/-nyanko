@@ -39,17 +39,32 @@ export function handleAuthAction(user: User | null, navigate: NavigateFunction, 
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { isOpen: isAuthModalOpen, setIsOpen: setIsAuthModalOpen } = useAuthModalStore();
+  const { isOpen: isAuthModalOpen, setIsOpen: setIsAuthModalOpen, mode: authMode, setMode: setAuthMode } = useAuthModalStore();
   const { user } = useAuthStore();
   const { isHeaderFooterVisible } = useHeaderFooter();
   const navigate = useNavigate();
 
+  // コンポーネントが初期化されるときに、モーダルが閉じた状態を確保する
+  useEffect(() => {
+    setIsAuthModalOpen(false);
+  }, []);
+
   const handleLoginAction = () => {
-    handleAuthAction(user, navigate, 'login');
+    if (user) {
+      navigate(`/profile/${user.id}`);
+    } else {
+      setAuthMode('login');
+      setIsAuthModalOpen(true);
+    }
   };
 
   const handleRegisterAction = () => {
-    handleAuthAction(user, navigate, 'register');
+    if (user) {
+      navigate(`/profile/${user.id}`);
+    } else {
+      setAuthMode('register');
+      setIsAuthModalOpen(true);
+    }
   };
 
   return (

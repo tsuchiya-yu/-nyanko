@@ -56,11 +56,11 @@ export default function CatCard({ cat, actions }: CatCardProps) {
           )}
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-800">{cat.name}</h3>
+          <h3 className="text-lg font-semibold text-gray-800 truncate">{cat.name}</h3>
           <p className="text-sm text-gray-600 mt-1">
             {cat.breed} | {age.toString()}
           </p>
-          <p className="text-sm text-gray-700 mt-2 line-clamp-2">{cat.description}</p>
+          <p className="text-sm text-gray-700 mt-2 line-clamp-2 min-h-[2.5rem]">{cat.description}</p>
         </div>
       </div>
       {actions && (

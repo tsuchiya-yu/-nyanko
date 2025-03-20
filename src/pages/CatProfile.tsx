@@ -104,7 +104,7 @@ export default function CatProfile() {
     data: cat,
     isLoading,
     error,
-    isError
+    isError,
   } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {

@@ -44,7 +44,11 @@ export default function CatPhotos() {
     queryFn: async () => {
       if (!id) throw new Error('猫IDが見つかりません');
 
-      const { data, error } = await supabase.from('cats').select('name, owner_id').eq('id', id).single();
+      const { data, error } = await supabase
+        .from('cats')
+        .select('name, owner_id')
+        .eq('id', id)
+        .single();
 
       if (error) throw error;
       return data;
@@ -97,7 +101,7 @@ export default function CatPhotos() {
 
       // 画像をアップロード前に最適化
       const optimizedFile = await optimizeImageForUpload(editedFile);
-      
+
       setImageFile(optimizedFile);
       setShowImageEditor(false);
 
@@ -115,7 +119,7 @@ export default function CatPhotos() {
       });
       setImageFile(editedFile);
       setShowImageEditor(false);
-      
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);

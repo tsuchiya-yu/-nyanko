@@ -1,6 +1,6 @@
+import { User } from '@supabase/supabase-js';
 import { useState, type ReactNode, useEffect } from 'react';
 import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
-import { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 
 import { useAuthStore } from '../store/authStore';
@@ -15,18 +15,22 @@ interface AuthModalStore {
   setMode: (mode: 'login' | 'register') => void;
 }
 
-export const useAuthModalStore = create<AuthModalStore>((set) => ({
+export const useAuthModalStore = create<AuthModalStore>(set => ({
   isOpen: false,
   mode: 'login',
-  setIsOpen: (isOpen) => set({ isOpen }),
-  setMode: (mode) => set({ mode }),
+  setIsOpen: isOpen => set({ isOpen }),
+  setMode: mode => set({ mode }),
 }));
 
 interface LayoutProps {
   children: ReactNode;
 }
 
-export function handleAuthAction(user: User | null, navigate: NavigateFunction, mode: 'login' | 'register' = 'login') {
+export function handleAuthAction(
+  user: User | null,
+  navigate: NavigateFunction,
+  mode: 'login' | 'register' = 'login'
+) {
   if (user) {
     // ユーザーがログイン済みの場合はUserProfileページに遷移
     navigate(`/profile/${user.id}`);
@@ -39,7 +43,12 @@ export function handleAuthAction(user: User | null, navigate: NavigateFunction, 
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { isOpen: isAuthModalOpen, setIsOpen: setIsAuthModalOpen, mode: authMode, setMode: setAuthMode } = useAuthModalStore();
+  const {
+    isOpen: isAuthModalOpen,
+    setIsOpen: setIsAuthModalOpen,
+    mode: authMode,
+    setMode: setAuthMode,
+  } = useAuthModalStore();
   const { user } = useAuthStore();
   const { isHeaderFooterVisible } = useHeaderFooter();
   const navigate = useNavigate();

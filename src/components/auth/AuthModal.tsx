@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Modal from '../common/Modal';
 import { useSessionRefresh } from '../../hooks/useSessionRefresh';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import Modal from '../common/Modal';
 import { useAuthModalStore } from '../Layout';
 
 interface AuthModalProps {
@@ -116,9 +116,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         </button>
       </div>
 
-      {error && (
-        <div className="mb-6 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>
-      )}
+      {error && <div className="mb-6 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
 
       <form
         id={localMode === 'login' ? 'login-form' : 'register-form'}

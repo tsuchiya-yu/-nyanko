@@ -1,6 +1,6 @@
 import { Heart } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
 import { ReactNode } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import OptimizedImage from './OptimizedImage';
 import { useFavorites } from '../hooks/useFavorites';
@@ -60,14 +60,12 @@ export default function CatCard({ cat, actions }: CatCardProps) {
           <p className="text-sm text-gray-600 mt-1">
             {cat.breed} | {age.toString()}
           </p>
-          <p className="text-sm text-gray-700 mt-2 line-clamp-2 min-h-[2.5rem]">{cat.description}</p>
+          <p className="text-sm text-gray-700 mt-2 line-clamp-2 min-h-[2.5rem]">
+            {cat.description}
+          </p>
         </div>
       </div>
-      {actions && (
-        <div className="px-4 pb-4 pt-0 flex gap-2 justify-between">
-          {actions}
-        </div>
-      )}
+      {actions && <div className="px-4 pb-4 pt-0 flex gap-2 justify-between">{actions}</div>}
     </div>
   );
 }

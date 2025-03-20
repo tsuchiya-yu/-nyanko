@@ -1,6 +1,6 @@
+import { X } from 'lucide-react';
 import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,7 +12,7 @@ interface ModalProps {
 
 /**
  * 共通モーダルコンポーネント
- * 
+ *
  * 使用例:
  * ```tsx
  * <Modal isOpen={isOpen} onClose={handleClose} title="設定">
@@ -20,20 +20,18 @@ interface ModalProps {
  * </Modal>
  * ```
  */
-export default function Modal({ 
-  isOpen, 
-  onClose, 
-  title, 
+export default function Modal({
+  isOpen,
+  onClose,
+  title,
   children,
-  closeButtonPosition = 'top-right'
+  closeButtonPosition = 'top-right',
 }: ModalProps) {
   if (!isOpen) return null;
-  
+
   return createPortal(
     <div className="fixed inset-0 bg-black/50 z-[9999]">
-      <div 
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl w-full max-w-md mx-4 shadow-lg z-[10000]"
-      >
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl w-full max-w-md mx-4 shadow-lg z-[10000]">
         {closeButtonPosition === 'top-right' && (
           <button
             onClick={onClose}
@@ -45,13 +43,11 @@ export default function Modal({
         )}
 
         <div className="p-6">
-          {title && (
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>
-          )}
+          {title && <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>}
           {children}
         </div>
       </div>
     </div>,
     document.body
   );
-} 
+}

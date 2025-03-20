@@ -134,7 +134,7 @@ export default function UserProfile() {
           <h2 className="text-lg font-medium text-gray-800 mb-6 flex items-center">
             登録している猫ちゃん
           </h2>
-          
+
           {cats?.length === 0 ? (
             <div className="bg-gray-50 rounded-xl p-8 text-center">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -204,7 +204,7 @@ export default function UserProfile() {
           profile={profile}
         />
       )}
-      
+
       {isOwnProfile && (
         <div className="mt-8 text-right">
           <button

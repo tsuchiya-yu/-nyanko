@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
+import { useForm } from 'react-hook-form';
 
-import Modal from '../common/Modal';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import Modal from '../common/Modal';
 
 interface UserSettingsModalProps {
   isOpen: boolean;
@@ -42,16 +42,16 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
   });
 
   const modalRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     if (isOpen) {
       console.log('Modal opened');
       console.log('Viewport dimensions:', {
         width: window.innerWidth,
         height: window.innerHeight,
-        scrollY: window.scrollY
+        scrollY: window.scrollY,
       });
-      
+
       // 初期表示時のログ
       const logModalPosition = () => {
         if (modalRef.current) {
@@ -61,17 +61,17 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
             left: rect.left,
             width: rect.width,
             height: rect.height,
-            offsetTop: modalRef.current.offsetTop
+            offsetTop: modalRef.current.offsetTop,
           });
         }
       };
-      
+
       // 初回ログ
       logModalPosition();
-      
+
       // 200msごとに位置をログ
       const intervalId = setInterval(logModalPosition, 200);
-      
+
       return () => {
         clearInterval(intervalId);
       };
@@ -229,9 +229,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
           )}
 
@@ -282,8 +280,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                 <input
                   type="password"
                   {...register('confirmPassword', {
-                    validate: value =>
-                      value === watch('newPassword') || 'パスワードが一致しません',
+                    validate: value => value === watch('newPassword') || 'パスワードが一致しません',
                   })}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"

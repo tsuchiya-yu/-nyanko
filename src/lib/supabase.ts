@@ -21,6 +21,6 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
     persistSession: true,
     autoRefreshToken: true,
     storageKey: 'cat-profile-auth',
-    storage: window.localStorage
-  }
+    storage: window.localStorage,
+  },
 });

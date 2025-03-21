@@ -562,7 +562,8 @@ export default function Home() {
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
+              CAT
+              LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
               また、写真をアップロードすると、AIが猫の気持ちを分析して教えてくれる「ねこのひとこと」機能が利用できます。
             </p>
           </details>

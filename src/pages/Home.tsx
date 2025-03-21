@@ -554,16 +554,16 @@ export default function Home() {
               <span className="font-medium">CAT LINKの利用にお金はかかりますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
-            <p className="mt-4 text-gray-600">いいえ、完全無料でご利用いただけます。</p>
+            <p className="mt-4 text-gray-600">完全無料でご利用いただけます。</p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">CAT LINKを利用することでどんなことができますか？</span>
+              <span className="font-medium">CAT LINKはどんなことができますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              CAT
-              LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
+              CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
+              また、写真をアップロードすると、AIが猫の気持ちを分析して教えてくれる「ねこのひとこと」機能が利用できます。
             </p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
@@ -572,7 +572,7 @@ export default function Home() {
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              会員登録をすると、猫ちゃんに「いいね！」をすることができます。さらに、猫ちゃんのプロフィールページを作成することができます。プロフィールページは、SNSで共有することができます。
+              会員登録をすると、猫ちゃんに「いいね」をすることができます。さらに、猫ちゃんのプロフィールページを作成することができます。
             </p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
@@ -581,7 +581,7 @@ export default function Home() {
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              「ねこのひとこと」は、アップロードした猫の写真をAIが分析して、猫の気持ちする機能です。写真をアップロードするだけで自動的に設定され、完全無料でご利用いただけます。まるで猫が話しているような一人称の語り口で、愛猫の気持ちをより深く理解するお手伝いをします。
+              「ねこのひとこと」は、アップロードした猫の写真をAIが分析して、猫の気持ちを教えてくれる機能です。写真をアップロードするだけで自動的に設定され、完全無料でご利用いただけます。
             </p>
           </details>
         </div>

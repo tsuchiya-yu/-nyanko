@@ -87,11 +87,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-center font-medium text-2xl text-gray-800 mb-6">
-        {localMode === 'login' ? 'おかえりなさい' : '新しい飼い主さん！ようこそ'}
-      </h2>
-
-      <div className="flex space-x-2 mb-8">
+      <div className="flex space-x-2 my-8">
         <button
           className={`flex-1 py-2 text-center rounded-lg text-sm font-medium transition-colors
             ${

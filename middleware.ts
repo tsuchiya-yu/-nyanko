@@ -5,6 +5,14 @@ export const config = {
 };
 
 export default function middleware(request: Request) {
+  // 環境変数が未設定または空の場合は認証をスキップ
+  if (
+    (process.env.BASIC_AUTH_USER === "" || process.env.BASIC_AUTH_USER === undefined) &&
+    (process.env.BASIC_AUTH_PASSWORD === "" || process.env.BASIC_AUTH_PASSWORD === undefined)
+  ) {
+    return next();
+  }
+
   const authorizationHeader = request.headers.get("authorization");
 
   if (authorizationHeader) {

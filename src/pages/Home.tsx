@@ -161,7 +161,7 @@ export default function Home() {
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-8 sm:mt-2 mt-8">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-12">
-              うちの猫を1ページに
+              あなたの猫を１ページに
             </h1>
             <div className="flex flex-col sm:flex-row w-full mx-auto mb-6">
               {/* 画像部分 */}
@@ -184,11 +184,11 @@ export default function Home() {
               <div className="w-full sm:w-1/2 flex flex-col items-center p-4 sm:pt-0">
                 <p className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-4">
                   <InstagramIcon className="h-5 w-5 mr-2" />
-                  うちのこ日記 in Instagram
+                  うちの子日記@Instagram
                 </p>
                 <p className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow w-full mb-6">
                   <X className="h-5 w-5 mr-2" />
-                  うちのこ日記 in X
+                  うちの子日記@X
                 </p>
 
                 <div className="flex w-full space-x-2">
@@ -238,7 +238,7 @@ export default function Home() {
               </div>
             </div>
             <p className="text-lg max-w-3xl mx-auto px-4 py-3">
-              あなたの愛猫の写真やプロフィールを登録して、他の猫好きさんに共有しよう！
+              あなたの愛猫の写真やプロフィールを登録して、他の人に見てもらおう！
             </p>
           </div>
         </div>
@@ -289,7 +289,7 @@ export default function Home() {
       {/* 3ステップ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
-          3ステップでページを作ろう
+          プロフィールページを作ろう！
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -345,7 +345,7 @@ export default function Home() {
               3
             </div>
             <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
-            <p className="text-gray-600">SNSで共有してうちのこをドンドン紹介しよう</p>
+            <p className="text-gray-600">SNSでページを共有して、うちの子を他の人に共有しよう！</p>
           </div>
         </div>
         <div className="text-center mt-8">
@@ -434,7 +434,7 @@ export default function Home() {
               <div>
                 <h3 className="font-medium text-gray-800">猫の気持ちを理解</h3>
                 <p className="text-gray-600 text-sm">
-                  愛猫の表情や仕草から、今どんな気持ちなのかを教えてくれます
+                  愛猫の表情や仕草から、どんな気持ちだったのかを教えてくれます
                 </p>
               </div>
             </div>
@@ -456,9 +456,9 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">猫視点のストーリー</h3>
+                <h3 className="font-medium text-gray-800">猫視点の語り口</h3>
                 <p className="text-gray-600 text-sm">
-                  まるで猫が話しているかのような一人称の語り口で楽しめます
+                  まるで猫が話しているかのような語り口で、より楽しめます
                 </p>
               </div>
             </div>
@@ -569,20 +569,20 @@ export default function Home() {
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">会員登録をするとどんなメリットがありますか？</span>
-              <ChevronDown className="h-5 w-5 text-gray-500" />
-            </summary>
-            <p className="mt-4 text-gray-600">
-              会員登録をすると、猫ちゃんに「いいね」をすることができます。さらに、猫ちゃんのプロフィールページを作成することができます。
-            </p>
-          </details>
-          <details className="bg-white p-6 rounded-lg shadow-md">
-            <summary className="flex justify-between items-center cursor-pointer">
               <span className="font-medium">「ねこのひとこと」機能とは何ですか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
               「ねこのひとこと」は、アップロードした猫の写真をAIが分析して、猫の気持ちを教えてくれる機能です。写真をアップロードするだけで自動的に設定され、完全無料でご利用いただけます。
+            </p>
+          </details>
+          <details className="bg-white p-6 rounded-lg shadow-md">
+            <summary className="flex justify-between items-center cursor-pointer">
+              <span className="font-medium">会員登録をするとどんなメリットがありますか？</span>
+              <ChevronDown className="h-5 w-5 text-gray-500" />
+            </summary>
+            <p className="mt-4 text-gray-600">
+              会員登録をすると、猫ちゃんに「いいね」をすることができます。さらに、猫ちゃんのプロフィールページを作成でき、写真をアップロードすることで「ねこのひとこと」機能も利用できます。
             </p>
           </details>
         </div>

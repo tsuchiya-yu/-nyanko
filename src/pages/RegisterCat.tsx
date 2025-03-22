@@ -210,7 +210,7 @@ export default function RegisterCat() {
                 type="text"
                 {...register('name', { required: '名前は必須です' })}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
             </div>
@@ -219,7 +219,7 @@ export default function RegisterCat() {
               <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>
               <select
                 {...register('gender')}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               >
                 <option value="">不明</option>
                 <option value="男の子">男の子</option>
@@ -233,7 +233,7 @@ export default function RegisterCat() {
                 type="date"
                 {...register('birthdate', { required: '生年月日は必須です' })}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
               {errors.birthdate && (
                 <p className="mt-1 text-sm text-red-600">{errors.birthdate.message}</p>
@@ -243,7 +243,7 @@ export default function RegisterCat() {
                   <input
                     type="checkbox"
                     {...register('is_birthdate_estimated')}
-                    className="rounded border-gray-300 text-pink-500 focus:ring-pink-500"
+                    className="rounded border-gray-300 text-pink-500 focus:ring-gray-500"
                   />
                   <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
                 </label>
@@ -257,7 +257,7 @@ export default function RegisterCat() {
                 {...register('breed', { required: '品種は必須です' })}
                 placeholder="ミックス"
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
               {errors.breed && <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>}
             </div>
@@ -269,7 +269,7 @@ export default function RegisterCat() {
                 {...register('catchphrase')}
                 placeholder="いつも元気いっぱい！甘えん坊な女の子♪"
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
             </div>
 
@@ -284,7 +284,7 @@ export default function RegisterCat() {
 
 子供たちとも仲良く遊ぶ穏やかな一面もあり、まさに我が家の人気者！！`}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
@@ -306,7 +306,7 @@ export default function RegisterCat() {
                   }
                 }}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
 
               {/* プレビュー画像の表示 */}
@@ -343,7 +343,7 @@ export default function RegisterCat() {
                 {...register('instagram_url')}
                 placeholder="https://www.instagram.com/..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
             </div>
 
@@ -354,7 +354,7 @@ export default function RegisterCat() {
                 {...register('x_url')}
                 placeholder="https://x.com/..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
             </div>
 
@@ -367,7 +367,7 @@ export default function RegisterCat() {
                 {...register('homepage_url')}
                 placeholder="https://nekoneko.com/..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
             </div>
 

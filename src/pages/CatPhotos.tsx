@@ -287,7 +287,7 @@ export default function CatPhotos() {
                     }
                   }}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 />
                 {!imageFile && !previewUrl && (
                   <p className="mt-1 text-sm text-red-600">写真は必須です</p>
@@ -321,7 +321,7 @@ export default function CatPhotos() {
                   {...register('comment')}
                   rows={2}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                 />
               </div>
 

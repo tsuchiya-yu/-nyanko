@@ -51,6 +51,7 @@ export default function Privacy() {
             <li>ユーザーからのお問い合わせに対応するため</li>
             <li>利用規約に違反する行為に対応するため</li>
             <li>当サービスの改善のため</li>
+            <li>個人を特定できない形に加工した上で、統計データとしてサービスの分析・改善に活用するため</li>
           </ul>
 
           <h2>3. 個人情報の第三者提供</h2>
@@ -88,7 +89,7 @@ export default function Privacy() {
             本プライバシーポリシーに関するお問い合わせは、当サービスの問い合わせフォームよりご連絡ください。
           </p>
 
-          <div className="text-right text-sm text-gray-600 mt-8">制定日：2025年3月1日</div>
+          <div className="text-right text-sm text-gray-600 mt-8">制定日：2025年3月23日</div>
         </div>
       </div>
     </div>

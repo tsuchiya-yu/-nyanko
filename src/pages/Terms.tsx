@@ -100,7 +100,7 @@ export default function Terms() {
             本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
           </p>
 
-          <div className="text-right text-sm text-gray-600 mt-8">制定日：2025年3月1日</div>
+          <div className="text-right text-sm text-gray-600 mt-8">制定日：2025年3月23日</div>
         </div>
       </div>
     </div>

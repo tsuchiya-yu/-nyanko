@@ -420,17 +420,16 @@ export default function Home() {
                 {news?.map(item => (
                   <article key={item.id} className="border-b border-gray-100 pb-4">
                     <time dateTime={item.published_at} className="text-sm text-gray-500">
-                      {new Date(item.published_at).toLocaleDateString('ja-JP', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                      }).replace(/\//g, '.')}
+                      {new Date(item.published_at)
+                        .toLocaleDateString('ja-JP', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                        })
+                        .replace(/\//g, '.')}
                     </time>
                     <h3 className="text-base text-gray-800 mt-1 hover:text-pink-500 transition-colors">
-                      <Link
-                        to={`/news/${item.slug}`}
-                        className="block"
-                      >
+                      <Link to={`/news/${item.slug}`} className="block">
                         {item.title}
                       </Link>
                     </h3>

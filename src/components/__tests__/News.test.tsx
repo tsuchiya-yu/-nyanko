@@ -116,4 +116,4 @@ describe('News', () => {
       expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
     });
   });
-}); 
+});

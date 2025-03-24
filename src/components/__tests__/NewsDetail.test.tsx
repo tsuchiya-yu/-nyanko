@@ -129,4 +129,4 @@ describe('NewsDetail', () => {
       expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
     });
   });
-}); 
+});

@@ -7,7 +7,11 @@ import { supabase } from '../lib/supabase';
 import type { News as NewsType } from '../types/index';
 
 export default function News() {
-  const { data: news, isLoading, error } = useQuery({
+  const {
+    data: news,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['news'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -25,9 +29,15 @@ export default function News() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <Helmet>
         <title>お知らせ一覧 - CAT LINK</title>
-        <meta name="description" content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。" />
+        <meta
+          name="description"
+          content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
+        />
         <meta property="og:title" content="お知らせ一覧 - CAT LINK" />
-        <meta property="og:description" content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。" />
+        <meta
+          property="og:description"
+          content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
+        />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cat-link.catnote.tokyo/news" />
         <link rel="canonical" href="https://cat-link.catnote.tokyo/news" />
@@ -50,11 +60,11 @@ export default function News() {
                     publisher: {
                       '@type': 'Organization',
                       name: 'CAT LINK',
-                      url: 'https://cat-link.catnote.tokyo'
-                    }
-                  }
-                }))
-              }
+                      url: 'https://cat-link.catnote.tokyo',
+                    },
+                  },
+                })),
+              },
             })}
           </script>
         )}
@@ -65,12 +75,7 @@ export default function News() {
           to="/"
           className="text-sm text-gray-600 hover:text-pink-500 transition-colors inline-flex items-center"
         >
-          <svg
-            className="w-4 h-4 mr-1"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -99,11 +104,13 @@ export default function News() {
           {news.map(item => (
             <article key={item.id} className="border-b border-gray-200 pb-8">
               <time dateTime={item.published_at} className="text-sm text-gray-500">
-                {new Date(item.published_at).toLocaleDateString('ja-JP', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                }).replace(/\//g, '.')}
+                {new Date(item.published_at)
+                  .toLocaleDateString('ja-JP', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  })
+                  .replace(/\//g, '.')}
               </time>
               <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-pink-500 transition-colors">
                 <Link to={`/news/${item.slug}`}>{item.title}</Link>
@@ -138,4 +145,4 @@ export default function News() {
       )}
     </div>
   );
-} 
+}

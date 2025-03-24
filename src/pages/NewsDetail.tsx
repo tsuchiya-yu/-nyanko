@@ -9,13 +9,14 @@ import type { News } from '../types/index';
 export default function NewsDetail() {
   const { slug } = useParams<{ slug: string }>();
 
-  const { data: news, isLoading, error } = useQuery({
+  const {
+    data: news,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['news', slug],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .eq('slug', slug);
+      const { data, error } = await supabase.from('news').select('*').eq('slug', slug);
 
       if (error) throw error;
       return data as News[];
@@ -65,8 +66,8 @@ export default function NewsDetail() {
             publisher: {
               '@type': 'Organization',
               name: 'CAT LINK',
-              url: 'https://cat-link.catnote.tokyo'
-            }
+              url: 'https://cat-link.catnote.tokyo',
+            },
           })}
         </script>
       </Helmet>
@@ -76,12 +77,7 @@ export default function NewsDetail() {
           to="/news"
           className="text-sm text-gray-600 hover:text-pink-500 transition-colors inline-flex items-center"
         >
-          <svg
-            className="w-4 h-4 mr-1"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -96,19 +92,19 @@ export default function NewsDetail() {
       <article>
         <header className="mb-8">
           <time dateTime={article.published_at} className="text-sm text-gray-500">
-            {new Date(article.published_at).toLocaleDateString('ja-JP', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            }).replace(/\//g, '.')}
+            {new Date(article.published_at)
+              .toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })
+              .replace(/\//g, '.')}
           </time>
           <h1 className="text-3xl font-bold text-gray-900 mt-2">{article.title}</h1>
         </header>
 
-        <div className="prose prose-pink max-w-none">
-          {article.content}
-        </div>
+        <div className="prose prose-pink max-w-none">{article.content}</div>
       </article>
     </div>
   );
-} 
+}

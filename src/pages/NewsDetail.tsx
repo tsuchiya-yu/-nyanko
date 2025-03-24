@@ -9,7 +9,7 @@ import type { News } from '../types/index';
 const convertUrlsToLinks = (text: string) => {
   // URLを検出する正規表現
   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  
+
   // テキストを配列に分割し、改行を保持
   return text.split('\n').map((line, i) => (
     <p key={i}>
@@ -130,9 +130,7 @@ export default function NewsDetail() {
           <h1 className="text-3xl font-bold text-gray-900 mt-2">{article.title}</h1>
         </header>
 
-        <div className="prose prose-gray max-w-none">
-          {convertUrlsToLinks(article.content)}
-        </div>
+        <div className="prose prose-gray max-w-none">{convertUrlsToLinks(article.content)}</div>
       </article>
     </div>
   );

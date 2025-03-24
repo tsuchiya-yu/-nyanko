@@ -1,18 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { InstagramIcon, X, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import CatCard from '../components/CatCard';
 import { handleAuthAction } from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 
-import type { Cat } from '../types';
+import type { Cat, News } from '../types/index';
 
 export default function Home() {
-  const { data: cats, isLoading } = useQuery({
+  const { data: cats, isLoading: isLoadingCats } = useQuery({
     queryKey: ['cats'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -23,6 +22,21 @@ export default function Home() {
 
       if (error) throw error;
       return data as Cat[];
+    },
+  });
+
+  const { data: news, isLoading: isLoadingNews } = useQuery({
+    queryKey: ['news'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .eq('is_published', true)
+        .order('published_at', { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+      return data as News[];
     },
   });
 
@@ -158,7 +172,7 @@ export default function Home() {
 
       {/* ヒーローセクション */}
       <section className="relative">
-        <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-12 sm:py-8 sm:mt-2 mt-8">
+        <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-2 sm:py-8 sm:mt-2 mt-8">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-12">
               あなたの猫を１ページに
@@ -241,24 +255,23 @@ export default function Home() {
               あなたの愛猫の写真やプロフィールを登録して、他の人に見てもらおう！
             </p>
           </div>
+          <div className="text-center mt-8">
+            <button
+              onClick={handleStartAction}
+              className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+            >
+              今すぐ始める
+            </button>
+          </div>
         </div>
       </section>
 
-      <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[0px]">
-        <button
-          onClick={handleStartAction}
-          className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
-        >
-          今すぐ始める
-        </button>
-      </section>
-
-      {/* 新着の猫ちゃん */}
+      {/* みんなの愛猫 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">みんなの愛猫</h2>
         </div>
-        {isLoading ? (
+        {isLoadingCats ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
           </div>
@@ -267,99 +280,18 @@ export default function Home() {
             {cats?.map(cat => <CatCard key={cat.id} cat={cat} />)}
           </div>
         )}
-        {/* <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 my-4">
-          <Link
-            to="/cats"
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
-          >
-            もっと見る
-          </Link>
-        </section> */}
-      </section>
-
-      <section className="max-w-7xl text-center mx-auto px-4 sm:px-6 lg:px-8 !mt-[40px]">
-        <button
-          onClick={handleStartAction}
-          className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
-        >
-          ページをつくる
-        </button>
-      </section>
-
-      {/* 3ステップ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
-          プロフィールページを作ろう！
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <picture>
-              <source srcSet="/images/top/webp/step1.webp" type="image/webp" />
-              <img
-                src="/images/top/step1.png"
-                alt="会員登録"
-                className="w-full h-48 object-scale-down rounded-lg mb-4"
-                width="300"
-                height="192"
-              />
-            </picture>
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
-              1
-            </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">会員登録</h3>
-            <p className="text-gray-600">メールアドレスで簡単に登録できます</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <picture>
-              <source srcSet="/images/top/webp/step2.webp" type="image/webp" />
-              <img
-                src="/images/top/step2.png"
-                alt="猫ちゃん情報の入力"
-                className="w-full h-48 object-scale-down rounded-lg mb-4"
-                width="300"
-                height="192"
-                decoding="async"
-                loading="lazy"
-              />
-            </picture>
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
-              2
-            </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">猫ちゃん情報の入力</h3>
-            <p className="text-gray-600">名前やプロフィール、写真を登録できます</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <picture>
-              <source srcSet="/images/top/webp/step3.webp" type="image/webp" />
-              <img
-                src="/images/top/step3.png"
-                alt="ページの公開"
-                className="w-full h-48 object-scale-down rounded-lg mb-4"
-                width="300"
-                height="192"
-                decoding="async"
-                loading="lazy"
-              />
-            </picture>
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
-              3
-            </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
-            <p className="text-gray-600">SNSでページを共有して、うちの子を他の人に共有しよう！</p>
-          </div>
-        </div>
         <div className="text-center mt-8">
           <button
             onClick={handleStartAction}
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
-            無料で始める
+            今すぐ始める
           </button>
         </div>
       </section>
 
       {/* AIが猫の気持ちを代弁 - 新しいセクション */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl my-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl mb-16">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">AIが猫の気持ちを代弁</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -470,6 +402,143 @@ export default function Home() {
             className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
           >
             「ねこのひとこと」を試してみる
+          </button>
+        </div>
+      </section>
+
+      {/* お知らせセクション */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="bg-white rounded-xl p-6 shadow-md">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">お知らせ</h2>
+          {isLoadingNews ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-4">
+                {news?.map(item => (
+                  <article key={item.id} className="border-b border-gray-100 pb-4">
+                    <time dateTime={item.published_at} className="text-sm text-gray-500">
+                      {new Date(item.published_at).toLocaleDateString('ja-JP', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      }).replace(/\//g, '.')}
+                    </time>
+                    <h3 className="text-base text-gray-800 mt-1 hover:text-pink-500 transition-colors">
+                      <Link
+                        to={`/news/${item.slug}`}
+                        className="block"
+                      >
+                        {item.title}
+                      </Link>
+                    </h3>
+                  </article>
+                ))}
+              </div>
+              <div className="mt-4 text-right">
+                <Link
+                  to="/news"
+                  className="inline-flex items-center text-sm text-gray-600 hover:text-pink-500 transition-colors"
+                >
+                  お知らせ一覧へ
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="text-center mt-8">
+          <button
+            onClick={handleStartAction}
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+          >
+            今すぐ始める
+          </button>
+        </div>
+      </section>
+
+      {/* プロフィールページを作ろう！ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
+          ３ステップでページを作ろう！
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-lg shadow-md text-center">
+            <picture>
+              <source srcSet="/images/top/webp/step1.webp" type="image/webp" />
+              <img
+                src="/images/top/step1.png"
+                alt="会員登録"
+                className="w-full h-48 object-scale-down rounded-lg mb-4"
+                width="300"
+                height="192"
+              />
+            </picture>
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+              1
+            </div>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">会員登録</h3>
+            <p className="text-gray-600">メールアドレスで簡単に登録できます</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md text-center">
+            <picture>
+              <source srcSet="/images/top/webp/step2.webp" type="image/webp" />
+              <img
+                src="/images/top/step2.png"
+                alt="猫ちゃん情報の入力"
+                className="w-full h-48 object-scale-down rounded-lg mb-4"
+                width="300"
+                height="192"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+              2
+            </div>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">猫ちゃん情報の入力</h3>
+            <p className="text-gray-600">名前やプロフィール、写真を登録できます</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md text-center">
+            <picture>
+              <source srcSet="/images/top/webp/step3.webp" type="image/webp" />
+              <img
+                src="/images/top/step3.png"
+                alt="ページの公開"
+                className="w-full h-48 object-scale-down rounded-lg mb-4"
+                width="300"
+                height="192"
+                decoding="async"
+                loading="lazy"
+              />
+            </picture>
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+              3
+            </div>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
+            <p className="text-gray-600">SNSでページを共有して、うちの子を他の人に共有しよう！</p>
+          </div>
+        </div>
+        <div className="text-center mt-8">
+          <button
+            onClick={handleStartAction}
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+          >
+            無料で始める
           </button>
         </div>
       </section>

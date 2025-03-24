@@ -1,6 +1,6 @@
 import { Heart } from 'lucide-react';
 import { ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import OptimizedImage from './OptimizedImage';
 import { useFavorites } from '../hooks/useFavorites';

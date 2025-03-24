@@ -1,8 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { X } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 
 import { supabase } from '../../lib/supabase';

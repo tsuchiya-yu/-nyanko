@@ -14,6 +14,7 @@ drop table if exists public.favorites;
 drop table if exists public.cat_photos;
 drop table if exists public.cats;
 drop table if exists public.profiles;
+drop table if exists public.news;
 
 -- Create profiles table
 create table public.profiles (
@@ -60,11 +61,23 @@ create table public.favorites (
     unique(user_id, cat_id)
 );
 
+-- Create news table
+create table public.news (
+    id uuid default gen_random_uuid() primary key,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+    published_at timestamp with time zone default timezone('utc'::text, now()) not null,
+    title text not null,
+    content text not null,
+    is_published boolean default true not null,
+    slug text unique not null
+);
+
 -- Enable RLS
 alter table public.profiles enable row level security;
 alter table public.cats enable row level security;
 alter table public.cat_photos enable row level security;
 alter table public.favorites enable row level security;
+alter table public.news enable row level security;
 
 -- RLS policies for profiles
 create policy "Public profiles are viewable by everyone"
@@ -130,6 +143,15 @@ create policy "Users can delete their own favorites"
     on public.favorites for delete
     using (auth.uid() = user_id);
 
+-- RLS policies for news
+create policy "News are viewable by everyone"
+    on public.news for select
+    using (is_published = true);
+
+create policy "Authenticated users can manage news"
+    on public.news for all
+    using (auth.role() = 'authenticated');
+
 -- Insert sample data
 insert into public.profiles (id, name, avatar_url)
 values
@@ -146,3 +168,10 @@ values
     ('897badee-71fd-40f9-a006-f8d7606f38d2', 'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec', '初めてのおもちゃに夢中！'),
     ('897badee-71fd-40f9-a006-f8d7606f38d2', 'https://images.unsplash.com/photo-1511044568932-338cba0ad803', 'お昼寝タイム'),
     ('b49cb104-9c63-4b45-a5b3-76c13d3b6f8c', 'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6', 'キャットタワーからの眺め');
+
+-- Insert sample news
+insert into public.news (title, content, published_at, slug)
+values
+    ('「ねこのひとこと」機能をアップデートしました！', 'より自然な猫の気持ちを表現できるようになりました。新しいAIモデルを導入し、より細かな表情や仕草の分析が可能になりました。', '2024-03-21 00:00:00+00', 'ai-update-202403'),
+    ('写真のアップロード枚数を増やしました', '最大30枚までアップロード可能になりました。思い出の写真をより多く共有できるようになりました。', '2024-03-15 00:00:00+00', 'photo-limit-update-202403'),
+    ('CAT LINKをリリースしました！', 'ついにCAT LINKをリリースしました。あなたの愛猫のプロフィールページを作成して、大切な思い出を残しましょう。', '2024-03-01 00:00:00+00', 'service-launch-202403');

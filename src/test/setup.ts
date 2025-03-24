@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { setupServer } from 'msw/node';
-import { afterAll, afterEach, beforeAll, vi } from 'vitest';
+import { afterEach, vi } from 'vitest';
 
 // Supabaseのモックをインポート
 import './mocks/supabase';
@@ -39,3 +38,18 @@ afterEach(() => {
 // beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 // afterEach(() => server.resetHandlers());
 // afterAll(() => server.close());
+
+vi.mock('@supabase/supabase-js', () => ({
+  createClient: vi.fn(() => ({
+    auth: {
+      signInWithOAuth: vi.fn(),
+      signOut: vi.fn(),
+      onAuthStateChange: vi.fn(),
+      getSession: vi.fn(),
+    },
+    from: vi.fn(),
+    storage: {
+      from: vi.fn(),
+    },
+  })),
+}));

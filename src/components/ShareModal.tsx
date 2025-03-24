@@ -1,4 +1,5 @@
-import { X, Check, Copy, Instagram, Twitter, MessageCircle } from 'lucide-react';
+import { X } from 'lucide-react';
+import { Check, Copy } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';

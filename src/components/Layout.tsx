@@ -1,5 +1,5 @@
 import { User } from '@supabase/supabase-js';
-import { useState, type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
 import { create } from 'zustand';
 

@@ -10,6 +10,8 @@ import CatPhotos from './pages/CatPhotos';
 import CatProfile from './pages/CatProfile';
 import EditCat from './pages/EditCat';
 import Home from './pages/Home';
+import News from './pages/News';
+import NewsDetail from './pages/NewsDetail';
 import Privacy from './pages/Privacy';
 import RegisterCat from './pages/RegisterCat';
 import Terms from './pages/Terms';
@@ -70,6 +72,8 @@ export default function App() {
           />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/news/:slug" element={<NewsDetail />} />
         </Routes>
       </Layout>
     </HeaderProvider>

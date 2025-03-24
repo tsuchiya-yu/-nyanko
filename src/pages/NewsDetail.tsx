@@ -75,7 +75,7 @@ export default function NewsDetail() {
       <div className="mb-8">
         <Link
           to="/news"
-          className="text-sm text-gray-600 hover:text-pink-500 transition-colors inline-flex items-center"
+          className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -103,7 +103,7 @@ export default function NewsDetail() {
           <h1 className="text-3xl font-bold text-gray-900 mt-2">{article.title}</h1>
         </header>
 
-        <div className="prose prose-pink max-w-none">{article.content}</div>
+        <div className="prose prose-gray max-w-none">{article.content}</div>
       </article>
     </div>
   );

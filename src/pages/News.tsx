@@ -73,7 +73,7 @@ export default function News() {
       <div className="mb-8">
         <Link
           to="/"
-          className="text-sm text-gray-600 hover:text-pink-500 transition-colors inline-flex items-center"
+          className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -112,14 +112,14 @@ export default function News() {
                   })
                   .replace(/\//g, '.')}
               </time>
-              <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-pink-500 transition-colors">
+              <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors">
                 <Link to={`/news/${item.slug}`}>{item.title}</Link>
               </h2>
               <p className="mt-3 text-gray-600 line-clamp-2">{item.content}</p>
               <div className="mt-4">
                 <Link
                   to={`/news/${item.slug}`}
-                  className="text-sm text-pink-500 hover:text-pink-600 transition-colors inline-flex items-center"
+                  className="text-sm text-gray-500 hover:text-gray-600 transition-colors inline-flex items-center"
                 >
                   続きを読む
                   <svg

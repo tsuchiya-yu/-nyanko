@@ -428,7 +428,7 @@ export default function Home() {
                         })
                         .replace(/\//g, '.')}
                     </time>
-                    <h3 className="text-base text-gray-800 mt-1 hover:text-pink-500 transition-colors">
+                    <h3 className="text-base text-gray-800 mt-1 hover:text-gray-500 transition-colors">
                       <Link to={`/news/${item.slug}`} className="block">
                         {item.title}
                       </Link>
@@ -439,7 +439,7 @@ export default function Home() {
               <div className="mt-4 text-right">
                 <Link
                   to="/news"
-                  className="inline-flex items-center text-sm text-gray-600 hover:text-pink-500 transition-colors"
+                  className="inline-flex items-center text-sm text-gray-600 hover:text-gray-500 transition-colors"
                 >
                   お知らせ一覧へ
                   <svg

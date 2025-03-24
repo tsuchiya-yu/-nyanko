@@ -39,6 +39,7 @@ afterEach(() => {
 // afterEach(() => server.resetHandlers());
 // afterAll(() => server.close());
 
+// Supabaseのモック
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
     auth: {
@@ -53,3 +54,14 @@ vi.mock('@supabase/supabase-js', () => ({
     },
   })),
 }));
+
+// react-helmet-asyncのモック
+vi.mock('react-helmet-async', () => ({
+  Helmet: ({ children }: { children: React.ReactNode }) => children,
+  HelmetProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+// テストのタイムアウトを設定
+vi.setConfig({
+  testTimeout: 10000,
+});

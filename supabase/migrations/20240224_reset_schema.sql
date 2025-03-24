@@ -9,12 +9,17 @@ drop policy if exists "Users can delete their own cats" on public.cats;
 drop policy if exists "Users can view their own favorites" on public.favorites;
 drop policy if exists "Users can insert their own favorites" on public.favorites;
 drop policy if exists "Users can delete their own favorites" on public.favorites;
+drop policy if exists "News are viewable by everyone" on public.news;
+drop policy if exists "Authenticated users can manage news" on public.news;
+drop policy if exists "Columns are viewable by everyone" on public.columns;
+drop policy if exists "Authenticated users can manage columns" on public.columns;
 
 drop table if exists public.favorites;
 drop table if exists public.cat_photos;
 drop table if exists public.cats;
 drop table if exists public.profiles;
 drop table if exists public.news;
+drop table if exists public.columns;
 
 -- Create profiles table
 create table public.profiles (
@@ -72,12 +77,23 @@ create table public.news (
     slug text unique not null
 );
 
+-- Create columns table
+create table public.columns (
+    id uuid default gen_random_uuid() primary key,
+    slug text not null unique,
+    title text not null,
+    content text not null,
+    image_url text,
+    published_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
 -- Enable RLS
 alter table public.profiles enable row level security;
 alter table public.cats enable row level security;
 alter table public.cat_photos enable row level security;
 alter table public.favorites enable row level security;
 alter table public.news enable row level security;
+alter table public.columns enable row level security;
 
 -- RLS policies for profiles
 create policy "Public profiles are viewable by everyone"
@@ -152,6 +168,15 @@ create policy "Authenticated users can manage news"
     on public.news for all
     using (auth.role() = 'authenticated');
 
+-- RLS policies for columns
+create policy "Columns are viewable by everyone"
+    on public.columns for select
+    using (true);
+
+create policy "Authenticated users can manage columns"
+    on public.columns for all
+    using (auth.role() = 'authenticated');
+
 -- Insert sample data
 insert into public.profiles (id, name, avatar_url)
 values
@@ -175,3 +200,10 @@ values
     ('「ねこのひとこと」機能をアップデートしました！', 'より自然な猫の気持ちを表現できるようになりました。新しいAIモデルを導入し、より細かな表情や仕草の分析が可能になりました。', '2024-03-21 00:00:00+00', 'ai-update-202403'),
     ('写真のアップロード枚数を増やしました', '最大30枚までアップロード可能になりました。思い出の写真をより多く共有できるようになりました。', '2024-03-15 00:00:00+00', 'photo-limit-update-202403'),
     ('CAT LINKをリリースしました！', 'ついにCAT LINKをリリースしました。あなたの愛猫のプロフィールページを作成して、大切な思い出を残しましょう。', '2024-03-01 00:00:00+00', 'service-launch-202403');
+
+-- Insert sample columns
+insert into public.columns (slug, title, content, image_url, published_at)
+values
+    ('cat-care-essentials', 'はじめての猫との暮らし：必要なものリスト', '<h2>はじめに</h2><p>猫を迎える準備をしていますか？新しい家族を迎えるには、いくつかの必需品が必要です。</p><h2>1. 食事関連のアイテム</h2><ul><li>高品質のキャットフード（年齢に合わせたもの）</li><li>清潔な水を保つための給水器</li><li>食器（できれば浅めの物）</li></ul><h2>2. トイレ関連</h2><ul><li>猫用トイレ（カバー付きかオープンタイプか検討を）</li><li>猫砂（いくつかの種類を試してみるのもおすすめ）</li><li>スコップ</li></ul><h2>3. 遊びと休息のために</h2><ul><li>キャットタワーや棚（高い場所が大好きです）</li><li>おもちゃ（羽根つき、ボール、ネズミ型など）</li><li>爪とぎ（縦型と横型両方あると良いでしょう）</li><li>居心地の良いベッドやブランケット</li></ul><h2>4. 移動用</h2><ul><li>キャリーケース（獣医visits用）</li></ul><h2>5. グルーミング用品</h2><ul><li>ブラシ（猫の毛の長さに合わせて）</li><li>爪切り</li></ul><p><a href="https://cat-link.catnote.tokyo" target="_blank" rel="noopener noreferrer">CAT LINK</a>でもっと詳しく猫との暮らしについて学びましょう！</p>', 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c', '2024-03-05 00:00:00+00'),
+    ('understanding-cat-behavior', '猫の行動を理解する：しっぽの動きが教えてくれること', '<h2>はじめに</h2><p>猫は言葉を話せませんが、体で多くを語っています。特にしっぽは猫の感情の優れた指標です。</p><h2>しっぽの動きと意味</h2><h3>まっすぐ上に立ったしっぽ</h3><p>猫が幸せで自信を持っているサインです。あなたに会えて嬉しいと伝えています。</p><h3>ゆっくりと揺れるしっぽ</h3><p>何かに集中している時のポーズです。狩りの態勢かもしれません。</p><h3>激しく左右に振るしっぽ</h3><p>イライラや怒りのサイン。この時は距離を置くのが賢明です。</p><h3>ふわふわに膨らんだしっぽ</h3><p>驚いたり怖がったりしている時に見られます。</p><h3>足の間に隠されたしっぽ</h3><p>不安や恐怖を感じている時のサイン。安心できる環境を提供しましょう。</p><h2>まとめ</h2><p>しっぽだけでなく、耳や目、体の姿勢も組み合わせて観察すると、あなたの猫がどう感じているかをより深く理解できるでしょう。</p><p><a href="https://cat-link.catnote.tokyo" target="_blank" rel="noopener noreferrer">CAT LINK</a>で愛猫との絆を深めましょう！</p>', 'https://images.unsplash.com/photo-1511044568932-338c0ad803', '2024-03-10 00:00:00+00'),
+    ('benefits-of-adopting-senior-cats', 'シニア猫を迎える10の魅力', '<h2>はじめに</h2><p>シニア猫（7歳以上）の魅力をご存知ですか？保護施設では若い猫に比べて見過ごされがちなシニア猫ですが、実は多くの利点があります。</p><h2>シニア猫の10の魅力</h2><ol><li><strong>性格が安定している</strong><br>年を重ねた猫は、すでに性格が形成されているので、どんな子かすぐにわかります。</li><li><strong>しつけが済んでいる</strong><br>ほとんどのシニア猫はトイレのしつけが済んでいます。</li><li><strong>落ち着いている</strong><br>子猫のような激しい遊びや夜中の暴れんぼうが少なく、穏やかな時間を過ごせます。</li><li><strong>感謝の気持ちが深い</strong><br>多くのシニア猫は、新しい家族に対する感謝の気持ちを示してくれます。</li><li><strong>家具への被害が少ない</strong><br>爪とぎや噛み癖などの問題行動が少ない傾向があります。</li><li><strong>医療履歴がわかっている</strong><br>多くの場合、健康状態や医療履歴が明確です。</li><li><strong>ずっと一緒に暮らせる</strong><br>シニアでも10歳以上生きる猫は多く、長い時間を共に過ごせます。</li><li><strong>子供にも優しい</strong><br>落ち着いた猫は子供にも忍耐強く接することが多いです。</li><li><strong>即座に家族の一員に</strong><br>適応が早く、すぐに家族の一員となってくれます。</li><li><strong>命を救える喜び</strong><br>シニア猫を迎えることは、本当の意味での「救済」となることが多いです。</li></ol><h2>まとめ</h2><p><a href="https://cat-link.catnote.tokyo" target="_blank" rel="noopener noreferrer">CAT LINK</a>では、シニア猫たちの魅力的なプロフィールも多数掲載しています。素敵な出会いを見つけてください。</p>', 'https://images.unsplash.com/photo-1573865526739-10659fec78a5', '2024-03-15 00:00:00+00');

@@ -6,6 +6,33 @@ import { supabase } from '../lib/supabase';
 
 import type { News } from '../types/index';
 
+const convertUrlsToLinks = (text: string) => {
+  // URLを検出する正規表現
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  
+  // テキストを配列に分割し、改行を保持
+  return text.split('\n').map((line, i) => (
+    <p key={i}>
+      {line.split(urlRegex).map((part, j) => {
+        if (part.match(urlRegex)) {
+          return (
+            <a
+              key={j}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              {part}
+            </a>
+          );
+        }
+        return part;
+      })}
+    </p>
+  ));
+};
+
 export default function NewsDetail() {
   const { slug } = useParams<{ slug: string }>();
 
@@ -103,7 +130,9 @@ export default function NewsDetail() {
           <h1 className="text-3xl font-bold text-gray-900 mt-2">{article.title}</h1>
         </header>
 
-        <div className="prose prose-gray max-w-none">{article.content}</div>
+        <div className="prose prose-gray max-w-none">
+          {convertUrlsToLinks(article.content)}
+        </div>
       </article>
     </div>
   );

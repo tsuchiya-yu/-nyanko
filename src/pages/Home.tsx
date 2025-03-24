@@ -408,7 +408,7 @@ export default function Home() {
 
       {/* お知らせセクション */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="bg-white rounded-xl p-6 shadow-md">
+        <div className="bg-white rounded-xl p-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">お知らせ</h2>
           {isLoadingNews ? (
             <div className="text-center py-12">

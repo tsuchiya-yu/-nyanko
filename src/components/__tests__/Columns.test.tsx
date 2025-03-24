@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
+import { MemoryRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-import Columns from '../../pages/Columns';
 import { supabase } from '../../lib/supabase';
+import Columns from '../../pages/Columns';
 
 // プロミスをフラッシュする関数
 const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -91,9 +91,6 @@ describe('Columns', () => {
     await waitFor(() => {
       expect(screen.getByText('猫のコラム')).toBeInTheDocument();
     }, { timeout: 5000 });
-
-    // コンポーネントをデバッグ出力
-    console.log(screen.debug());
   });
 
   it('エラー時にエラーメッセージを表示する', async () => {

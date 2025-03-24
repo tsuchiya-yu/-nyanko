@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-import ColumnDetail from '../../pages/ColumnDetail';
 import { supabase } from '../../lib/supabase';
+import ColumnDetail from '../../pages/ColumnDetail';
 
 // プロミスをフラッシュする関数
 const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));

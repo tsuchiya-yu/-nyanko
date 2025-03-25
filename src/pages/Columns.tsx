@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
+import { stripHtml } from '../utils/html';
 
 import type { Column } from '../types/index';
 
@@ -19,13 +20,6 @@ export default function Columns() {
       return data as Column[];
     },
   });
-
-  // HTMLタグを除去してテキストのみを取得する関数
-  const stripHtml = (html: string) => {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -66,7 +60,7 @@ export default function Columns() {
           トップに戻る
         </Link>
       </div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">猫のコラム</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">コラム一覧</h1>
 
       {isLoading ? (
         <div className="text-center py-12">

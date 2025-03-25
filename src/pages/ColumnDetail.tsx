@@ -122,12 +122,11 @@ export default function ColumnDetail() {
       </article>
 
       <div className="mt-12 pt-8 border-t border-gray-200">
-        <h2 className="text-xl font-semibold mb-4">他の記事も読む</h2>
         <Link
           to="/columns"
           className="inline-flex items-center text-gray-500 hover:text-gray-600 transition-colors"
         >
-          すべての記事を見る
+          他の記事を読む
           <svg
             className="w-4 h-4 ml-1"
             fill="none"

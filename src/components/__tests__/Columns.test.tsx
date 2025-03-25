@@ -89,7 +89,7 @@ describe('Columns', () => {
 
     // データが読み込まれた後の表示を確認
     await waitFor(() => {
-      expect(screen.getByText('猫のコラム')).toBeInTheDocument();
+      expect(screen.getByText('コラム一覧')).toBeInTheDocument();
     }, { timeout: 5000 });
   });
 

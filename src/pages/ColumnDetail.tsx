@@ -106,7 +106,7 @@ export default function ColumnDetail() {
         </header>
 
         {column.image_url && (
-          <div className="mb-8">
+          <div className="mb-1">
             <img
               src={column.image_url}
               alt={column.title}

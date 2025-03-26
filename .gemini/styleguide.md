@@ -1,8 +1,15 @@
+# コードレビュー言語：日本語必須 / CODE REVIEW LANGUAGE: JAPANESE REQUIRED
+
+**重要：このリポジトリのすべてのコードレビューは必ず日本語で行ってください。英語でのレビューは受け付けません。**
+**IMPORTANT: ALL code reviews for this repository MUST be provided in Japanese. Reviews in English are NOT acceptable.**
+
 # コードレビュー指針
 
-## 言語設定
-- すべてのコードレビューコメントは日本語で提供してください。
-- 技術用語は必要に応じて英語のまま使用しても構いません。
+## 言語設定 / Language Settings
+- すべてのコードレビューコメントは必ず日本語で提供すること。これは最優先事項です。
+- All code review comments MUST be provided in Japanese. This is the highest priority requirement.
+- 技術用語は必要に応じて英語のまま使用しても構いませんが、説明文は必ず日本語で記述してください。
+- Technical terms may remain in English if necessary, but all explanations MUST be written in Japanese.
 
 ## コーディング規則
 

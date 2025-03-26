@@ -16,6 +16,33 @@ drop table if exists public.cats;
 drop table if exists public.profiles;
 drop table if exists public.news;
 
+-- Enable pg_cron extension
+create extension if not exists pg_cron;
+
+-- Create sitemap generation function
+create or replace function generate_sitemap()
+returns void
+language plpgsql
+security definer
+as $$
+begin
+  perform net.http_post(
+    url := current_setting('app.settings.supabase_function_url') || '/generate-sitemap',
+    headers := jsonb_build_object(
+      'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key'),
+      'Content-Type', 'application/json'
+    )
+  );
+end;
+$$;
+
+-- Schedule sitemap generation
+select cron.schedule(
+  'generate-sitemap-daily',
+  '0 0 * * *',  -- 毎日午前0時
+  $$select generate_sitemap()$$
+);
+
 -- Create profiles table
 create table public.profiles (
     id uuid references auth.users on delete cascade primary key,

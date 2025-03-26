@@ -1,8 +1,8 @@
 ---
 name: タスク
 about: 開発タスクの作成と管理
-title: '[TASK] '
-labels: task
+title: '[タスク] '
+labels: タスク
 assignees: ''
 ---
 

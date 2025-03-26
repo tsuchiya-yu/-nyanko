@@ -1,8 +1,8 @@
 ---
 name: 機能要望
 about: 新機能の提案や改善要望
-title: '[FEATURE] '
-labels: enhancement
+title: '[新機能] '
+labels: 新機能
 assignees: ''
 ---
 

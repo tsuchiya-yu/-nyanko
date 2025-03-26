@@ -1,8 +1,8 @@
 ---
 name: バグ報告
 about: バグの報告と再現手順の共有
-title: '[BUG] '
-labels: bug
+title: '[バグ] '
+labels: バグ
 assignees: ''
 ---
 

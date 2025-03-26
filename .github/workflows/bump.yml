@@ -1,0 +1,82 @@
+name: Bump Version and Create PR
+
+on:
+  schedule:
+    - cron: '0 19 * * 5'  # 毎週金曜日の19:00に実行
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/**'
+      - '.github/workflows/bump.yml'
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Determine version bump type
+        id: version-bump
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "bump-type=patch" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.head_commit.message }}" == *"BREAKING CHANGE"* ]]; then
+            echo "bump-type=major" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.head_commit.message }}" == "feat:"* ]]; then
+            echo "bump-type=minor" >> $GITHUB_OUTPUT
+          else
+            echo "bump-type=patch" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version
+        run: npm version ${{ steps.version-bump.outputs.bump-type }} --no-git-tag-version
+
+      - name: Create Pull Request for major/minor
+        if: steps.version-bump.outputs.bump-type != 'patch'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: ${{ steps.version-bump.outputs.bump-type }}バージョンアップ'
+          title: '${{ steps.version-bump.outputs.bump-type }}バージョンアップ'
+          body: |
+            ## 変更内容
+            - パッケージのバージョンを${{ steps.version-bump.outputs.bump-type }}アップしました
+            - 現在のバージョン: ${{ steps.version-bump.outputs.bump-type }}
+            
+            ## 変更の種類
+            ${{ steps.version-bump.outputs.bump-type == 'major' && '⚠️ メジャーバージョンアップ' || '' }}
+            ${{ steps.version-bump.outputs.bump-type == 'minor' && 'マイナーバージョンアップ' || '' }}
+            
+            ---
+            このPRはGitHub Actionsワークフローによって自動生成されました。
+            レビュー後、問題なければマージしてください。
+          branch: bump-${{ steps.version-bump.outputs.bump-type }}-version
+          delete-branch: true
+          draft: false
+          labels: |
+            BUMP
+
+      - name: Auto-merge patch version
+        if: steps.version-bump.outputs.bump-type == 'patch'
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump patch version"
+          git push 

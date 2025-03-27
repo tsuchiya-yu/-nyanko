@@ -37,7 +37,7 @@ make up
 1. **データベースのセットアップ**
 - Supabaseのダッシュボードにログイン
 - SQL Editorを開く
-- `20240224_reset_schema.sql`の内容をコピーして実行
+- `schema.sql`の内容をコピーして実行
 
 1. **アプリケーションの確認**
 - ブラウザで http://localhost:5173 にアクセス
@@ -82,6 +82,35 @@ make test-coverage  # カバレッジレポート付きでテスト実行
 make deploy-function  # image-to-gemini関数をデプロイ
 ```
 
+### Supabase Edge Functions
+
+Edge Functionsのデプロイ方法：
+
+```bash
+# サイトマップ生成関数のデプロイ
+supabase functions deploy generate-sitemap
+
+# 画像生成AIとの連携関数のデプロイ
+supabase functions deploy image-to-gemini
+```
+
+#### Edge Functionsの環境変数設定
+
+Edge Functionsには以下の環境変数を設定してください：
+
+1. **generate-sitemap**
+```bash
+# Supabaseダッシュボードで設定
+PROJECT_URL=<SUPABASE_PROJECT_URL>
+SERVICE_ROLE_KEY=<SUPABASE_SERVICE_ROLE_KEY>
+```
+
+2. **image-to-gemini**
+```bash
+# Supabaseダッシュボードで設定
+GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
+```
+
 ## 技術スタック
 
 - Vite + React + TypeScript
@@ -122,4 +151,4 @@ docker compose ps
 
 ### データベース周りで問題が発生した場合
 - Supabaseのダッシュボードでデータベースの状態を確認
-- SQLエディタで`20240224_reset_schema.sql`を再実行(データが消えるので注意)
+- SQLエディタで`schema.sql`を再実行(データが消えるので注意)

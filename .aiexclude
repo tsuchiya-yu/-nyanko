@@ -1,0 +1,32 @@
+# 秘匿情報を含むファイル
+.env
+.env.*
+!.env.example
+
+# 自動生成ファイル
+node_modules/
+dist/
+coverage/
+.bolt/
+
+# 大きなデータファイル
+*.csv
+*.json.gz
+*.sql
+
+# ビルドアーティファクト
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS固有ファイル
+.DS_Store
+Thumbs.db
+
+# 秘密鍵やトークン
+*_key.pem
+*_token.txt
+*_secret.txt 

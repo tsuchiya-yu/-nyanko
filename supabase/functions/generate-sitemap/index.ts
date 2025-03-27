@@ -18,7 +18,7 @@ interface News {
 
 interface Column {
   slug: string
-  created_at: string
+  published_at: string
 }
 
 serve(async (req) => {
@@ -53,7 +53,7 @@ serve(async (req) => {
 
     const { data: columns, error: columnsError } = await supabaseClient
       .from('columns')
-      .select('slug, created_at')
+      .select('slug, published_at')
     
     if (columnsError) {
       throw new Error(`columnsテーブルの取得に失敗: ${columnsError.message}`)
@@ -96,7 +96,7 @@ serve(async (req) => {
   ${(columns as Column[]).map(item => `
   <url>
     <loc>https://cat-link.catnote.tokyo/columns/${item.slug}</loc>
-    <lastmod>${new Date(item.created_at).toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date(item.published_at).toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>`).join('')}

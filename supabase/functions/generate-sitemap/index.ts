@@ -16,6 +16,11 @@ interface News {
   created_at: string
 }
 
+interface Column {
+  slug: string
+  created_at: string
+}
+
 serve(async (req) => {
   try {
     // 環境変数の確認
@@ -44,6 +49,14 @@ serve(async (req) => {
     
     if (newsError) {
       throw new Error(`newsテーブルの取得に失敗: ${newsError.message}`)
+    }
+
+    const { data: columns, error: columnsError } = await supabaseClient
+      .from('columns')
+      .select('slug, created_at')
+    
+    if (columnsError) {
+      throw new Error(`columnsテーブルの取得に失敗: ${columnsError.message}`)
     }
 
     // サイトマップの生成
@@ -79,6 +92,13 @@ serve(async (req) => {
     <lastmod>${new Date(item.created_at).toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
+  </url>`).join('')}
+  ${(columns as Column[]).map(item => `
+  <url>
+    <loc>https://cat-link.catnote.tokyo/columns/${item.slug}</loc>
+    <lastmod>${new Date(item.created_at).toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>`).join('')}
 </urlset>`
 

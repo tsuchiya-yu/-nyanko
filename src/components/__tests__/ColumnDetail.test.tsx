@@ -55,10 +55,14 @@ describe('ColumnDetail', () => {
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation(callback => Promise.resolve(callback({
-        data: [mockColumn],
-        error: null,
-      }))),
+      then: vi.fn().mockImplementation(callback =>
+        Promise.resolve(
+          callback({
+            data: [mockColumn],
+            error: null,
+          })
+        )
+      ),
     }));
 
     render(
@@ -80,9 +84,12 @@ describe('ColumnDetail', () => {
     await flushPromises();
 
     // データが読み込まれた後の表示を確認
-    await waitFor(() => {
-      expect(screen.getByText('テストコラム')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('テストコラム')).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('エラー時にエラーメッセージを表示する', async () => {
@@ -90,10 +97,14 @@ describe('ColumnDetail', () => {
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation(callback => Promise.resolve(callback({
-        data: null,
-        error: new Error('テストエラー'),
-      }))),
+      then: vi.fn().mockImplementation(callback =>
+        Promise.resolve(
+          callback({
+            data: null,
+            error: new Error('テストエラー'),
+          })
+        )
+      ),
     }));
 
     render(
@@ -112,9 +123,12 @@ describe('ColumnDetail', () => {
     await flushPromises();
 
     // エラーメッセージを確認
-    await waitFor(() => {
-      expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('コラムが見つからない場合に404メッセージを表示する', async () => {
@@ -122,10 +136,14 @@ describe('ColumnDetail', () => {
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation(callback => Promise.resolve(callback({
-        data: [],
-        error: null,
-      }))),
+      then: vi.fn().mockImplementation(callback =>
+        Promise.resolve(
+          callback({
+            data: [],
+            error: null,
+          })
+        )
+      ),
     }));
 
     render(
@@ -144,8 +162,11 @@ describe('ColumnDetail', () => {
     await flushPromises();
 
     // 404メッセージを確認
-    await waitFor(() => {
-      expect(screen.getByText('404 - 記事が見つかりません')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('404 - 記事が見つかりません')).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
-}); 
+});

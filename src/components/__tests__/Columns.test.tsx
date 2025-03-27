@@ -65,10 +65,14 @@ describe('Columns', () => {
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       order: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation(callback => Promise.resolve(callback({
-        data: mockColumns,
-        error: null,
-      }))),
+      then: vi.fn().mockImplementation(callback =>
+        Promise.resolve(
+          callback({
+            data: mockColumns,
+            error: null,
+          })
+        )
+      ),
     }));
 
     render(
@@ -88,9 +92,12 @@ describe('Columns', () => {
     await flushPromises();
 
     // データが読み込まれた後の表示を確認
-    await waitFor(() => {
-      expect(screen.getByText('コラム一覧')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('コラム一覧')).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('エラー時にエラーメッセージを表示する', async () => {
@@ -98,10 +105,14 @@ describe('Columns', () => {
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       order: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation(callback => Promise.resolve(callback({
-        data: null,
-        error: new Error('テストエラー'),
-      }))),
+      then: vi.fn().mockImplementation(callback =>
+        Promise.resolve(
+          callback({
+            data: null,
+            error: new Error('テストエラー'),
+          })
+        )
+      ),
     }));
 
     render(
@@ -118,9 +129,12 @@ describe('Columns', () => {
     await flushPromises();
 
     // エラーメッセージを確認
-    await waitFor(() => {
-      expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('コラムが存在しない場合にメッセージを表示する', async () => {
@@ -128,10 +142,14 @@ describe('Columns', () => {
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       order: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation(callback => Promise.resolve(callback({
-        data: [],
-        error: null,
-      }))),
+      then: vi.fn().mockImplementation(callback =>
+        Promise.resolve(
+          callback({
+            data: [],
+            error: null,
+          })
+        )
+      ),
     }));
 
     render(
@@ -148,9 +166,12 @@ describe('Columns', () => {
     await flushPromises();
 
     // 記事がない場合のメッセージを確認
-    await waitFor(() => {
-      expect(screen.getByText('記事はありません')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText('記事はありません')).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 
   it('トップに戻るリンクが正しく機能する', () => {
@@ -168,4 +189,4 @@ describe('Columns', () => {
     expect(backLink).toBeInTheDocument();
     expect(backLink.closest('a')).toHaveAttribute('href', '/');
   });
-}); 
+});

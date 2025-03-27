@@ -8,7 +8,11 @@ import { stripHtml } from '../utils/html';
 import type { Column } from '../types/index';
 
 export default function Columns() {
-  const { data: columns, isLoading, error } = useQuery({
+  const {
+    data: columns,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['columns'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -39,17 +43,12 @@ export default function Columns() {
         <link rel="canonical" href="https://cat-link.catnote.tokyo/columns" />
       </Helmet>
 
-<div className="mb-8">
+      <div className="mb-8">
         <Link
           to="/"
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
-          <svg
-            className="w-4 h-4 mr-1"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -75,7 +74,10 @@ export default function Columns() {
       ) : columns && columns.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {columns.map(column => (
-            <article key={column.id} className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow">
+            <article
+              key={column.id}
+              className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
+            >
               {column.image_url && (
                 <Link to={`/columns/${column.slug}`} className="block">
                   <img
@@ -88,18 +90,18 @@ export default function Columns() {
               )}
               <div className="p-4">
                 <time dateTime={column.published_at} className="text-sm text-gray-500">
-                  {new Date(column.published_at).toLocaleDateString('ja-JP', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  }).replace(/\//g, '.')}
+                  {new Date(column.published_at)
+                    .toLocaleDateString('ja-JP', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    })
+                    .replace(/\//g, '.')}
                 </time>
                 <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors">
                   <Link to={`/columns/${column.slug}`}>{column.title}</Link>
                 </h2>
-                <p className="mt-3 text-gray-600 line-clamp-3">
-                  {stripHtml(column.content)}
-                </p>
+                <p className="mt-3 text-gray-600 line-clamp-3">{stripHtml(column.content)}</p>
                 <div className="mt-4">
                   <Link
                     to={`/columns/${column.slug}`}
@@ -130,4 +132,4 @@ export default function Columns() {
       )}
     </div>
   );
-} 
+}

@@ -433,7 +433,10 @@ export default function Home() {
             <>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
                 {columns?.map(column => (
-                  <article key={column.id} className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow">
+                  <article
+                    key={column.id}
+                    className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
+                  >
                     {column.image_url && (
                       <Link to={`/columns/${column.slug}`} className="block">
                         <img
@@ -446,11 +449,13 @@ export default function Home() {
                     )}
                     <div className="p-4">
                       <time dateTime={column.published_at} className="text-sm text-gray-500">
-                        {new Date(column.published_at).toLocaleDateString('ja-JP', {
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                        }).replace(/\//g, '.')}
+                        {new Date(column.published_at)
+                          .toLocaleDateString('ja-JP', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          })
+                          .replace(/\//g, '.')}
                       </time>
                       <h3 className="text-base font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors line-clamp-2">
                         <Link to={`/columns/${column.slug}`}>{column.title}</Link>

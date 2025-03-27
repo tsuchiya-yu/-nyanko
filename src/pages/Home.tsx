@@ -7,8 +7,9 @@ import CatCard from '../components/CatCard';
 import { handleAuthAction } from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import { stripHtml } from '../utils/html';
 
-import type { Cat, News } from '../types/index';
+import type { Cat, News, Column } from '../types/index';
 
 export default function Home() {
   const { data: cats, isLoading: isLoadingCats } = useQuery({
@@ -37,6 +38,20 @@ export default function Home() {
 
       if (error) throw error;
       return data as News[];
+    },
+  });
+
+  const { data: columns, isLoading: isLoadingColumns } = useQuery({
+    queryKey: ['columns'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('columns')
+        .select('*')
+        .order('published_at', { ascending: false })
+        .limit(4);
+
+      if (error) throw error;
+      return data as Column[];
     },
   });
 
@@ -403,6 +418,78 @@ export default function Home() {
           >
             「ねこのひとこと」を試してみる
           </button>
+        </div>
+      </section>
+
+      {/* コラムセクション */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="bg-white rounded-xl p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">猫のコラム</h2>
+          {isLoadingColumns ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+            </div>
+          ) : (
+            <>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
+                {columns?.map(column => (
+                  <article
+                    key={column.id}
+                    className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
+                  >
+                    {column.image_url && (
+                      <Link to={`/columns/${column.slug}`} className="block">
+                        <img
+                          src={column.image_url}
+                          alt={column.title}
+                          loading="lazy"
+                          className="w-full h-40 object-cover"
+                        />
+                      </Link>
+                    )}
+                    <div className="p-4">
+                      <time dateTime={column.published_at} className="text-sm text-gray-500">
+                        {new Date(column.published_at)
+                          .toLocaleDateString('ja-JP', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          })
+                          .replace(/\//g, '.')}
+                      </time>
+                      <h3 className="text-base font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors line-clamp-2">
+                        <Link to={`/columns/${column.slug}`}>{column.title}</Link>
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                        {stripHtml(column.content)}
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div className="text-right">
+                <Link
+                  to="/columns"
+                  className="inline-flex items-center text-sm text-gray-600 hover:text-gray-500 transition-colors"
+                >
+                  コラム一覧へ
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 

@@ -29,3 +29,12 @@ export interface News {
   slug: string;
   is_published: boolean;
 }
+
+export interface Column {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  image_url: string | null;
+  published_at: string;
+}

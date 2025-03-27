@@ -1,6 +1,14 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach, vi, beforeAll } from 'vitest';
+
+// コンソール出力を抑制
+beforeAll(() => {
+  // console.log, console.infoなどを無効化
+  vi.spyOn(console, 'log').mockImplementation(() => {});
+  vi.spyOn(console, 'info').mockImplementation(() => {});
+  vi.spyOn(console, 'warn').mockImplementation(() => {});
+});
 
 // Supabaseのモックをインポート
 import './mocks/supabase';
@@ -39,6 +47,7 @@ afterEach(() => {
 // afterEach(() => server.resetHandlers());
 // afterAll(() => server.close());
 
+// Supabaseのモック
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
     auth: {
@@ -53,3 +62,14 @@ vi.mock('@supabase/supabase-js', () => ({
     },
   })),
 }));
+
+// react-helmet-asyncのモック
+vi.mock('react-helmet-async', () => ({
+  Helmet: ({ children }: { children: React.ReactNode }) => children,
+  HelmetProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+// テストのタイムアウトを設定
+vi.setConfig({
+  testTimeout: 10000,
+});

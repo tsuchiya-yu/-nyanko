@@ -21,3 +21,21 @@ export const mockSupabaseClient = {
 vi.mock('../lib/supabase', () => ({
   supabase: mockSupabaseClient,
 }));
+
+// Supabaseのグローバルモック
+vi.mock('../../lib/supabase', () => ({
+  supabase: {
+    from: vi.fn().mockImplementation(() => ({
+      select: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      then: vi.fn(),
+    })),
+    storage: {
+      from: vi.fn().mockImplementation(() => ({
+        upload: vi.fn(),
+        getPublicUrl: vi.fn(),
+      })),
+    },
+  },
+}));

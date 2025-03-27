@@ -8,6 +8,8 @@ import { useSessionRefresh } from './hooks/useSessionRefresh';
 import { initGA, trackPageView } from './lib/analytics';
 import CatPhotos from './pages/CatPhotos';
 import CatProfile from './pages/CatProfile';
+import ColumnDetail from './pages/ColumnDetail';
+import Columns from './pages/Columns';
 import EditCat from './pages/EditCat';
 import Home from './pages/Home';
 import News from './pages/News';
@@ -74,6 +76,8 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
+          <Route path="/columns" element={<Columns />} />
+          <Route path="/columns/:slug" element={<ColumnDetail />} />
         </Routes>
       </Layout>
     </HeaderProvider>

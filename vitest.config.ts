@@ -12,6 +12,15 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],
     },
+    testTimeout: 10000,
+    globalSetup: [],
+    logLevels: {
+      'vitest:stdout': 'silent',
+    },
+    silent: true,
+    outputFile: {
+      json: './test-results.json',
+    },
   },
   resolve: {
     alias: {

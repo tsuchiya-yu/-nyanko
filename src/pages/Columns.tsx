@@ -12,17 +12,19 @@ export default function Columns() {
     data: columns,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<Column[]>({
     queryKey: ['columns'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('columns')
-        .select('*')
+        .select('id, title, content, image_url, published_at, slug')
         .order('published_at', { ascending: false });
 
       if (error) throw error;
-      return data as Column[];
+      return data;
     },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
   });
 
   return (
@@ -79,13 +81,21 @@ export default function Columns() {
               className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
             >
               {column.image_url && (
-                <Link to={`/columns/${column.slug}`} className="block">
-                  <img
-                    src={column.image_url}
-                    alt={column.title}
-                    loading="lazy"
-                    className="w-full h-48 object-cover"
-                  />
+                <Link to={`/columns/${column.slug}`} className="block aspect-video">
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcSet={`${column.image_url}?transform=resize&width=800&quality=75&format=webp`}
+                    />
+                    <img
+                      src={`${column.image_url}?transform=resize&width=800&quality=75`}
+                      alt={column.title}
+                      loading="lazy"
+                      width="800"
+                      height="450"
+                      className="w-full h-full object-cover"
+                    />
+                  </picture>
                 </Link>
               )}
               <div className="p-4">
@@ -106,13 +116,15 @@ export default function Columns() {
                   <Link
                     to={`/columns/${column.slug}`}
                     className="text-sm text-gray-500 hover:text-gray-600 transition-colors inline-flex items-center"
+                    aria-label={`${column.title}の続きを読む`}
                   >
-                    続きを読む
+                    記事の続きを読む
                     <svg
                       className="w-4 h-4 ml-1"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
+                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"

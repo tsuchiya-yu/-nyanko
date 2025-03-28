@@ -88,21 +88,21 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
-          <Route 
-            path="/columns" 
+          <Route
+            path="/columns"
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <Columns />
               </Suspense>
-            } 
+            }
           />
-          <Route 
-            path="/columns/:slug" 
+          <Route
+            path="/columns/:slug"
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <ColumnDetail />
               </Suspense>
-            } 
+            }
           />
         </Routes>
       </Layout>

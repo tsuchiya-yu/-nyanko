@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -8,8 +8,9 @@ import { useSessionRefresh } from './hooks/useSessionRefresh';
 import { initGA, trackPageView } from './lib/analytics';
 import CatPhotos from './pages/CatPhotos';
 import CatProfile from './pages/CatProfile';
-import ColumnDetail from './pages/ColumnDetail';
-import Columns from './pages/Columns';
+// 遅延ロード用に変更
+const ColumnDetail = lazy(() => import('./pages/ColumnDetail'));
+const Columns = lazy(() => import('./pages/Columns'));
 import EditCat from './pages/EditCat';
 import Home from './pages/Home';
 import News from './pages/News';
@@ -18,6 +19,17 @@ import Privacy from './pages/Privacy';
 import RegisterCat from './pages/RegisterCat';
 import Terms from './pages/Terms';
 import UserProfile from './pages/UserProfile';
+
+// ローディングコンポーネント
+const LoadingFallback = () => (
+  <div className="text-center py-12">
+    <div
+      role="status"
+      aria-label="読み込み中"
+      className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"
+    />
+  </div>
+);
 
 export default function App() {
   useSessionRefresh();
@@ -76,8 +88,22 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
-          <Route path="/columns" element={<Columns />} />
-          <Route path="/columns/:slug" element={<ColumnDetail />} />
+          <Route 
+            path="/columns" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <Columns />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/columns/:slug" 
+            element={
+              <Suspense fallback={<LoadingFallback />}>
+                <ColumnDetail />
+              </Suspense>
+            } 
+          />
         </Routes>
       </Layout>
     </HeaderProvider>

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { calculateAge } from './calculateAge';
+import { calculateAge } from '../calculateAge';
 
 describe('calculateAge関数', () => {
   // 現在の日付をモック
@@ -61,4 +61,4 @@ describe('calculateAge関数', () => {
     expect(calculateAge('2020/01/01').months).toBe(0);
     expect(calculateAge('2020/01/01').toString()).toBe('3歳');
   });
-});
+}); 

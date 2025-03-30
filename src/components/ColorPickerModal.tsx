@@ -14,6 +14,7 @@ export interface ColorPickerModalProps {
   onChange: (color: string) => void;
   title: string;
   colors: string[];
+  originalColor?: string; // 元の色（リセット用）
 }
 
 export function ColorPickerModal({
@@ -23,6 +24,7 @@ export function ColorPickerModal({
   onChange,
   title,
   colors,
+  originalColor,
 }: ColorPickerModalProps) {
   if (!isOpen) return null;
 
@@ -48,7 +50,18 @@ export function ColorPickerModal({
             className="block-picker"
           />
         </div>
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end mt-4 space-x-2">
+          {originalColor && (
+            <button
+              onClick={() => {
+                onChange(originalColor);
+                onClose();
+              }}
+              className="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none text-sm"
+            >
+              リセット
+            </button>
+          )}
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-500 focus:outline-none"

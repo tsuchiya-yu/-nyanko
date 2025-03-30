@@ -579,6 +579,7 @@ export default function EditCat() {
               onChange={handleBgColorChange}
               title="背景色を選択"
               colors={backgroundColors}
+              originalColor={cat?.background_color || defaultBackgroundColor}
             />
 
             <ColorPickerModal
@@ -588,6 +589,7 @@ export default function EditCat() {
               onChange={handleTextColorChange}
               title="文字色を選択"
               colors={textColors}
+              originalColor={cat?.text_color || defaultTextColor}
             />
 
             <button

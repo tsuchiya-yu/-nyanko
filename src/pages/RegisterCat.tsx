@@ -471,6 +471,7 @@ export default function RegisterCat() {
               onChange={handleBgColorChange}
               title="背景色を選択"
               colors={backgroundColors}
+              originalColor={defaultBackgroundColor}
             />
 
             <ColorPickerModal
@@ -480,6 +481,7 @@ export default function RegisterCat() {
               onChange={handleTextColorChange}
               title="文字色を選択"
               colors={textColors}
+              originalColor={defaultTextColor}
             />
 
             <button

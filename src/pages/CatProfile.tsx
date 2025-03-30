@@ -31,6 +31,8 @@ interface CatWithOwner {
   profiles: {
     name: string;
   };
+  background_color?: string;
+  text_color?: string;
 }
 
 interface CatPhoto {
@@ -100,6 +102,10 @@ export default function CatProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<CatPhoto | null>(null);
   const { setHeaderFooterVisible } = useHeaderFooter();
+
+  // デフォルトの色設定
+  const defaultBackgroundColor = '#FFF5F9';
+  const defaultTextColor = '#6F4400';
 
   const {
     data: cat,
@@ -211,10 +217,28 @@ export default function CatProfile() {
   useEffect(() => {
     setHeaderFooterVisible?.(false);
 
+    // 猫データ取得後に親要素の背景色を設定
+    if (cat) {
+      // データベースから取得した色を使用（設定されていない場合はデフォルト値）
+      const bgColor = cat.background_color || defaultBackgroundColor;
+      
+      const parentElement = document.querySelector('div.min-h-screen.flex.flex-col.bg-white');
+      if (parentElement) {
+        const originalBgColor = window.getComputedStyle(parentElement).backgroundColor;
+        parentElement.setAttribute('style', `background-color: ${bgColor} !important`);
+        
+        return () => {
+          // クリーンアップ時に元の背景色に戻す
+          parentElement.setAttribute('style', `background-color: ${originalBgColor}`);
+          setHeaderFooterVisible?.(true);
+        };
+      }
+    }
+    
     return () => {
       setHeaderFooterVisible?.(true);
     };
-  }, [setHeaderFooterVisible]);
+  }, [setHeaderFooterVisible, cat]);
 
   if (isLoading) {
     return (
@@ -241,9 +265,15 @@ export default function CatProfile() {
   }
 
   const age = cat ? calculateAge(cat.birthdate) : null;
+  
+  // データベースから取得した色を使用（設定されていない場合はデフォルト値）
+  const textColor = cat.text_color || defaultTextColor;
 
   return (
-    <div className="max-w-[480px] mx-auto space-y-6 relative min-h-screen">
+    <div 
+      className="max-w-[480px] mx-auto space-y-6 relative min-h-screen"
+      style={{ color: textColor }}
+    >
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
@@ -349,7 +379,8 @@ export default function CatProfile() {
           <div className="fixed top-4 right-4 z-40">
             <button
               onClick={() => setIsShareModalOpen(true)}
-              className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
+              className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              style={{ color: textColor }}
               aria-label="シェアする"
             >
               <Share2 className="h-6 w-6" />
@@ -376,7 +407,7 @@ export default function CatProfile() {
               />
             </button>
           </div>
-          <div className="pt-2.5 text-gray-700">
+          <div className="pt-2.5">
             <h1 className="text-lg font-bold pb-0 mb-1">{cat.name}</h1>
             <p className="text-xs">
               {cat.breed} | {age?.toString()}
@@ -395,7 +426,8 @@ export default function CatProfile() {
                   href={cat.instagram_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-gray-500 hover:text-gray-600"
+                  className="inline-flex items-center hover:opacity-80"
+                  style={{ color: textColor }}
                 >
                   <Instagram className="h-6 w-6 mr-2" />
                 </a>
@@ -405,7 +437,8 @@ export default function CatProfile() {
                   href={cat.x_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-gray-500 hover:text-gray-600"
+                  className="inline-flex items-center hover:opacity-80"
+                  style={{ color: textColor }}
                 >
                   <Twitter className="h-6 w-6 mr-2" />
                 </a>
@@ -415,7 +448,8 @@ export default function CatProfile() {
                   href={cat.homepage_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-gray-500 hover:text-gray-600"
+                  className="inline-flex items-center hover:opacity-80"
+                  style={{ color: textColor }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -435,8 +469,8 @@ export default function CatProfile() {
             </div>
           )}
 
-          <div className="prose max-w-none">
-            <p className="text-gray-700 whitespace-pre-line text-sm">{cat.description}</p>
+          <div className="max-w-none">
+            <p className="whitespace-pre-line text-sm">{cat.description}</p>
           </div>
 
           {photos && photos.length > 0 && (
@@ -483,7 +517,7 @@ export default function CatProfile() {
               style={{ aspectRatio: '160/20', height: '20px' }}
             />
           </Link>
-          <p className="text-xs text-gray-700 mt-2 h-[16px]">©︎CAT LINK All Rights Reserved</p>
+          <p className="text-xs mt-2 h-[16px]">©︎CAT LINK All Rights Reserved</p>
         </div>
       </div>
 

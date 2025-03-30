@@ -1,0 +1,12 @@
+/* BlockPickerのパディングを変更するスタイル */
+.block-picker > div {
+  padding-top: 10px !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* BlockPickerのコンテナスタイルの微調整 */
+.color-picker-container .block-picker {
+  box-shadow: none !important;
+} 

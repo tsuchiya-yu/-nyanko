@@ -1,11 +1,10 @@
 import { X } from 'lucide-react';
 import { BlockPicker } from 'react-color';
 import { createPortal } from 'react-dom';
-
 import { backgroundColors, textColors } from '../utils/constants';
 
-// スタイルを追加
-import './colorPickerStyles.css';
+// CSSモジュールとしてスタイルをインポート
+import styles from './colorPickerStyles.module.css';
 
 // ColorPickerModalコンポーネント
 export interface ColorPickerModalProps {
@@ -39,7 +38,7 @@ export function ColorPickerModal({
           <X size={18} />
         </button>
         <h3 className="text-lg font-semibold mb-4">{title}</h3>
-        <div className="color-picker-container">
+        <div className={styles.colorPickerContainer}>
           <BlockPicker
             color={color}
             onChange={colorObj => {
@@ -48,7 +47,7 @@ export function ColorPickerModal({
             colors={colors}
             triangle="hide"
             width="220px"
-            className="block-picker"
+            className={styles.blockPicker}
           />
         </div>
         <div className="flex justify-end mt-4 space-x-2">

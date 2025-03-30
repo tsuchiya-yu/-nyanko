@@ -231,9 +231,6 @@ export default function RegisterCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-              // 色の値をフォームデータに設定
-              data.background_color = bgColor;
-              data.text_color = textColor;
               console.log('提出するデータ:', data);
               mutation.mutate(data);
             })}

@@ -42,4 +42,4 @@ export const textColors = [
   '#2F4858',
   '#9C2B20',
   '#3D550C',
-]; 
+];

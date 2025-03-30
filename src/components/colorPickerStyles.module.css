@@ -9,4 +9,4 @@
 /* BlockPickerのコンテナスタイルの微調整 */
 .colorPickerContainer :global(.block-picker) {
   box-shadow: none !important;
-} 
+}

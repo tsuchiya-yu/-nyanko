@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Share2, ArrowLeft, Instagram, Twitter, Heart } from 'lucide-react';
+import { Share2, ArrowLeft, Instagram, Twitter, Heart, Link as LinkIcon, MoreHorizontal, Pencil, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
-import { useParams, Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import OptimizedImage from '../components/OptimizedImage';
@@ -13,6 +13,7 @@ import { handleApiError } from '../lib/api';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
+import { defaultBackgroundColor, defaultTextColor } from '../utils/constants';
 
 interface CatWithOwner {
   id: string;
@@ -102,10 +103,6 @@ export default function CatProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<CatPhoto | null>(null);
   const { setHeaderFooterVisible } = useHeaderFooter();
-
-  // デフォルトの色設定
-  const defaultBackgroundColor = '#FFF5F9';
-  const defaultTextColor = '#6F4400';
 
   const {
     data: cat,

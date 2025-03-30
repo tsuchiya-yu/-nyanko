@@ -5,14 +5,9 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
-import {
-  ColorPickerModal,
-  backgroundColors,
-  textColors,
-  defaultBackgroundColor,
-  defaultTextColor,
-} from '../components/ColorPickerModal';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { defaultBackgroundColor, defaultTextColor, backgroundColors, textColors } from '../utils/constants';
+import { ColorPickerModal } from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';

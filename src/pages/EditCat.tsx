@@ -1,18 +1,23 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
+import { Pencil, Trash, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Pencil, Trash, X } from 'lucide-react';
-import { defaultBackgroundColor, defaultTextColor, backgroundColors, textColors } from '../utils/constants';
-import { ColorPickerModal } from '../components/ColorPickerModal';
 
+import { ColorPickerModal } from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import {
+  defaultBackgroundColor,
+  defaultTextColor,
+  backgroundColors,
+  textColors,
+} from '../utils/constants';
 
 interface CatFormData {
   name: string;

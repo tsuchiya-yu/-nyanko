@@ -221,12 +221,12 @@ export default function CatProfile() {
     if (cat) {
       // データベースから取得した色を使用（設定されていない場合はデフォルト値）
       const bgColor = cat.background_color || defaultBackgroundColor;
-      
+
       const parentElement = document.querySelector('div.min-h-screen.flex.flex-col.bg-white');
       if (parentElement) {
         const originalBgColor = window.getComputedStyle(parentElement).backgroundColor;
         parentElement.setAttribute('style', `background-color: ${bgColor} !important`);
-        
+
         return () => {
           // クリーンアップ時に元の背景色に戻す
           parentElement.setAttribute('style', `background-color: ${originalBgColor}`);
@@ -234,7 +234,7 @@ export default function CatProfile() {
         };
       }
     }
-    
+
     return () => {
       setHeaderFooterVisible?.(true);
     };
@@ -265,12 +265,12 @@ export default function CatProfile() {
   }
 
   const age = cat ? calculateAge(cat.birthdate) : null;
-  
+
   // データベースから取得した色を使用（設定されていない場合はデフォルト値）
   const textColor = cat.text_color || defaultTextColor;
 
   return (
-    <div 
+    <div
       className="max-w-[480px] mx-auto space-y-6 relative min-h-screen"
       style={{ color: textColor }}
     >

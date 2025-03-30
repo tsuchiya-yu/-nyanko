@@ -6,7 +6,13 @@ import { useForm } from 'react-hook-form';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ColorPickerModal, backgroundColors, textColors, defaultBackgroundColor, defaultTextColor } from '../components/ColorPickerModal';
+import {
+  ColorPickerModal,
+  backgroundColors,
+  textColors,
+  defaultBackgroundColor,
+  defaultTextColor,
+} from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
@@ -47,13 +53,13 @@ export default function EditCat() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
   const [editingImage, setEditingImage] = useState<File | null>(null);
-  
+
   // 色選択のState
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
-  
+
   const {
     register,
     handleSubmit,
@@ -262,7 +268,7 @@ export default function EditCat() {
     setBgColor(color);
     setValue('background_color', color);
   };
-  
+
   // 文字色変更のハンドラー
   const handleTextColorChange = (color: string) => {
     setTextColor(color);
@@ -508,7 +514,7 @@ export default function EditCat() {
             {/* カラーテーマ設定 */}
             <div className="pt-4 border-t border-gray-200">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">カラーテーマ設定</h2>
-              
+
               <div className="space-y-6">
                 <p>プロフィールページのカラーテーマを設定できます。</p>
                 {/* 背景色 */}
@@ -532,7 +538,7 @@ export default function EditCat() {
                     />
                   </div>
                 </div>
-                
+
                 {/* 文字色 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">文字色</label>
@@ -554,11 +560,16 @@ export default function EditCat() {
                     />
                   </div>
                 </div>
-                
+
                 {/* プレビュー */}
-                <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: bgColor, color: textColor }}>
+                <div
+                  className="mt-4 p-4 rounded-lg"
+                  style={{ backgroundColor: bgColor, color: textColor }}
+                >
                   <h3 className="text-base font-medium mb-2">プレビュー</h3>
-                  <p className="text-sm">このように表示されます。実際のページで確認するには保存してください。</p>
+                  <p className="text-sm">
+                    このように表示されます。実際のページで確認するには保存してください。
+                  </p>
                 </div>
               </div>
             </div>
@@ -572,7 +583,7 @@ export default function EditCat() {
               title="背景色を選択"
               colors={backgroundColors}
             />
-            
+
             <ColorPickerModal
               isOpen={showTextColorPicker}
               onClose={() => setShowTextColorPicker(false)}

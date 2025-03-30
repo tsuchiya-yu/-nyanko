@@ -103,16 +103,18 @@ describe('Columns', () => {
   it('エラー時にエラーメッセージを表示する', async () => {
     // モックのクリーンアップ
     vi.clearAllMocks();
-    
+
     // supabase.fromのモックを設定 - エラーを返すように
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       order: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation((callback) => {
-        return Promise.resolve(callback({ 
-          data: null, 
-          error: { message: 'テストエラー' } 
-        }));
+      then: vi.fn().mockImplementation(callback => {
+        return Promise.resolve(
+          callback({
+            data: null,
+            error: { message: 'テストエラー' },
+          })
+        );
       }),
     }));
 
@@ -130,27 +132,32 @@ describe('Columns', () => {
 
     // 非同期処理を待つ
     await flushPromises();
-    
+
     // ヘッダータイトルがあることを確認
-    await waitFor(() => {
-      const header = screen.getByRole('heading', { level: 1 });
-      expect(header).toBeInTheDocument();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        const header = screen.getByRole('heading', { level: 1 });
+        expect(header).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
   });
 
   it('コラムが存在しない場合にメッセージを表示する', async () => {
     // モックのクリーンアップ
     vi.clearAllMocks();
-    
+
     // supabase.fromのモックを設定 - 空の配列を返すように
     (supabase.from as any).mockImplementation(() => ({
       select: vi.fn().mockReturnThis(),
       order: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation((callback) => {
-        return Promise.resolve(callback({ 
-          data: [], 
-          error: null 
-        }));
+      then: vi.fn().mockImplementation(callback => {
+        return Promise.resolve(
+          callback({
+            data: [],
+            error: null,
+          })
+        );
       }),
     }));
 
@@ -168,12 +175,15 @@ describe('Columns', () => {
 
     // 非同期処理を待つ
     await flushPromises();
-    
+
     // ヘッダータイトルがあることを確認
-    await waitFor(() => {
-      const header = screen.getByRole('heading', { level: 1 });
-      expect(header).toBeInTheDocument();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        const header = screen.getByRole('heading', { level: 1 });
+        expect(header).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
   });
 
   it('トップに戻るリンクが正しく機能する', () => {

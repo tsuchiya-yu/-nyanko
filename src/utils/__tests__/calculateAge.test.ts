@@ -61,4 +61,4 @@ describe('calculateAge関数', () => {
     expect(calculateAge('2020/01/01').months).toBe(0);
     expect(calculateAge('2020/01/01').toString()).toBe('3歳');
   });
-}); 
+});

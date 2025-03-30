@@ -1,10 +1,10 @@
 import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import Layout from '../Layout';
 import { useHeaderFooter } from '../../context/HeaderContext';
 import { useAuthStore } from '../../store/authStore';
 import { renderWithProviders } from '../../test/utils';
+import Layout from '../Layout';
 
 // モックの設定
 vi.mock('../../store/authStore');
@@ -171,4 +171,4 @@ describe('Layoutコンポーネント', () => {
     // 子要素は表示されていることを確認
     expect(screen.getByTestId('content')).toBeInTheDocument();
   });
-}); 
+});

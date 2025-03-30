@@ -1,11 +1,11 @@
 import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import CatCard from '../CatCard';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useAuthStore } from '../../store/authStore';
 import { renderWithProviders, mockCat } from '../../test/utils';
 import { calculateAge } from '../../utils/calculateAge';
+import CatCard from '../CatCard';
 
 // モックの設定
 vi.mock('../../store/authStore');
@@ -157,4 +157,4 @@ describe('CatCardコンポーネント', () => {
     const heartIcon = unlikeButton.querySelector('svg');
     expect(heartIcon).toHaveClass('fill-pink-500');
   });
-}); 
+});

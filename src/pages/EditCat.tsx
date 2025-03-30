@@ -1,14 +1,23 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
+import { Pencil, Trash, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
+import { ColorPickerModal } from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import {
+  defaultBackgroundColor,
+  defaultTextColor,
+  backgroundColors,
+  textColors,
+} from '../utils/constants';
 
 interface CatFormData {
   name: string;
@@ -22,6 +31,8 @@ interface CatFormData {
   x_url?: string;
   homepage_url?: string;
   gender?: string;
+  background_color?: string;
+  text_color?: string;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -44,6 +55,13 @@ export default function EditCat() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
   const [editingImage, setEditingImage] = useState<File | null>(null);
+
+  // 色選択のState
+  const [showBgColorPicker, setShowBgColorPicker] = useState(false);
+  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+  const [bgColor, setBgColor] = useState(defaultBackgroundColor);
+  const [textColor, setTextColor] = useState(defaultTextColor);
+
   const {
     register,
     handleSubmit,
@@ -90,7 +108,13 @@ export default function EditCat() {
         x_url: cat.x_url || '',
         homepage_url: cat.homepage_url || '',
         gender: cat.gender || '',
+        background_color: cat.background_color || defaultBackgroundColor,
+        text_color: cat.text_color || defaultTextColor,
       });
+
+      // 色の状態を初期化
+      setBgColor(cat.background_color || defaultBackgroundColor);
+      setTextColor(cat.text_color || defaultTextColor);
 
       // cat.image_urlが存在する場合、プレビューURLとして設定
       if (cat.image_url) {
@@ -192,6 +216,8 @@ export default function EditCat() {
           x_url: data.x_url || null,
           homepage_url: data.homepage_url || null,
           gender: data.gender || null,
+          background_color: data.background_color,
+          text_color: data.text_color,
         })
         .eq('id', id);
 
@@ -238,6 +264,18 @@ export default function EditCat() {
       navigate(`/cats/${id}`);
     },
   });
+
+  // 背景色変更のハンドラー
+  const handleBgColorChange = (color: string) => {
+    setBgColor(color);
+    setValue('background_color', color);
+  };
+
+  // 文字色変更のハンドラー
+  const handleTextColorChange = (color: string) => {
+    setTextColor(color);
+    setValue('text_color', color);
+  };
 
   if (isLoading) {
     return (
@@ -471,6 +509,90 @@ export default function EditCat() {
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
             </div>
+
+            {/* カラーテーマ設定 */}
+            <div className="pt-4 border-t border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">カラーテーマ設定</h2>
+
+              <div className="space-y-6">
+                <p>プロフィールページのカラーテーマを設定できます。</p>
+                {/* 背景色 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">背景色</label>
+                  <div className="flex items-center">
+                    <div
+                      className="w-10 h-10 rounded border border-gray-300 cursor-pointer mr-3"
+                      style={{ backgroundColor: bgColor }}
+                      onClick={() => setShowBgColorPicker(true)}
+                    ></div>
+                    <input
+                      type="text"
+                      value={bgColor}
+                      onChange={e => {
+                        setBgColor(e.target.value);
+                        setValue('background_color', e.target.value);
+                      }}
+                      className="block px-3 py-2 border border-gray-300 rounded-lg
+                        focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                {/* 文字色 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">文字色</label>
+                  <div className="flex items-center">
+                    <div
+                      className="w-10 h-10 rounded border border-gray-300 cursor-pointer mr-3"
+                      style={{ backgroundColor: textColor }}
+                      onClick={() => setShowTextColorPicker(true)}
+                    ></div>
+                    <input
+                      type="text"
+                      value={textColor}
+                      onChange={e => {
+                        setTextColor(e.target.value);
+                        setValue('text_color', e.target.value);
+                      }}
+                      className="block px-3 py-2 border border-gray-300 rounded-lg
+                        focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                {/* プレビュー */}
+                <div
+                  className="mt-4 p-4 rounded-lg"
+                  style={{ backgroundColor: bgColor, color: textColor }}
+                >
+                  <h3 className="text-base font-medium mb-2">プレビュー</h3>
+                  <p className="text-sm">
+                    このように表示されます。実際のページで確認するには保存してください。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* モーダル */}
+            <ColorPickerModal
+              isOpen={showBgColorPicker}
+              onClose={() => setShowBgColorPicker(false)}
+              color={bgColor}
+              onChange={handleBgColorChange}
+              title="背景色を選択"
+              colors={backgroundColors}
+              originalColor={cat?.background_color || defaultBackgroundColor}
+            />
+
+            <ColorPickerModal
+              isOpen={showTextColorPicker}
+              onClose={() => setShowTextColorPicker(false)}
+              color={textColor}
+              onChange={handleTextColorChange}
+              title="文字色を選択"
+              colors={textColors}
+              originalColor={cat?.text_color || defaultTextColor}
+            />
 
             <button
               type="submit"

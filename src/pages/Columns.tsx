@@ -18,6 +18,7 @@ export default function Columns() {
       const { data, error } = await supabase
         .from('columns')
         .select('id, title, content, image_url, published_at, slug')
+        .lt('published_at', new Date().toISOString())
         .order('published_at', { ascending: false });
 
       if (error) throw error;

@@ -18,6 +18,7 @@ export default function News() {
         .from('news')
         .select('*')
         .eq('is_published', true)
+        .lt('published_at', new Date().toISOString())
         .order('published_at', { ascending: false });
 
       if (error) throw error;

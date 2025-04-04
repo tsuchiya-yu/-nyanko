@@ -33,6 +33,7 @@ export default function Home() {
         .from('news')
         .select('*')
         .eq('is_published', true)
+        .lt('published_at', new Date().toISOString())
         .order('published_at', { ascending: false })
         .limit(3);
 
@@ -47,6 +48,7 @@ export default function Home() {
       const { data, error } = await supabase
         .from('columns')
         .select('*')
+        .lt('published_at', new Date().toISOString())
         .order('published_at', { ascending: false })
         .limit(4);
 

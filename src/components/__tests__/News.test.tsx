@@ -62,9 +62,11 @@ describe('News', () => {
     const mockFrom = vi.fn().mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({
-            data: mockNews,
-            error: null,
+          lt: vi.fn().mockReturnValue({
+            order: vi.fn().mockResolvedValue({
+              data: mockNews,
+              error: null,
+            }),
           }),
         }),
       }),
@@ -84,7 +86,9 @@ describe('News', () => {
     const mockFrom = vi.fn().mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockReturnValue(new Promise(() => {})),
+          lt: vi.fn().mockReturnValue({
+            order: vi.fn().mockReturnValue(new Promise(() => {})),
+          }),
         }),
       }),
     });
@@ -100,9 +104,11 @@ describe('News', () => {
     const mockFrom = vi.fn().mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          order: vi.fn().mockResolvedValue({
-            data: null,
-            error: new Error('エラーが発生しました'),
+          lt: vi.fn().mockReturnValue({
+            order: vi.fn().mockResolvedValue({
+              data: null,
+              error: new Error('エラーが発生しました'),
+            }),
           }),
         }),
       }),

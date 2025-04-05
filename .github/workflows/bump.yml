@@ -12,6 +12,11 @@ on:
       - 'src/**'
       - '.github/workflows/bump.yml'
 
+# GitHub Actionsに必要な権限を追加
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   bump-version:
     runs-on: ubuntu-latest
@@ -19,6 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,6 +60,7 @@ jobs:
         if: steps.version-bump.outputs.bump-type != 'patch'
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'chore: ${{ steps.version-bump.outputs.bump-type }}バージョンアップ'
           title: '${{ steps.version-bump.outputs.bump-type }}バージョンアップ'
           body: |

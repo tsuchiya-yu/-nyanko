@@ -1,8 +1,9 @@
 import { Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { usePageViewCount } from '../hooks/usePageViewCount';
 
 import CatCard from './CatCard';
+import { usePageViewCount } from '../hooks/usePageViewCount';
+
 import type { Cat } from '../types';
 
 interface CatCardWithViewsProps {
@@ -44,4 +45,4 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
       </div>
     </div>
   );
-} 
+}

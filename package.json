@@ -22,6 +22,7 @@
     "@types/react-color": "^3.0.13",
     "@vercel/edge": "^1.2.1",
     "cross-fetch": "^4.1.0",
+    "googleapis": "^148.0.0",
     "hammerjs": "^2.0.8",
     "lucide-react": "^0.344.0",
     "qrcode.react": "^4.2.0",

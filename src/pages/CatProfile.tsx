@@ -19,6 +19,7 @@ import AuthModal from '../components/auth/AuthModal';
 import OptimizedImage from '../components/OptimizedImage';
 import ShareModal from '../components/ShareModal';
 import { useHeaderFooter } from '../context/HeaderContext';
+import { usePageViewCount } from '../hooks/usePageViewCount';
 import { handleApiError } from '../lib/api';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';

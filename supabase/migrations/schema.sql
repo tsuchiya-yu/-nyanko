@@ -13,6 +13,7 @@ drop policy if exists "News are viewable by everyone" on public.news;
 drop policy if exists "Authenticated users can manage news" on public.news;
 drop policy if exists "Columns are viewable by everyone" on public.columns;
 drop policy if exists "Authenticated users can manage columns" on public.columns;
+drop policy if exists "Service role can manage cache" on public.cache;
 
 drop table if exists public.favorites;
 drop table if exists public.cat_photos;
@@ -20,6 +21,7 @@ drop table if exists public.cats;
 drop table if exists public.profiles;
 drop table if exists public.news;
 drop table if exists public.columns;
+drop table if exists public.cache;
 
 -- Enable pg_cron extension
 create extension if not exists pg_cron;
@@ -116,6 +118,28 @@ create table public.columns (
     published_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- Create cache table for storing API responses
+create table public.cache (
+    key text primary key,
+    value integer not null,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+    expires_at timestamp with time zone not null
+);
+
+-- Function to automatically delete expired cache entries
+create or replace function delete_expired_cache() returns trigger as $$
+begin
+    delete from cache where expires_at < now();
+    return null;
+end;
+$$ language plpgsql;
+
+-- Trigger to clean up expired cache on insert
+drop trigger if exists trigger_delete_expired_cache on cache;
+create trigger trigger_delete_expired_cache
+after insert on cache
+execute procedure delete_expired_cache();
+
 -- Enable RLS
 alter table public.profiles enable row level security;
 alter table public.cats enable row level security;
@@ -123,6 +147,7 @@ alter table public.cat_photos enable row level security;
 alter table public.favorites enable row level security;
 alter table public.news enable row level security;
 alter table public.columns enable row level security;
+alter table public.cache enable row level security;
 
 -- RLS policies for profiles
 create policy "Public profiles are viewable by everyone"
@@ -205,6 +230,12 @@ create policy "Columns are viewable by everyone"
 create policy "Authenticated users can manage columns"
     on public.columns for all
     using (auth.role() = 'authenticated');
+
+-- RLS policies for cache
+create policy "Service role can manage cache" on public.cache
+    for all
+    using (true)
+    with check (true);
 
 -- Insert sample data
 insert into public.profiles (id, name, avatar_url)

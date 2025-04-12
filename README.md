@@ -21,65 +21,43 @@ cd cat-link
 ```bash
 cp .env.example .env
 ```
-`.env`ファイルを開き、必要な環境変数を設定してください：
+`.env`ファイルを開き、必要な環境変数を設定してください。
 
-1. **Dockerコンテナのビルドと起動**
-```bash
-docker compose build
-docker compose up -d
-```
-または、Makefileを使用：
+3. **開発環境の起動**
 ```bash
 make build
 make up
 ```
 
-1. **データベースのセットアップ**
+4. **データベースのセットアップ**
 - Supabaseのダッシュボードにログイン
 - SQL Editorを開く
 - `schema.sql`の内容をコピーして実行
 
-1. **アプリケーションの確認**
+5. **アプリケーションの確認**
 - ブラウザで http://localhost:5173 にアクセス
 - アプリケーションが正常に動作することを確認
 
 ## 開発コマンド
 
-### Dockerコマンド
-```bash
-# コンテナの起動
-docker compose up -d
-
-# コンテナのログ確認
-docker compose logs -f
-
-# コンテナの停止
-docker compose down
-
-# コンテナ内でコマンドを実行
-docker compose exec web npm run <command>
-```
-
 ### Makefileコマンド
-より簡単に開発環境を操作するためのMakefileコマンドが用意されています：
+開発環境を操作するためのMakefileコマンドが用意されています：
 
 ```bash
-# コンテナのビルドと起動
+# 開発環境の操作
 make build   # Dockerイメージのビルド
 make up      # コンテナの起動
 make down    # コンテナの停止
+make logs    # コンテナのログ確認
 make app     # コンテナ内でのbashシェル起動
 
 # コード品質管理
-make lint    # ESLintによるコード検証と自動修正
+make lint    # ESLintによるコード検証
 make format  # Prettierによるコードフォーマット
 
 # テスト実行
 make test           # テストの実行
 make test-coverage  # カバレッジレポート付きでテスト実行
-
-# Supabase Functions
-make deploy-function  # image-to-gemini関数をデプロイ
 ```
 
 ### Supabase Edge Functions
@@ -87,25 +65,35 @@ make deploy-function  # image-to-gemini関数をデプロイ
 Edge Functionsのデプロイ方法：
 
 ```bash
-# サイトマップ生成関数のデプロイ
-supabase functions deploy generate-sitemap
+# Google Analytics Pageviews取得関数のデプロイ
+make deploy-ga-pageviews
 
-# 画像生成AIとの連携関数のデプロイ
-supabase functions deploy image-to-gemini
+# サイトマップ生成関数のデプロイ
+make deploy-sitemap
+
+# 画像から猫の気持ちを生成する関数のデプロイ
+make deploy-gemini
 ```
 
 #### Edge Functionsの環境変数設定
 
 Edge Functionsには以下の環境変数を設定してください：
 
-1. **generate-sitemap**
+1. **ga-pageviews**
+```bash
+# Supabaseダッシュボードで設定
+GA_PROPERTY_ID=<GOOGLE_ANALYTICS_PROPERTY_ID>
+GA_CREDENTIALS=<GOOGLE_SERVICE_ACCOUNT_JSON>
+```
+
+2. **generate-sitemap**
 ```bash
 # Supabaseダッシュボードで設定
 PROJECT_URL=<SUPABASE_PROJECT_URL>
 SERVICE_ROLE_KEY=<SUPABASE_SERVICE_ROLE_KEY>
 ```
 
-2. **image-to-gemini**
+3. **image-to-gemini**
 ```bash
 # Supabaseダッシュボードで設定
 GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
@@ -113,42 +101,87 @@ GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
 
 ## 技術スタック
 
-- Vite + React + TypeScript
+### フロントエンド
+- React 18
+- TypeScript
+- Vite
 - TailwindCSS
 - React Query (@tanstack/react-query)
-- Supabase
 - React Router DOM
 - Zustand（状態管理）
-- Vitest & Testing Library（テスト）
+- React Hook Form
+- React Image Crop
+- React Zoom Pan Pinch
+
+### バックエンド
+- Supabase
+- Edge Functions (Vercel Edge)
+- Google Analytics API
+- Google Gemini API
+
+### 開発環境
+- Docker
+- Docker Compose
+- Make
+
+### テスト・品質管理
+- Vitest
+- Testing Library
+- ESLint
+- Prettier
 
 ## プロジェクト構成
 
 ```
 src/
+  ├── app/         # アプリケーション固有のロジック
   ├── components/  # 再利用可能なコンポーネント
-  ├── pages/       # ページコンポーネント
-  ├── lib/         # ユーティリティ関数やAPI関連
-  ├── hooks/       # カスタムフック
   ├── context/     # Reactコンテキスト
+  ├── hooks/       # カスタムフック
+  ├── lib/         # ユーティリティ関数やAPI関連
+  ├── pages/       # ページコンポーネント
   ├── store/       # 状態管理（Zustand）
-  └── types/       # TypeScript型定義
+  ├── test/        # テストユーティリティ
+  ├── types/       # TypeScript型定義
+  └── utils/       # 汎用ユーティリティ関数
+
+supabase/
+  └── functions/   # Supabase Edge Functions
+      ├── ga-pageviews/      # Google Analyticsページビュー取得
+      ├── generate-sitemap/  # サイトマップ生成
+      └── image-to-gemini/   # 画像生成AI連携
 ```
 
 ## 主な機能
 
 - 猫のプロフィール登録・編集
-- 猫の写真管理
+- 猫の写真管理（画像のクロップ・ズーム機能付き）
 - ユーザープロフィール管理
-- 猫のプロフィール閲覧・共有
+- 猫のプロフィール閲覧・共有（QRコード生成機能付き）
+- Google Analyticsによるアクセス解析
+- AIを活用した画像分析・生成
 
 ## トラブルシューティング
 
-### アプリケーションにアクセスできない場合
-- Dockerコンテナが正常に起動しているか確認
+### 開発環境の問題
+- コンテナの状態確認
 ```bash
-docker compose ps
+make ps
+```
+- ログの確認
+```bash
+make logs
+```
+- 開発環境の再起動
+```bash
+make down
+make up
 ```
 
 ### データベース周りで問題が発生した場合
 - Supabaseのダッシュボードでデータベースの状態を確認
-- SQLエディタで`schema.sql`を再実行(データが消えるので注意)
+- SQLエディタで`schema.sql`を再実行（データが消えるので注意）
+
+### テストの実行に関する問題
+- `make test`で個別のテストを実行して問題を特定
+- `coverage`ディレクトリを削除して`make test-coverage`を再実行

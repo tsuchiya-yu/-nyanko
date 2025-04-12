@@ -1,3 +1,4 @@
+# コンテナ操作
 build:
 	docker compose build
 
@@ -9,6 +10,12 @@ down:
 
 app:
 	docker compose exec web bash
+
+ps:
+	docker compose ps
+
+logs:
+	docker compose logs -f
 
 # 静的解析とフォーマット
 lint:
@@ -25,5 +32,13 @@ test-coverage:
 	docker compose exec web npm run test:coverage
 
 # Supabase Functions デプロイ
-deploy-function:
+deploy-ga-pageviews:
+	supabase functions deploy ga-pageviews --no-verify-jwt
+
+deploy-sitemap:
+	supabase functions deploy generate-sitemap --no-verify-jwt
+
+deploy-gemini:
 	supabase functions deploy image-to-gemini --no-verify-jwt
+
+.PHONY: build up down app ps logs lint format test test-coverage deploy-ga-pageviews deploy-sitemap deploy-gemini

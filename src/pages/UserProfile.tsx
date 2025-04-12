@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 
 import CatCard from '../components/CatCard';
+import CatCardWithViews from '../components/CatCardWithViews';
 import UserSettingsModal from '../components/user/UserSettingsModal';
 import { useFavorites } from '../hooks/useFavorites';
 import { supabase } from '../lib/supabase';
@@ -153,29 +154,7 @@ export default function UserProfile() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {cats?.map(cat => (
-                <div key={cat.id} className="group relative">
-                  <CatCard
-                    cat={cat}
-                    actions={
-                      isOwnProfile && (
-                        <>
-                          <Link
-                            to={`/cats/${cat.id}/photos`}
-                            className="flex-1 px-3 py-2 bg-gray-800 text-white rounded-lg hover:bg-black transition-all text-sm font-medium text-center"
-                          >
-                            写真を追加
-                          </Link>
-                          <Link
-                            to={`/cats/${cat.id}/edit`}
-                            className="flex-1 px-3 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
-                          >
-                            編集する
-                          </Link>
-                        </>
-                      )
-                    }
-                  />
-                </div>
+                <CatCardWithViews key={cat.id} cat={cat} isOwnProfile={isOwnProfile} />
               ))}
             </div>
           )}
@@ -189,9 +168,7 @@ export default function UserProfile() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {favoriteCats.map(cat => (
-              <div key={cat.id} className="relative">
-                <CatCard cat={cat} />
-              </div>
+              <CatCardWithViews key={cat.id} cat={cat} />
             ))}
           </div>
         </div>

@@ -16,23 +16,25 @@ interface OwnerCatsSectionProps {
   title?: string;
 }
 
-export default function OwnerCatsSection({ 
-  cats, 
-  textColor = '#000000', 
-  title = '同じ飼い主の猫ちゃん' 
+export default function OwnerCatsSection({
+  cats,
+  textColor = '#000000',
+  title = '同じ飼い主の猫ちゃん',
 }: OwnerCatsSectionProps) {
   if (!cats || cats.length === 0) return null;
 
   return (
     <div className="mt-10 px-3">
-      <h2 className="text-lg font-semibold mb-4" style={{ color: textColor }}>{title}</h2>
-      <div 
-        className="overflow-x-auto pb-4 -mx-3 px-3" 
-        style={{ 
-          scrollbarWidth: 'none', /* Firefox */
-          msOverflowStyle: 'none', /* IE and Edge */
+      <h2 className="text-lg font-semibold mb-4" style={{ color: textColor }}>
+        {title}
+      </h2>
+      <div
+        className="overflow-x-auto pb-4 -mx-3 px-3"
+        style={{
+          scrollbarWidth: 'none' /* Firefox */,
+          msOverflowStyle: 'none' /* IE and Edge */,
           paddingRight: '20px',
-          WebkitOverflowScrolling: 'touch' /* スムーズスクロール */
+          WebkitOverflowScrolling: 'touch' /* スムーズスクロール */,
         }}
       >
         {/* Chrome, Safari, Opera向けのスクロールバー非表示 */}
@@ -61,9 +63,7 @@ export default function OwnerCatsSection({
                     />
                   </div>
                   <div className="p-2 bg-white">
-                    <h3 className="text-sm font-semibold text-gray-800 truncate">
-                      {cat.name}
-                    </h3>
+                    <h3 className="text-sm font-semibold text-gray-800 truncate">{cat.name}</h3>
                     <div className="h-[2.5rem] overflow-hidden mt-1">
                       <p className="text-xs text-gray-600 leading-normal line-clamp-2">
                         {cat.description || '　'}
@@ -78,4 +78,4 @@ export default function OwnerCatsSection({
       </div>
     </div>
   );
-} 
+}

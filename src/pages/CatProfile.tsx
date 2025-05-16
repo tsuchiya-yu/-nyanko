@@ -529,6 +529,9 @@ export default function CatProfile() {
           )}
         </div>
 
+        {/* 同じ飼い主の猫 */}
+        <OwnerCatsSection cats={ownerCats || []} textColor={textColor} />
+
         <div
           className="text-center mt-20 h-[80px] min-h-[80px] flex flex-col items-center justify-center"
           style={{ contentVisibility: 'auto', containIntrinsicSize: '0 80px' }}

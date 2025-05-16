@@ -3,12 +3,11 @@ import {
   Share2,
   ArrowLeft,
   Instagram,
-  Twitter,
+  X,
   Heart,
   Link as LinkIcon,
   MoreHorizontal,
   Pencil,
-  X,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -17,7 +16,9 @@ import { Link, useParams } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import OptimizedImage from '../components/OptimizedImage';
+import OwnerCatsSection from '../components/OwnerCatsSection';
 import ShareModal from '../components/ShareModal';
+import XIcon from '../components/icons/XIcon';
 import { useHeaderFooter } from '../context/HeaderContext';
 import { usePageViewCount } from '../hooks/usePageViewCount';
 import { handleApiError } from '../lib/api';
@@ -221,6 +222,25 @@ export default function CatProfile() {
     setIsModalOpen(false);
     setSelectedPhoto(null);
   };
+
+  // 同じ飼い主の他の猫を取得
+  const { data: ownerCats } = useQuery({
+    queryKey: ['owner-cats', cat?.owner_id, id],
+    queryFn: async () => {
+      if (!cat?.owner_id || !id) return [];
+
+      const { data, error } = await supabase
+        .from('cats')
+        .select('*')
+        .eq('owner_id', cat.owner_id)
+        .neq('id', id) // 現在表示中の猫を除外
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!cat?.owner_id && !!id,
+  });
 
   useEffect(() => {
     setHeaderFooterVisible?.(false);
@@ -448,7 +468,7 @@ export default function CatProfile() {
                   className="inline-flex items-center hover:opacity-80"
                   style={{ color: textColor }}
                 >
-                  <Twitter className="h-6 w-6 mr-2" />
+                  <XIcon className="h-6 w-6 mr-2" />
                 </a>
               )}
               {cat.homepage_url && (

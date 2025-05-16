@@ -4,7 +4,7 @@ build:
 
 # 全サービス起動
 up:
-	@make supabase-start || true
+	@make supabase-start
 	@make docker-up
 
 # コンテナ クリーンアップ
@@ -24,14 +24,12 @@ supabase-start:
 				supabase start --ignore-health-check --exclude vector; \
 			fi; \
 		fi; \
-		sleep 10; \
 	else \
 		if docker info | grep -q "Operating System: Docker Desktop"; then \
 			supabase start --ignore-health-check; \
 		else \
 			supabase start --ignore-health-check --exclude vector; \
 		fi; \
-		sleep 10; \
 	fi
 
 # Dockerコンテナのみ起動

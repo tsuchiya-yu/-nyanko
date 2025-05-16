@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 
 import OptimizedImage from './OptimizedImage';
+import styles from './OwnerCatsSection.module.css';
 
 interface Cat {
   id: string;
   name: string;
   description: string;
   image_url: string;
-  [key: string]: any; // その他のプロパティ
 }
 
 interface OwnerCatsSectionProps {
@@ -25,17 +25,9 @@ export default function OwnerCatsSection({
 
   return (
     <div className="mt-10 px-3">
-      <h2 className="text-lg font-semibold mb-4" style={{ color: textColor }}>
-        {title}
-      </h2>
-      <div
-        className="overflow-x-auto pb-4 -mx-3 px-3"
-        style={{
-          scrollbarWidth: 'none' /* Firefox */,
-          msOverflowStyle: 'none' /* IE and Edge */,
-          paddingRight: '20px',
-          WebkitOverflowScrolling: 'touch' /* スムーズスクロール */,
-        }}
+      <h2 className="text-lg font-semibold mb-4" style={{ color: textColor }}>{title}</h2>
+      <div 
+        className={`overflow-x-auto pb-4 -mx-3 px-3 ${styles.scrollContainer} ${styles.hideScrollbar}`}
       >
         {/* Chrome, Safari, Opera向けのスクロールバー非表示 */}
         <style>

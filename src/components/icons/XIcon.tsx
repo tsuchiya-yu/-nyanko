@@ -23,4 +23,4 @@ const XIcon: React.FC<XIconProps> = ({ className = '', width = 24, height = 24, 
   );
 };
 
-export default XIcon; 
+export default XIcon;

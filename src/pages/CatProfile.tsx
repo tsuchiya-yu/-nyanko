@@ -15,10 +15,10 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
+import XIcon from '../components/icons/XIcon';
 import OptimizedImage from '../components/OptimizedImage';
 import OwnerCatsSection from '../components/OwnerCatsSection';
 import ShareModal from '../components/ShareModal';
-import XIcon from '../components/icons/XIcon';
 import { useHeaderFooter } from '../context/HeaderContext';
 import { usePageViewCount } from '../hooks/usePageViewCount';
 import { handleApiError } from '../lib/api';

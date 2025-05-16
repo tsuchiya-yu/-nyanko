@@ -25,8 +25,10 @@ export default function OwnerCatsSection({
 
   return (
     <div className="mt-10 px-3">
-      <h2 className="text-lg font-semibold mb-4" style={{ color: textColor }}>{title}</h2>
-      <div 
+      <h2 className="text-lg font-semibold mb-4" style={{ color: textColor }}>
+        {title}
+      </h2>
+      <div
         className={`overflow-x-auto pb-4 -mx-3 px-3 ${styles.scrollContainer} ${styles.hideScrollbar}`}
       >
         {/* Chrome, Safari, Opera向けのスクロールバー非表示 */}

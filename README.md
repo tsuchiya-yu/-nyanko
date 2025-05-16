@@ -7,7 +7,7 @@
 ### 前提条件
 
 - Docker と Docker Compose がインストールされていること
-- Supabase のアカウントを持っていること
+- Supabase CLIがインストールされていること
 
 ### 環境構築手順
 
@@ -25,18 +25,22 @@ cp .env.example .env
 
 3. **開発環境の起動**
 ```bash
-make build
 make up
 ```
+このコマンドで以下の処理が実行されます：
+- Supabaseサービスの起動（Docker Desktop/Colima環境自動検出）
+- アプリケーションコンテナの起動
 
-4. **データベースのセットアップ**
-- Supabaseのダッシュボードにログイン
-- SQL Editorを開く
-- `schema.sql`の内容をコピーして実行
+4. **データベースのリストア（必要な場合）**
+プロジェクトルートに`production.sql`の名前でダンプファイルを配置して、以下のコマンドを実行してください。
+```bash
+make db-restore
+```
 
-5. **アプリケーションの確認**
+1. **アプリケーションの確認**
 - ブラウザで http://localhost:5173 にアクセス
-- アプリケーションが正常に動作することを確認
+- Supabase Studio: http://localhost:54323
+- Supabase API: http://localhost:54321
 
 ## 開発コマンド
 
@@ -45,9 +49,12 @@ make up
 
 ```bash
 # 開発環境の操作
-make build   # Dockerイメージのビルド
-make up      # コンテナの起動
-make down    # コンテナの停止
+make up      # 全サービス起動（Supabase + アプリケーション）
+make stop    # コンテナの停止（削除せず）
+make down    # コンテナの停止と削除
+make clean   # コンテナとボリュームの完全削除
+make restart # 全環境の再起動（down→clean→up）
+make status  # コンテナとボリュームの状態確認
 make logs    # コンテナのログ確認
 make app     # コンテナ内でのbashシェル起動
 
@@ -58,6 +65,9 @@ make format  # Prettierによるコードフォーマット
 # テスト実行
 make test           # テストの実行
 make test-coverage  # カバレッジレポート付きでテスト実行
+
+# データベース操作
+make db-restore     # データベースの復元
 ```
 
 ### Supabase Edge Functions

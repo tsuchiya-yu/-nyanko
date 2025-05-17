@@ -27,6 +27,8 @@ interface CatFormData {
   description: string;
   image_url: string;
   instagram_url?: string;
+  youtube_url?: string;
+  tiktok_url?: string;
   x_url?: string;
   homepage_url?: string;
   gender?: string;
@@ -65,6 +67,8 @@ export default function RegisterCat() {
       description: '',
       image_url: '',
       instagram_url: '',
+      youtube_url: '',
+      tiktok_url: '',
       x_url: '',
       homepage_url: '',
       gender: '',
@@ -165,6 +169,8 @@ export default function RegisterCat() {
         description: data.description,
         image_url: imageUrl,
         instagram_url: data.instagram_url || null,
+        youtube_url: data.youtube_url || null,
+        tiktok_url: data.tiktok_url || null,
         x_url: data.x_url || null,
         homepage_url: data.homepage_url || null,
         owner_id: user?.id,
@@ -374,6 +380,28 @@ export default function RegisterCat() {
                 type="url"
                 {...register('instagram_url')}
                 placeholder="https://www.instagram.com/..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">YouTubeのURL</label>
+              <input
+                type="url"
+                {...register('youtube_url')}
+                placeholder="https://www.youtube.com/@..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">TikTokのURL</label>
+              <input
+                type="url"
+                {...register('tiktok_url')}
+                placeholder="https://www.tiktok.com/@..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />

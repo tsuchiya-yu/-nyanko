@@ -7,6 +7,8 @@ export interface Cat {
   image_url: string;
   catchphrase: string;
   instagram_url: string | null;
+  youtube_url: string | null;
+  tiktok_url: string | null;
   x_url: string | null;
   homepage_url: string | null;
   owner_id: string;

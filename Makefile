@@ -6,6 +6,7 @@ build:
 up:
 	@make supabase-start
 	@make docker-up
+	@nohup supabase functions serve --env-file .env > /tmp/supabase_functions.log 2>&1 & echo $$! > /tmp/supabase_functions.pid
 
 # コンテナ クリーンアップ
 clean:
@@ -40,11 +41,19 @@ docker-up:
 stop:
 	-docker compose stop
 	-docker ps -a | grep supabase_.*_cat_profile | awk '{print $$1}' | xargs -r docker stop
+	@if [ -f /tmp/supabase_functions.pid ]; then \
+		kill $$(cat /tmp/supabase_functions.pid) 2>/dev/null || true; \
+		rm -f /tmp/supabase_functions.pid; \
+	fi
 
 # 全サービス停止＆削除
 down:
 	-docker compose down
 	-supabase stop
+	@if [ -f /tmp/supabase_functions.pid ]; then \
+		kill $$(cat /tmp/supabase_functions.pid) 2>/dev/null || true; \
+		rm -f /tmp/supabase_functions.pid; \
+	fi
 
 restart: down clean up
 
@@ -90,4 +99,8 @@ deploy-sitemap:
 deploy-gemini:
 	supabase functions deploy image-to-gemini --no-verify-jwt
 
-.PHONY: build up down restart status app ps logs lint format test test-coverage deploy-ga-pageviews deploy-sitemap deploy-gemini
+# Supabase Functions 実行（ローカル環境用）
+functions-serve:
+	supabase functions serve --env-file .env
+
+.PHONY: build up down restart status app ps logs lint format test test-coverage deploy-ga-pageviews deploy-sitemap deploy-gemini functions-serve

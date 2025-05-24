@@ -5,7 +5,7 @@ export interface Cat {
   breed: string;
   description: string;
   image_url: string;
-  catchphrase: string;
+  catchphrase: string | null;
   instagram_url: string | null;
   youtube_url: string | null;
   tiktok_url: string | null;

@@ -35,7 +35,7 @@ interface CatWithOwner {
   birthdate: string;
   is_birthdate_estimated: boolean;
   breed: string;
-  catchphrase: string;
+  catchphrase: string | null;
   description: string;
   image_url: string;
   instagram_url: string | null;

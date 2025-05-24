@@ -371,7 +371,13 @@ export default function CatProfile() {
               '@type': 'Person',
               name: cat.profiles?.name || '飼い主',
             },
-            sameAs: [cat.instagram_url, cat.youtube_url, cat.tiktok_url, cat.x_url, cat.homepage_url].filter(Boolean),
+            sameAs: [
+              cat.instagram_url,
+              cat.youtube_url,
+              cat.tiktok_url,
+              cat.x_url,
+              cat.homepage_url,
+            ].filter(Boolean),
             hasPart:
               photos && photos.length > 0
                 ? {

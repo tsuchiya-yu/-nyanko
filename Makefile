@@ -10,7 +10,8 @@ up:
 		echo "Supabase Edge Functions (PID $$(cat /tmp/supabase_functions.pid)) は既に実行中です。"; \
 	else \
 		rm -f /tmp/supabase_functions.pid; \
-		nohup supabase functions serve --env-file .env > /tmp/supabase_functions.log 2>&1 & echo $$! > /tmp/supabase_functions.pid \
+		nohup supabase functions serve --env-file .env > /tmp/supabase_functions.log 2>&1 & \
+		echo $$! > /tmp/supabase_functions.pid; \
 	fi
 
 # コンテナ クリーンアップ

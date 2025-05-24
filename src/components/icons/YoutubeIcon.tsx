@@ -6,7 +6,12 @@ interface YoutubeIconProps extends React.SVGProps<SVGSVGElement> {
   height?: number | string;
 }
 
-const YoutubeIcon: React.FC<YoutubeIconProps> = ({ className = '', width = 24, height = 24, ...props }) => {
+const YoutubeIcon: React.FC<YoutubeIconProps> = ({
+  className = '',
+  width = 24,
+  height = 24,
+  ...props
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -27,4 +32,4 @@ const YoutubeIcon: React.FC<YoutubeIconProps> = ({ className = '', width = 24, h
   );
 };
 
-export default YoutubeIcon; 
+export default YoutubeIcon;

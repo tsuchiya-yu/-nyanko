@@ -32,4 +32,4 @@ const YoutubeIcon: React.FC<YoutubeIconProps> = ({
   );
 };
 
-export default YoutubeIcon; 
+export default YoutubeIcon;

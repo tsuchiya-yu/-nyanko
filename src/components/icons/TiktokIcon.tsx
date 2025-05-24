@@ -47,4 +47,4 @@ const TiktokIcon: React.FC<TiktokIconProps> = ({
   );
 };
 
-export default TiktokIcon; 
+export default TiktokIcon;

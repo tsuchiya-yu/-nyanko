@@ -19,7 +19,7 @@ interface OwnerCatsSectionProps {
 export default function OwnerCatsSection({
   cats,
   textColor = '#000000',
-  title = '同じ飼い主の猫ちゃん',
+  title = '同じ飼い主さんの猫ちゃん',
 }: OwnerCatsSectionProps) {
   if (!cats || cats.length === 0) return null;
 

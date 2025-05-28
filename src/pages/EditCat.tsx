@@ -24,10 +24,12 @@ interface CatFormData {
   birthdate: string;
   is_birthdate_estimated: boolean;
   breed: string;
-  catchphrase: string;
+  catchphrase?: string;
   description: string;
   image_url: string;
   instagram_url?: string;
+  youtube_url?: string;
+  tiktok_url?: string;
   x_url?: string;
   homepage_url?: string;
   gender?: string;
@@ -105,6 +107,8 @@ export default function EditCat() {
         description: cat.description,
         image_url: cat.image_url,
         instagram_url: cat.instagram_url || '',
+        youtube_url: cat.youtube_url || '',
+        tiktok_url: cat.tiktok_url || '',
         x_url: cat.x_url || '',
         homepage_url: cat.homepage_url || '',
         gender: cat.gender || '',
@@ -209,10 +213,12 @@ export default function EditCat() {
           birthdate: data.birthdate,
           is_birthdate_estimated: data.is_birthdate_estimated,
           breed: data.breed,
-          catchphrase: data.catchphrase,
+          catchphrase: data.catchphrase || null,
           description: data.description,
           image_url: data.image_url,
           instagram_url: data.instagram_url || null,
+          youtube_url: data.youtube_url || null,
+          tiktok_url: data.tiktok_url || null,
           x_url: data.x_url || null,
           homepage_url: data.homepage_url || null,
           gender: data.gender || null,
@@ -481,6 +487,28 @@ export default function EditCat() {
                 type="url"
                 {...register('instagram_url')}
                 placeholder="https://www.instagram.com/..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">YouTubeのURL</label>
+              <input
+                type="url"
+                {...register('youtube_url')}
+                placeholder="https://www.youtube.com/@..."
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">TikTokのURL</label>
+              <input
+                type="url"
+                {...register('tiktok_url')}
+                placeholder="https://www.tiktok.com/@..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />

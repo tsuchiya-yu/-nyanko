@@ -15,7 +15,9 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
+import TiktokIcon from '../components/icons/TiktokIcon';
 import XIcon from '../components/icons/XIcon';
+import YoutubeIcon from '../components/icons/YoutubeIcon';
 import OptimizedImage from '../components/OptimizedImage';
 import OwnerCatsSection from '../components/OwnerCatsSection';
 import ShareModal from '../components/ShareModal';
@@ -33,10 +35,12 @@ interface CatWithOwner {
   birthdate: string;
   is_birthdate_estimated: boolean;
   breed: string;
-  catchphrase: string;
+  catchphrase: string | null;
   description: string;
   image_url: string;
   instagram_url: string | null;
+  youtube_url: string | null;
+  tiktok_url: string | null;
   x_url: string | null;
   homepage_url: string | null;
   owner_id: string;
@@ -367,7 +371,13 @@ export default function CatProfile() {
               '@type': 'Person',
               name: cat.profiles?.name || '飼い主',
             },
-            sameAs: [cat.instagram_url, cat.x_url, cat.homepage_url].filter(Boolean),
+            sameAs: [
+              cat.instagram_url,
+              cat.youtube_url,
+              cat.tiktok_url,
+              cat.x_url,
+              cat.homepage_url,
+            ].filter(Boolean),
             hasPart:
               photos && photos.length > 0
                 ? {
@@ -447,7 +457,7 @@ export default function CatProfile() {
         </div>
 
         <div className="">
-          {(cat.instagram_url || cat.x_url) && (
+          {(cat.instagram_url || cat.x_url || cat.youtube_url || cat.tiktok_url) && (
             <div className="flex space-x-1 mb-4 justify-center">
               {cat.instagram_url && (
                 <a
@@ -458,6 +468,28 @@ export default function CatProfile() {
                   style={{ color: textColor }}
                 >
                   <Instagram className="h-6 w-6 mr-2" />
+                </a>
+              )}
+              {cat.youtube_url && (
+                <a
+                  href={cat.youtube_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center hover:opacity-80"
+                  style={{ color: textColor }}
+                >
+                  <YoutubeIcon className="h-6 w-6 mr-2" />
+                </a>
+              )}
+              {cat.tiktok_url && (
+                <a
+                  href={cat.tiktok_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center hover:opacity-80"
+                  style={{ color: textColor }}
+                >
+                  <TiktokIcon className="h-6 w-6 mr-2" />
                 </a>
               )}
               {cat.x_url && (

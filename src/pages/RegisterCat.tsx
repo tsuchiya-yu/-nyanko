@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
@@ -55,7 +54,6 @@ export default function RegisterCat() {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<CatFormData>({
     defaultValues: {
@@ -76,9 +74,6 @@ export default function RegisterCat() {
       text_color: defaultTextColor,
     },
   });
-
-  // フォームの現在値を監視
-  const formValues = watch();
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

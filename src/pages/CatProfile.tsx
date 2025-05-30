@@ -1,14 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  Share2,
-  ArrowLeft,
-  Instagram,
-  X,
-  Heart,
-  Link as LinkIcon,
-  MoreHorizontal,
-  Pencil,
-} from 'lucide-react';
+import { Share2, ArrowLeft, Instagram, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
@@ -22,7 +13,6 @@ import OptimizedImage from '../components/OptimizedImage';
 import OwnerCatsSection from '../components/OwnerCatsSection';
 import ShareModal from '../components/ShareModal';
 import { useHeaderFooter } from '../context/HeaderContext';
-import { usePageViewCount } from '../hooks/usePageViewCount';
 import { handleApiError } from '../lib/api';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';

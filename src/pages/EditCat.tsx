@@ -1,7 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
-import { Pencil, Trash, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
@@ -69,12 +67,8 @@ export default function EditCat() {
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<CatFormData>();
-
-  // フォームの現在値を監視
-  const formValues = watch();
 
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],

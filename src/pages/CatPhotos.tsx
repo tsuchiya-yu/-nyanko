@@ -31,11 +31,7 @@ function sanitizeFileName(fileName: string): string {
 export default function CatPhotos() {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<PhotoFormData>();
+  const { register, handleSubmit, reset } = useForm<PhotoFormData>();
 
   const { data: cat } = useQuery({
     queryKey: ['cat', id],

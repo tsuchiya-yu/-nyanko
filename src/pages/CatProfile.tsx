@@ -1,10 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  Share2,
-  ArrowLeft,
-  Instagram,
-  Heart,
-} from 'lucide-react';
+import { Share2, ArrowLeft, Instagram, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';

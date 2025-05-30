@@ -35,8 +35,6 @@ export default function CatPhotos() {
     register,
     handleSubmit,
     reset,
-    setValue,
-    formState: { errors },
   } = useForm<PhotoFormData>();
 
   const { data: cat } = useQuery({

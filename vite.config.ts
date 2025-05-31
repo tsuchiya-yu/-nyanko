@@ -27,13 +27,6 @@ export default ({ mode }: { mode: string }) => {
     server: {
       port: 5173,
       host: '0.0.0.0',
-      watch: {
-        usePolling: true,
-        interval: 100,
-      },
-      hmr: {
-        port: 5173,
-      },
     },
     // HTMLファイル内の%ENV_VAR%を置換
     experimental: {

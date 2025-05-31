@@ -59,7 +59,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/cats/:id" element={<CatProfile />} />
+          <Route path="/cats/:path" element={<CatProfile />} />
           <Route
             path="/cats/:id/edit"
             element={

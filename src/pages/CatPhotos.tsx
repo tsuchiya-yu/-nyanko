@@ -40,7 +40,7 @@ export default function CatPhotos() {
 
       const { data, error } = await supabase
         .from('cats')
-        .select('name, owner_id')
+        .select('id, name, owner_id')
         .eq('id', id)
         .single();
 

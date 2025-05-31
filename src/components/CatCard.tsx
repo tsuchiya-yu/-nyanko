@@ -22,7 +22,7 @@ export default function CatCard({ cat, actions }: CatCardProps) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/cats/${cat.id}`);
+    navigate(`/cats/${cat.prof_path_id}`);
   };
 
   return (

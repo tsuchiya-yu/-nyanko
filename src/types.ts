@@ -17,6 +17,7 @@ export interface Cat {
   gender?: string | null;
   background_color?: string;
   text_color?: string;
+  prof_path_id: string;
 }
 
 export interface Favorite {

@@ -77,6 +77,7 @@ create table public.cats (
     gender text,
     background_color text default '#FFFFFF',
     text_color text default '#000000',
+    prof_path_id text default 'cat_' || floor(random() * 1000000)::text not null unique,
     owner_id uuid references public.profiles(id) on delete cascade not null
 );
 

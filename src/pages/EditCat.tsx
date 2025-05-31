@@ -33,6 +33,7 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
+  prof_path_id: string;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -61,6 +62,7 @@ export default function EditCat() {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
+  const [submittedData, setSubmittedData] = useState<CatFormData | null>(null);
 
   const {
     register,
@@ -108,6 +110,7 @@ export default function EditCat() {
         gender: cat.gender || '',
         background_color: cat.background_color || defaultBackgroundColor,
         text_color: cat.text_color || defaultTextColor,
+        prof_path_id: cat.prof_path_id || '',
       });
 
       // 色の状態を初期化
@@ -166,6 +169,19 @@ export default function EditCat() {
 
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
+      // URLパスの重複チェック
+      if (data.prof_path_id !== cat?.prof_path_id) {
+        const { data: existingCat, error: checkError } = await supabase
+          .from('cats')
+          .select('id')
+          .eq('prof_path_id', data.prof_path_id)
+          .single();
+
+        if (!checkError && existingCat) {
+          throw new Error('このプロフィールページURLは既に使用されています。別のURLを選択してください。');
+        }
+      }
+
       // 編集した画像をSupabase Storageにアップロード
       if (imageFile) {
         const uniqueId = uuidv4();
@@ -218,8 +234,9 @@ export default function EditCat() {
           gender: data.gender || null,
           background_color: data.background_color,
           text_color: data.text_color,
+          prof_path_id: data.prof_path_id,
         })
-        .eq('id', id);
+        .eq('id', cat?.id);
 
       if (error) {
         console.error('Update error:', error); // デバッグログ
@@ -229,7 +246,7 @@ export default function EditCat() {
       // 更新されたデータを返す（キャッシュ更新に使用）
       return {
         ...data,
-        id,
+        id: cat?.id,
       };
     },
     onSuccess: updatedData => {
@@ -261,7 +278,7 @@ export default function EditCat() {
       }, 100);
 
       alert('猫ちゃんの情報を更新しました');
-      navigate(`/cats/${id}`);
+      navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
     },
   });
 
@@ -312,14 +329,14 @@ export default function EditCat() {
           content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`}
         />
         <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
-        <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}/edit`} />
+        <meta property="og:url" content={`https://cat-link.com/cats/${id}/edit`} />
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
           content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
+        <link rel="canonical" href={`https://cat-link.com/cats/${id}`} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -344,6 +361,7 @@ export default function EditCat() {
           <form
             onSubmit={handleSubmit(data => {
               console.log('提出するデータ:', data);
+              setSubmittedData(data);
               mutation.mutate(data);
             })}
             className="space-y-6"
@@ -418,15 +436,38 @@ export default function EditCat() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">説明</label>
               <textarea
-                {...register('description', { required: '紹介文は必須です' })}
-                rows={4}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-              />
+                {...register('description', { required: '説明は必須です' })}
+                rows={5}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              ></textarea>
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールURL
+              </label>
+              <div className="flex items-center">
+                <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
+                <input
+                  type="text"
+                  {...register('prof_path_id', { 
+                    required: 'プロフィールURLは必須です',
+                    pattern: {
+                      value: /^[a-zA-Z0-9_-]+$/,
+                      message: '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます'
+                    }
+                  })}
+                  className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                />
+              </div>
+              {errors.prof_path_id && (
+                <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
             </div>
 

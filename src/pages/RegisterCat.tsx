@@ -33,6 +33,12 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
+  prof_path_id: string;
+}
+
+// ランダムなパスIDを生成する関数
+function generateRandomPathId() {
+  return `cat_${Math.floor(Math.random() * 1000000)}`;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -50,6 +56,8 @@ export default function RegisterCat() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
+  const [randomPathId] = useState(generateRandomPathId());
+
   const {
     register,
     handleSubmit,
@@ -72,6 +80,7 @@ export default function RegisterCat() {
       gender: '',
       background_color: defaultBackgroundColor,
       text_color: defaultTextColor,
+      prof_path_id: randomPathId,
     },
   });
 
@@ -133,6 +142,17 @@ export default function RegisterCat() {
     setIsSubmitting(true);
 
     try {
+      // パスの重複チェック
+      const { data: existingCat, error: checkError } = await supabase
+        .from('cats')
+        .select('id')
+        .eq('prof_path_id', data.prof_path_id)
+        .single();
+
+      if (!checkError && existingCat) {
+        throw new Error('このプロフィールページURLは既に使用されています。別のURLを選択してください。');
+      }
+      
       let imageUrl = '';
 
       // 画像がある場合はアップロード
@@ -172,6 +192,7 @@ export default function RegisterCat() {
         gender: data.gender || null,
         background_color: data.background_color,
         text_color: data.text_color,
+        prof_path_id: data.prof_path_id,
       });
 
       if (error) throw error;
@@ -183,7 +204,8 @@ export default function RegisterCat() {
       navigate(`/profile/${user?.id}`);
     } catch (error) {
       console.error('Error registering cat:', error);
-      alert('猫の登録に失敗しました');
+      const errorMessage = error instanceof Error ? error.message : '猫の登録に失敗しました';
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -307,20 +329,39 @@ export default function RegisterCat() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">説明</label>
               <textarea
-                {...register('description', { required: '紹介文は必須です' })}
-                rows={4}
-                placeholder={`丸顔で大きな耳が特徴的な愛らしい女の子です。
-普段はとても甘えん坊で、人が近くにいると安心する性格ですが、意外と独立心も強く、一人で窓の外を眺めたりするのが好きです。
-家ではお気に入りのクッションでのんびり過ごす時間が多く、家族にはとても優しい性格で癒しを与えてくれる存在です。
-
-子供たちとも仲良く遊ぶ穏やかな一面もあり、まさに我が家の人気者！！`}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-              />
+                {...register('description', { required: '説明は必須です' })}
+                rows={5}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              ></textarea>
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールURL
+              </label>
+              <div className="flex items-center">
+                <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
+                <input
+                  type="text"
+                  {...register('prof_path_id', { 
+                    required: 'プロフィールURLは必須です',
+                    pattern: {
+                      value: /^[a-zA-Z0-9_-]+$/,
+                      message: '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます'
+                    }
+                  })}
+                  placeholder="my_cat"
+                  className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                />
+              </div>
+              {errors.prof_path_id && (
+                <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
             </div>
 

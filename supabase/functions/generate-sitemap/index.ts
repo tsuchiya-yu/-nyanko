@@ -11,6 +11,7 @@ const corsHeaders = {
 
 interface Cat {
   id: string
+  prof_path_id: string
   created_at: string
 }
 
@@ -40,7 +41,7 @@ serve(async (req) => {
     // データベースから情報を取得
     const { data: cats, error: catsError } = await supabaseClient
       .from('cats')
-      .select('id, created_at')
+      .select('id, prof_path_id, created_at')
     
     if (catsError) {
       throw new Error(`catsテーブルの取得に失敗: ${catsError.message}`)
@@ -84,7 +85,7 @@ serve(async (req) => {
   </url>
   ${(cats as Cat[]).map(cat => `
   <url>
-    <loc>https://cat-link.catnote.tokyo/cats/${cat.id}</loc>
+    <loc>https://cat-link.catnote.tokyo/cats/${cat.prof_path_id}</loc>
     <lastmod>${new Date(cat.created_at).toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>

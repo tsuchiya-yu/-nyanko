@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
@@ -95,6 +95,19 @@ export default function RegisterCat() {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
+  const [mutationError, setMutationError] = useState<string | null>(null);
+  const profPathIdRef = useRef<HTMLInputElement | null>(null);
+
+  // プロフィールURLエラー時のフォーカス処理
+  useEffect(() => {
+    if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
+      profPathIdRef.current.focus();
+      profPathIdRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+    }
+  }, [mutationError]);
 
   // 背景色変更のハンドラー
   const handleBgColorChange = (color: string) => {
@@ -138,18 +151,24 @@ export default function RegisterCat() {
   };
 
   // 猫の登録処理
-  const handleRegisterCat = async (data: CatFormData) => {
-    setIsSubmitting(true);
-
-    try {
+  const mutation = useMutation({
+    mutationFn: async (data: CatFormData) => {
+      console.log('Mutation started with data:', data);
+      setMutationError(null); // エラーをクリア
+      
       // パスの重複チェック
+      console.log('Checking prof_path_id duplication:', data.prof_path_id);
+      
       const { data: existingCat, error: checkError } = await supabase
         .from('cats')
         .select('id')
         .eq('prof_path_id', data.prof_path_id)
         .single();
 
+      console.log('Duplication check result:', { existingCat, checkError });
+
       if (!checkError && existingCat) {
+        console.log('prof_path_id already exists, throwing error');
         throw new Error('このプロフィールページURLは既に使用されています。別のURLを選択してください。');
       }
       
@@ -197,22 +216,22 @@ export default function RegisterCat() {
 
       if (error) throw error;
 
+      return data;
+    },
+    onSuccess: async () => {
+      console.log('Mutation successful');
+      setMutationError(null); // エラーをクリア
+      
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
       // 登録成功
       navigate(`/profile/${user?.id}`);
-    } catch (error) {
-      console.error('Error registering cat:', error);
-      const errorMessage = error instanceof Error ? error.message : '猫の登録に失敗しました';
-      alert(errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const mutation = useMutation({
-    mutationFn: handleRegisterCat,
+    },
+    onError: (error: Error) => {
+      console.error('Mutation error:', error);
+      setMutationError(error.message);
+    },
   });
 
   return (
@@ -358,10 +377,20 @@ export default function RegisterCat() {
                   placeholder="my_cat"
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  ref={(e) => {
+                    const { ref } = register('prof_path_id');
+                    ref(e);
+                    if (profPathIdRef) {
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                    }
+                  }}
                 />
               </div>
               {errors.prof_path_id && (
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
+              )}
+              {mutationError && mutationError.includes('プロフィールページURL') && (
+                <p className="mt-1 text-sm text-red-600">{mutationError}</p>
               )}
             </div>
 

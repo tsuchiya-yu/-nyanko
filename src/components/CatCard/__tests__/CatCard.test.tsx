@@ -1,17 +1,17 @@
 import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { useFavorites } from '../../hooks/useFavorites';
-import { useAuthStore } from '../../store/authStore';
-import { renderWithProviders, mockCat } from '../../test/utils';
-import { calculateAge } from '../../utils/calculateAge';
-import CatCard from '../CatCard';
+import { useFavorites } from '../../../hooks/useFavorites';
+import { useAuthStore } from '../../../store/authStore';
+import { renderWithProviders, mockCat } from '../../../test/utils';
+import { calculateAge } from '../../../utils/calculateAge';
+import CatCard from '../index';
 
 // モックの設定
-vi.mock('../../store/authStore');
-vi.mock('../../hooks/useFavorites');
-vi.mock('../../utils/calculateAge');
-vi.mock('../../lib/supabase', () => ({
+vi.mock('../../../store/authStore');
+vi.mock('../../../hooks/useFavorites');
+vi.mock('../../../utils/calculateAge');
+vi.mock('../../../lib/supabase', () => ({
   supabase: {
     from: vi.fn().mockReturnThis(),
     select: vi.fn().mockReturnThis(),

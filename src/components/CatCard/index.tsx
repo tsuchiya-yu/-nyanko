@@ -2,12 +2,12 @@ import { Heart } from 'lucide-react';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import OptimizedImage from './OptimizedImage';
-import { useFavorites } from '../hooks/useFavorites';
-import { useAuthStore } from '../store/authStore';
-import { calculateAge } from '../utils/calculateAge';
+import { useFavorites } from '../../hooks/useFavorites';
+import { useAuthStore } from '../../store/authStore';
+import { calculateAge } from '../../utils/calculateAge';
+import OptimizedImage from '../OptimizedImage';
 
-import type { Cat } from '../types';
+import type { Cat } from '../../types';
 
 interface CatCardProps {
   cat: Cat;

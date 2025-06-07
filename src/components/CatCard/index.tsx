@@ -2,10 +2,10 @@ import { Heart } from 'lucide-react';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import OptimizedImage from '../OptimizedImage';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useAuthStore } from '../../store/authStore';
 import { calculateAge } from '../../utils/calculateAge';
+import OptimizedImage from '../OptimizedImage';
 
 import type { Cat } from '../../types';
 
@@ -68,4 +68,4 @@ export default function CatCard({ cat, actions }: CatCardProps) {
       {actions && <div className="px-4 pb-4 pt-0 flex gap-2 justify-between">{actions}</div>}
     </div>
   );
-} 
+}

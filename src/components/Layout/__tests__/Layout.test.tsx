@@ -101,9 +101,24 @@ describe('Layoutコンポーネント', () => {
     expect(screen.getByText('テストコンテンツ')).toBeInTheDocument();
   });
 
-  it('ログアウト機能は現在のLayoutでは実装されていません', () => {
-    // 現在のLayoutではログアウトボタンは存在しない
-    expect(true).toBe(true);
+  it('ログアウトボタンが存在しないことを確認', () => {
+    (useAuthStore as any).mockReturnValue({
+      user: { id: 'user-1', email: 'test@example.com' },
+      profile: { name: 'テストユーザー' },
+      setUser: mockSetUser,
+      setProfile: vi.fn(),
+      signOut: mockSignOut,
+      fetchProfile: vi.fn(),
+    });
+
+    renderWithProviders(
+      <Layout>
+        <div>テストコンテンツ</div>
+      </Layout>
+    );
+
+    // ログアウトボタンが存在しないことを確認
+    expect(screen.queryByRole('button', { name: /ログアウト/i })).not.toBeInTheDocument();
   });
 
   it('フッターが表示されること', () => {

@@ -157,4 +157,4 @@ describe('CatCardコンポーネント', () => {
     const heartIcon = unlikeButton.querySelector('svg');
     expect(heartIcon).toHaveClass('fill-pink-500');
   });
-}); 
+});

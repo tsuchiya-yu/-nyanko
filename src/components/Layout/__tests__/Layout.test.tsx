@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { renderWithProviders } from '../../../test/utils';
 import { useAuthStore } from '../../../store/authStore';
+import { renderWithProviders } from '../../../test/utils';
 import Layout from '../../Layout';
 
 // モックの設定
@@ -132,4 +132,4 @@ describe('Layoutコンポーネント', () => {
     expect(termsLink).toHaveAttribute('href', '/terms');
     expect(privacyLink).toHaveAttribute('href', '/privacy');
   });
-}); 
+});

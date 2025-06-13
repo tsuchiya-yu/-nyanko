@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPickerModal } from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
+import ToggleSwitch from '../components/ToggleSwitch';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import {
@@ -33,6 +34,7 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
+  is_public?: boolean;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -72,6 +74,7 @@ export default function RegisterCat() {
       gender: '',
       background_color: defaultBackgroundColor,
       text_color: defaultTextColor,
+      is_public: true,
     },
   });
 
@@ -86,6 +89,9 @@ export default function RegisterCat() {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
+
+  // 公開/非公開のState
+  const [isPublic, setIsPublic] = useState(true);
 
   // 背景色変更のハンドラー
   const handleBgColorChange = (color: string) => {
@@ -172,6 +178,7 @@ export default function RegisterCat() {
         gender: data.gender || null,
         background_color: data.background_color,
         text_color: data.text_color,
+        is_public: data.is_public,
       });
 
       if (error) throw error;
@@ -424,6 +431,24 @@ export default function RegisterCat() {
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">公開状態</label>
+              <div className="flex items-center">
+                <ToggleSwitch
+                  id="is_public_register"
+                  checked={isPublic}
+                  onChange={(checked) => {
+                    setIsPublic(checked);
+                    setValue('is_public', checked);
+                  }}
+                  label={isPublic ? '公開' : '非公開'}
+                />
+              </div>
+              <p className="mt-1 text-sm text-gray-600">
+                公開すると他の人もプロフィールページを見ることができます
+              </p>
             </div>
 
             {/* カラーテーマ設定 */}

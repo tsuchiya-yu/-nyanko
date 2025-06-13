@@ -40,6 +40,7 @@ interface CatWithOwner {
   };
   background_color?: string;
   text_color?: string;
+  is_public?: boolean;
 }
 
 interface CatPhoto {
@@ -137,6 +138,11 @@ export default function CatProfile() {
         if (fetchError) throw fetchError;
         if (!data) throw new Error('猫が見つかりません');
 
+        // 猫が非公開で、かつ現在のユーザーが飼い主でない場合は404エラー
+        if (data.is_public === false && (!user || data.owner_id !== user.id)) {
+          throw new Error('この猫のプロフィールは存在しません');
+        }
+
         return data as CatWithOwner;
       } catch (error) {
         console.error('Error fetching cat data:', error);
@@ -223,12 +229,18 @@ export default function CatProfile() {
     queryFn: async () => {
       if (!cat?.owner_id || !id) return [];
 
-      const { data, error } = await supabase
+      let query = supabase
         .from('cats')
         .select('*')
         .eq('owner_id', cat.owner_id)
-        .neq('id', id) // 現在表示中の猫を除外
-        .order('created_at', { ascending: false });
+        .neq('id', id); // 現在表示中の猫を除外
+
+      // 飼い主本人でない場合は公開猫のみ表示
+      if (!user || cat.owner_id !== user.id) {
+        query = query.eq('is_public', true);
+      }
+
+      const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
       return data;

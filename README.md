@@ -140,6 +140,10 @@ GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
 - ESLint
 - Prettier
 
+### テストの書き方
+
+テストファイルは、テスト対象のファイルと同じディレクトリに`__tests__`ディレクトリを作成し、その中に`.test.ts`または`.test.tsx`として配置します。
+
 ## プロジェクト構成
 
 ```

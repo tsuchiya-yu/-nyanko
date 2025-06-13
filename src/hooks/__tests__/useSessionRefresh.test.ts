@@ -37,18 +37,20 @@ describe('useSessionRefresh', () => {
     });
 
     // supabase.auth.onAuthStateChangeのモック
-    (supabase.auth.onAuthStateChange as unknown as ReturnType<typeof vi.fn>).mockImplementation((callback: MockCallback) => {
-      // コールバック関数を保存して後でテストから呼び出せるようにする
-      authCallback = callback;
+    (supabase.auth.onAuthStateChange as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (callback: MockCallback) => {
+        // コールバック関数を保存して後でテストから呼び出せるようにする
+        authCallback = callback;
 
-      return {
-        data: {
-          subscription: {
-            unsubscribe: mockUnsubscribe,
+        return {
+          data: {
+            subscription: {
+              unsubscribe: mockUnsubscribe,
+            },
           },
-        },
-      };
-    });
+        };
+      }
+    );
   });
 
   afterEach(() => {

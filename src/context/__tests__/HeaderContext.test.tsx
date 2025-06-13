@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { HeaderProvider, useHeaderFooter } from './HeaderContext';
+import { HeaderProvider, useHeaderFooter } from '../HeaderContext';
 
 // テスト用のコンポーネント
 const TestComponent = () => {

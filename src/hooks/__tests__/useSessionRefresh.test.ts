@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { useSessionRefresh } from './useSessionRefresh';
+import { useSessionRefresh } from '../useSessionRefresh';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 

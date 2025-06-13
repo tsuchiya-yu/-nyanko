@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { useSessionRefresh } from '../useSessionRefresh';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import { useSessionRefresh } from '../useSessionRefresh';
 
 // グローバルオブジェクトの型定義
 type MockCallback = (event: string, session: unknown) => Promise<void>;

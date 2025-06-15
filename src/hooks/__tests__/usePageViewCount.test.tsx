@@ -33,7 +33,9 @@ describe('usePageViewCount', () => {
     });
     window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('test-page'), { wrapper: createWrapper() });
+    const { result } = renderHook(() => usePageViewCount('test-page'), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => {
       expect(result.current.data).toBe(5);
@@ -50,7 +52,9 @@ describe('usePageViewCount', () => {
     });
     window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('test-page'), { wrapper: createWrapper() });
+    const { result } = renderHook(() => usePageViewCount('test-page'), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => {
       expect(result.current.data).toBe(0);
@@ -63,7 +67,9 @@ describe('usePageViewCount', () => {
     const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
     window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('test-page'), { wrapper: createWrapper() });
+    const { result } = renderHook(() => usePageViewCount('test-page'), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => {
       expect(result.current.data).toBe(0);
@@ -71,4 +77,4 @@ describe('usePageViewCount', () => {
       expect(result.current.error).toBeNull();
     });
   });
-}); 
+});

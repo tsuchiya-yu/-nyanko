@@ -57,7 +57,7 @@ describe('useFavorites', () => {
       { id: 'cat2', name: 'ねこ2' },
     ];
     (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ user: mockUser });
-    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockImplementation((table) => {
+    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockImplementation(table => {
       if (table === 'favorites') {
         return {
           select: () => ({
@@ -93,7 +93,7 @@ describe('useFavorites', () => {
     const mockSelectFn = vi.fn().mockResolvedValue({ data: [], error: null });
 
     (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ user: mockUser });
-    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockImplementation((table) => {
+    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockImplementation(table => {
       if (table === 'favorites') {
         return {
           select: () => ({
@@ -127,7 +127,7 @@ describe('useFavorites', () => {
     });
 
     (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ user: mockUser });
-    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockImplementation((table) => {
+    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockImplementation(table => {
       if (table === 'favorites') {
         return {
           select: () => ({
@@ -186,9 +186,9 @@ describe('useFavorites', () => {
     const { result } = renderHook(() => useFavorites(), { wrapper });
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
 
     expect(result.current.error).toBe(mockError.message);
   });
-}); 
+});

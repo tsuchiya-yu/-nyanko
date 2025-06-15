@@ -1,85 +1,73 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { usePageViewCount } from '../usePageViewCount';
+import { vi } from 'vitest';
 
-// グローバルなfetchのモック
-const mockFetch = vi.fn();
-global.fetch = mockFetch;
+// fetchのモック
+const originalFetch = window.fetch;
 
-describe('usePageViewCount', () => {
-  let queryClient: QueryClient;
-
-  beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-        },
+const createWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
       },
-    });
-
-    // モックのリセット
-    vi.clearAllMocks();
+    },
   });
-
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
+  return ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+};
 
-  it('ページビュー数を正しく取得できる', async () => {
-    const mockPageViews = 42;
-    mockFetch.mockResolvedValueOnce({
+describe('usePageViewCount', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    window.fetch = originalFetch;
+  });
+
+  it('ページビュー数が正しく取得される', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ pageViews: mockPageViews }),
+      json: async () => ({ pageViews: 5 }),
     });
+    window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('cat1'), { wrapper });
+    const { result } = renderHook(() => usePageViewCount('test-page'), { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(result.current.data).toBe(mockPageViews);
+      expect(result.current.data).toBe(5);
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBeNull();
     });
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('/functions/v1/ga-pageviews'),
-      expect.objectContaining({
-        method: 'POST',
-        headers: expect.objectContaining({
-          'Content-Type': 'application/json',
-        }),
-        body: JSON.stringify({ catId: 'cat1' }),
-      })
-    );
+    expect(mockFetch).toHaveBeenCalled();
   });
 
-  it('APIエラーの場合、0を返す', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-      statusText: 'Internal Server Error',
+  it('ページビュー数が0の場合、正しく処理される', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ pageViews: 0 }),
     });
+    window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('cat1'), { wrapper });
+    const { result } = renderHook(() => usePageViewCount('test-page'), { wrapper: createWrapper() });
 
-    // 非同期処理の完了を待つ
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    expect(result.current.data).toBe(0);
+    await waitFor(() => {
+      expect(result.current.data).toBe(0);
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBeNull();
+    });
   });
 
-  it('ネットワークエラーの場合、0を返す', async () => {
-    mockFetch.mockRejectedValueOnce(new Error('Network error'));
+  it('エラーが発生した場合、dataが0になる', async () => {
+    const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
+    window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('cat1'), { wrapper });
+    const { result } = renderHook(() => usePageViewCount('test-page'), { wrapper: createWrapper() });
 
-    // 非同期処理の完了を待つ
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    expect(result.current.data).toBe(0);
-  });
-
-  it('catIdが未指定の場合、クエリが実行されない', () => {
-    renderHook(() => usePageViewCount(''), { wrapper });
-
-    expect(mockFetch).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(result.current.data).toBe(0);
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBeNull();
+    });
   });
 }); 

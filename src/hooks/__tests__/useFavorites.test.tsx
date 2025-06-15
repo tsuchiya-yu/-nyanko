@@ -1,9 +1,10 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useFavorites } from '../useFavorites';
-import { useAuthStore } from '../../store/authStore';
+
 import { supabase } from '../../lib/supabase';
+import { useAuthStore } from '../../store/authStore';
+import { useFavorites } from '../useFavorites';
 
 // モックの設定
 vi.mock('../../store/authStore', () => ({

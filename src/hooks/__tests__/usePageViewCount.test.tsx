@@ -1,7 +1,8 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { usePageViewCount } from '../usePageViewCount';
-import { vi } from 'vitest';
 
 // fetchのモック
 const originalFetch = window.fetch;

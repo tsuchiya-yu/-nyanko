@@ -1,15 +1,15 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { useSessionRefresh } from './useSessionRefresh';
-import { supabase } from '../lib/supabase';
-import { useAuthStore } from '../store/authStore';
+import { supabase } from '../../lib/supabase';
+import { useAuthStore } from '../../store/authStore';
+import { useSessionRefresh } from '../useSessionRefresh';
 
 // グローバルオブジェクトの型定義
 type MockCallback = (event: string, session: unknown) => Promise<void>;
 
 // モックの設定
-vi.mock('../lib/supabase', () => ({
+vi.mock('../../lib/supabase', () => ({
   supabase: {
     auth: {
       onAuthStateChange: vi.fn(),
@@ -17,7 +17,7 @@ vi.mock('../lib/supabase', () => ({
   },
 }));
 
-vi.mock('../store/authStore', () => ({
+vi.mock('../../store/authStore', () => ({
   useAuthStore: vi.fn(),
 }));
 
@@ -32,25 +32,25 @@ describe('useSessionRefresh', () => {
     vi.clearAllMocks();
 
     // useAuthStoreのモック
-    (useAuthStore as { mockReturnValue: (value: unknown) => void }).mockReturnValue({
+    (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       setUser: mockSetUser,
     });
 
     // supabase.auth.onAuthStateChangeのモック
-    (
-      supabase.auth.onAuthStateChange as { mockImplementation: (callback: MockCallback) => unknown }
-    ).mockImplementation(callback => {
-      // コールバック関数を保存して後でテストから呼び出せるようにする
-      authCallback = callback;
+    (supabase.auth.onAuthStateChange as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (callback: MockCallback) => {
+        // コールバック関数を保存して後でテストから呼び出せるようにする
+        authCallback = callback;
 
-      return {
-        data: {
-          subscription: {
-            unsubscribe: mockUnsubscribe,
+        return {
+          data: {
+            subscription: {
+              unsubscribe: mockUnsubscribe,
+            },
           },
-        },
-      };
-    });
+        };
+      }
+    );
   });
 
   afterEach(() => {

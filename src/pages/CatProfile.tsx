@@ -138,9 +138,9 @@ export default function CatProfile() {
         if (fetchError) throw fetchError;
         if (!data) throw new Error('猫が見つかりません');
 
-        // 猫が非公開で、かつ現在のユーザーが飼い主でない場合は404エラー
-        if (data.is_public === false && (!user || data.owner_id !== user.id)) {
-          throw new Error('この猫のプロフィールは存在しません');
+        // 猫が非公開の場合は404エラー
+        if (data.is_public === false) {
+          throw new Error('この猫ちゃんは非公開です🐈');
         }
 
         return data as CatWithOwner;

@@ -40,7 +40,7 @@ interface CatWithOwner {
   };
   background_color?: string;
   text_color?: string;
-  is_public?: boolean;
+  is_public: boolean;
 }
 
 interface CatPhoto {

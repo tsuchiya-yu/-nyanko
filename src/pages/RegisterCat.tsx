@@ -34,7 +34,7 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
-  is_public?: boolean;
+  is_public: boolean;
 }
 
 function sanitizeFileName(fileName: string): string {

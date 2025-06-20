@@ -543,7 +543,7 @@ export default function EditCat() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">公開状態</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">プロフィールページの公開</label>
               <div className="flex items-center">
                 <ToggleSwitch
                   id="is_public_edit"
@@ -556,7 +556,7 @@ export default function EditCat() {
                 />
               </div>
               <p className="mt-1 text-sm text-gray-600">
-                公開すると他の人もプロフィールページを見ることができます
+                公開すると他の人もページを見ることができます
               </p>
             </div>
 

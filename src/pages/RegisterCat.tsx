@@ -161,7 +161,7 @@ export default function RegisterCat() {
       }
 
       // データベースに登録
-      const { error } = await supabase.from('cats').insert({
+      const { data: insertedCat, error } = await supabase.from('cats').insert({
         name: data.name,
         birthdate: data.birthdate,
         is_birthdate_estimated: data.is_birthdate_estimated,
@@ -179,15 +179,19 @@ export default function RegisterCat() {
         background_color: data.background_color,
         text_color: data.text_color,
         is_public: data.is_public,
-      });
+      }).select().single();
 
       if (error) throw error;
 
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
-      // 登録成功
-      navigate(`/profile/${user?.id}`);
+      // 登録成功 - is_publicの値に応じて遷移先を変更
+      if (data.is_public && insertedCat) {
+        navigate(`/cats/${insertedCat.id}`);
+      } else {
+        navigate(`/profile/${user?.id}`);
+      }
     } catch (error) {
       console.error('Error registering cat:', error);
       alert('猫の登録に失敗しました');

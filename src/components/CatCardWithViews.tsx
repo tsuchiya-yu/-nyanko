@@ -38,6 +38,12 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
           )
         }
       />
+      {/* 非公開タグ */}
+      {cat.is_public === false && (
+        <div className="absolute bottom-[5.5rem] right-2 bg-gray-700 text-white text-xs px-2 py-0.5 rounded">
+          非公開
+        </div>
+      )}
       {/* ページビュー数の表示 */}
       <div className="mt-1 flex items-center justify-end text-gray-500 text-xs">
         <Eye className="h-3 w-3 mr-1" />

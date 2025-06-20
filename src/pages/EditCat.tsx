@@ -34,7 +34,7 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
-  is_public?: boolean;
+  is_public: boolean;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -271,7 +271,13 @@ export default function EditCat() {
       }, 100);
 
       alert('猫ちゃんの情報を更新しました');
-      navigate(`/cats/${id}`);
+
+      // is_publicの値に応じて遷移先を変更
+      if (updatedData.is_public) {
+        navigate(`/cats/${id}`);
+      } else {
+        navigate(`/profile/${cat?.owner_id}`);
+      }
     },
   });
 

@@ -40,9 +40,7 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
         footer={
           cat.is_public === false && (
             <div className="flex justify-end">
-              <span className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded">
-                非公開
-              </span>
+              <span className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded">非公開</span>
             </div>
           )
         }

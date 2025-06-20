@@ -161,25 +161,29 @@ export default function RegisterCat() {
       }
 
       // データベースに登録
-      const { data: insertedCat, error } = await supabase.from('cats').insert({
-        name: data.name,
-        birthdate: data.birthdate,
-        is_birthdate_estimated: data.is_birthdate_estimated,
-        breed: data.breed,
-        catchphrase: data.catchphrase || null,
-        description: data.description,
-        image_url: imageUrl,
-        instagram_url: data.instagram_url || null,
-        youtube_url: data.youtube_url || null,
-        tiktok_url: data.tiktok_url || null,
-        x_url: data.x_url || null,
-        homepage_url: data.homepage_url || null,
-        owner_id: user?.id,
-        gender: data.gender || null,
-        background_color: data.background_color,
-        text_color: data.text_color,
-        is_public: data.is_public,
-      }).select().single();
+      const { data: insertedCat, error } = await supabase
+        .from('cats')
+        .insert({
+          name: data.name,
+          birthdate: data.birthdate,
+          is_birthdate_estimated: data.is_birthdate_estimated,
+          breed: data.breed,
+          catchphrase: data.catchphrase || null,
+          description: data.description,
+          image_url: imageUrl,
+          instagram_url: data.instagram_url || null,
+          youtube_url: data.youtube_url || null,
+          tiktok_url: data.tiktok_url || null,
+          x_url: data.x_url || null,
+          homepage_url: data.homepage_url || null,
+          owner_id: user?.id,
+          gender: data.gender || null,
+          background_color: data.background_color,
+          text_color: data.text_color,
+          is_public: data.is_public,
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 

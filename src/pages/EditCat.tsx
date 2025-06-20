@@ -543,12 +543,14 @@ export default function EditCat() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">プロフィールページの公開</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールページの公開
+              </label>
               <div className="flex items-center">
                 <ToggleSwitch
                   id="is_public_edit"
                   checked={isPublic}
-                  onChange={(checked) => {
+                  onChange={checked => {
                     setIsPublic(checked);
                     setValue('is_public', checked);
                   }}

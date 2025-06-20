@@ -6,7 +6,13 @@ interface ToggleSwitchProps {
   disabled?: boolean;
 }
 
-export default function ToggleSwitch({ id, checked, onChange, label, disabled = false }: ToggleSwitchProps) {
+export default function ToggleSwitch({
+  id,
+  checked,
+  onChange,
+  label,
+  disabled = false,
+}: ToggleSwitchProps) {
   return (
     <div className="flex items-center">
       <div className="relative">
@@ -14,7 +20,7 @@ export default function ToggleSwitch({ id, checked, onChange, label, disabled = 
           type="checkbox"
           id={id}
           checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
+          onChange={e => onChange(e.target.checked)}
           disabled={disabled}
           className="sr-only"
         />
@@ -38,4 +44,4 @@ export default function ToggleSwitch({ id, checked, onChange, label, disabled = 
       )}
     </div>
   );
-} 
+}

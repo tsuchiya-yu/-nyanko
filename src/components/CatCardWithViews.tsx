@@ -37,6 +37,13 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
             </>
           )
         }
+        footer={
+          cat.is_public === false && (
+            <div className="flex justify-end">
+              <span className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded">非公開</span>
+            </div>
+          )
+        }
       />
       {/* ページビュー数の表示 */}
       <div className="mt-1 flex items-center justify-end text-gray-500 text-xs">

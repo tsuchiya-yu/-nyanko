@@ -77,6 +77,7 @@ create table public.cats (
     gender text,
     background_color text default '#FFFFFF',
     text_color text default '#000000',
+    is_public boolean default true not null,
     owner_id uuid references public.profiles(id) on delete cascade not null
 );
 

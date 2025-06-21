@@ -18,6 +18,7 @@ export default function Home() {
       const { data, error } = await supabase
         .from('cats')
         .select('*')
+        .eq('is_public', true)
         .order('created_at', { ascending: false })
         .limit(6);
 

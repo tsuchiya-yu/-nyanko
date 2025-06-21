@@ -311,7 +311,14 @@ export default function EditCat() {
       }, 100);
 
       alert('猫ちゃんの情報を更新しました');
-      navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
+
+      // is_publicの値に応じて遷移先を変更
+      if (submittedData?.is_public) {
+        navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
+      } else {
+        navigate(`/profile/${cat?.owner_id}`);
+      }
+
     },
     onError: (error: Error) => {
       console.error('Mutation error:', error);

@@ -3,7 +3,7 @@ import { InstagramIcon, X, ChevronDown } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, Link } from 'react-router-dom';
 
-import CatCard from '../components/CatCard';
+import CatCard from '../components/CatCard/index';
 import { handleAuthAction } from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
@@ -18,6 +18,7 @@ export default function Home() {
       const { data, error } = await supabase
         .from('cats')
         .select('*')
+        .eq('is_public', true)
         .order('created_at', { ascending: false })
         .limit(6);
 

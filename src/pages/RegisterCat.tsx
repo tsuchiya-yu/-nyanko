@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPickerModal } from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
+import ToggleSwitch from '../components/ToggleSwitch';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import {
@@ -34,6 +35,7 @@ interface CatFormData {
   background_color?: string;
   text_color?: string;
   prof_path_id: string;
+  is_public: boolean;
 }
 
 // ランダムなパスIDを生成する関数
@@ -81,6 +83,7 @@ export default function RegisterCat() {
       background_color: defaultBackgroundColor,
       text_color: defaultTextColor,
       prof_path_id: randomPathId,
+      is_public: true,
     },
   });
 
@@ -108,6 +111,9 @@ export default function RegisterCat() {
       });
     }
   }, [mutationError]);
+
+  // 公開/非公開のState
+  const [isPublic, setIsPublic] = useState(true);
 
   // 背景色変更のハンドラー
   const handleBgColorChange = (color: string) => {
@@ -194,39 +200,48 @@ export default function RegisterCat() {
       }
 
       // データベースに登録
-      const { error } = await supabase.from('cats').insert({
-        name: data.name,
-        birthdate: data.birthdate,
-        is_birthdate_estimated: data.is_birthdate_estimated,
-        breed: data.breed,
-        catchphrase: data.catchphrase || null,
-        description: data.description,
-        image_url: imageUrl,
-        instagram_url: data.instagram_url || null,
-        youtube_url: data.youtube_url || null,
-        tiktok_url: data.tiktok_url || null,
-        x_url: data.x_url || null,
-        homepage_url: data.homepage_url || null,
-        owner_id: user?.id,
-        gender: data.gender || null,
-        background_color: data.background_color,
-        text_color: data.text_color,
-        prof_path_id: data.prof_path_id,
-      });
+      const { data: insertedCat, error } = await supabase
+        .from('cats')
+        .insert({
+          name: data.name,
+          birthdate: data.birthdate,
+          is_birthdate_estimated: data.is_birthdate_estimated,
+          breed: data.breed,
+          catchphrase: data.catchphrase || null,
+          description: data.description,
+          image_url: imageUrl,
+          instagram_url: data.instagram_url || null,
+          youtube_url: data.youtube_url || null,
+          tiktok_url: data.tiktok_url || null,
+          x_url: data.x_url || null,
+          homepage_url: data.homepage_url || null,
+          owner_id: user?.id,
+          gender: data.gender || null,
+          background_color: data.background_color,
+          text_color: data.text_color,
+          prof_path_id: data.prof_path_id,
+          is_public: data.is_public,
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
-      return data;
+      return { data, insertedCat };
     },
-    onSuccess: async () => {
+    onSuccess: async (result) => {
       console.log('Mutation successful');
       setMutationError(null); // エラーをクリア
       
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
-      // 登録成功
-      navigate(`/profile/${user?.id}`);
+      // 登録成功 - is_publicの値に応じて遷移先を変更
+      if (result.data.is_public && result.insertedCat) {
+        navigate(`/cats/${result.insertedCat.id}`);
+      } else {
+        navigate(`/profile/${user?.id}`);
+      }
     },
     onError: (error: Error) => {
       console.error('Mutation error:', error);
@@ -494,6 +509,30 @@ export default function RegisterCat() {
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールページの公開
+              </label>
+              <div className="flex items-center">
+                <ToggleSwitch
+                  id="is_public_register"
+                  checked={isPublic}
+                  onChange={checked => {
+                    setIsPublic(checked);
+                    setValue('is_public', checked);
+                  }}
+                  label={isPublic ? '公開' : '非公開'}
+                />
+                <input
+                  type="hidden"
+                  {...register('is_public')}
+                />
+              </div>
+              <p className="mt-1 text-sm text-gray-600">
+                公開すると他の人もページを見ることができます
+              </p>
             </div>
 
             {/* カラーテーマ設定 */}

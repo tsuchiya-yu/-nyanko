@@ -16,6 +16,7 @@ export interface Cat {
   gender?: string | null;
   background_color?: string;
   text_color?: string;
+  is_public: boolean;
 }
 
 export interface Owner {

@@ -1,7 +1,7 @@
 import { Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import CatCard from './CatCard';
+import CatCard from './CatCard/index';
 import { usePageViewCount } from '../hooks/usePageViewCount';
 
 import type { Cat } from '../types';
@@ -35,6 +35,13 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
                 編集する
               </Link>
             </>
+          )
+        }
+        footer={
+          cat.is_public === false && (
+            <div className="flex justify-end">
+              <span className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded">非公開</span>
+            </div>
           )
         }
       />

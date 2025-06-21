@@ -18,6 +18,7 @@ export interface Cat {
   background_color?: string;
   text_color?: string;
   prof_path_id: string;
+  is_public: boolean;
 }
 
 export interface Favorite {

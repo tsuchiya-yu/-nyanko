@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 
-import CatCard from '../components/CatCard';
 import CatCardWithViews from '../components/CatCardWithViews';
 import UserSettingsModal from '../components/user/UserSettingsModal';
 import { useFavorites } from '../hooks/useFavorites';

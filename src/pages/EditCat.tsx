@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPickerModal } from '../components/ColorPickerModal';
 import ImageEditor from '../components/ImageEditor';
+import ToggleSwitch from '../components/ToggleSwitch';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import {
@@ -34,6 +35,7 @@ interface CatFormData {
   background_color?: string;
   text_color?: string;
   prof_path_id: string;
+  is_public: boolean;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -65,6 +67,9 @@ export default function EditCat() {
   const [submittedData, setSubmittedData] = useState<CatFormData | null>(null);
   const [mutationError, setMutationError] = useState<string | null>(null);
   const profPathIdRef = useRef<HTMLInputElement | null>(null);
+
+  // 公開/非公開のState
+  const [isPublic, setIsPublic] = useState(true);
 
   const {
     register,
@@ -113,11 +118,15 @@ export default function EditCat() {
         background_color: cat.background_color || defaultBackgroundColor,
         text_color: cat.text_color || defaultTextColor,
         prof_path_id: cat.prof_path_id || '',
+        is_public: cat.is_public !== undefined ? cat.is_public : true,
       });
 
       // 色の状態を初期化
       setBgColor(cat.background_color || defaultBackgroundColor);
       setTextColor(cat.text_color || defaultTextColor);
+
+      // 公開/非公開の状態を初期化
+      setIsPublic(cat.is_public !== undefined ? cat.is_public : true);
 
       // cat.image_urlが存在する場合、プレビューURLとして設定
       if (cat.image_url) {
@@ -255,6 +264,7 @@ export default function EditCat() {
           background_color: data.background_color,
           text_color: data.text_color,
           prof_path_id: data.prof_path_id,
+          is_public: data.is_public,
         })
         .eq('id', cat?.id);
 
@@ -306,6 +316,13 @@ export default function EditCat() {
     onError: (error: Error) => {
       console.error('Mutation error:', error);
       setMutationError(error.message);
+
+      // is_publicの値に応じて遷移先を変更
+      if (submittedData?.is_public) {
+        navigate(`/cats/${id}`);
+      } else {
+        navigate(`/profile/${cat?.owner_id}`);
+      }
     },
   });
 
@@ -608,6 +625,26 @@ export default function EditCat() {
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールページの公開
+              </label>
+              <div className="flex items-center">
+                <ToggleSwitch
+                  id="is_public_edit"
+                  checked={isPublic}
+                  onChange={checked => {
+                    setIsPublic(checked);
+                    setValue('is_public', checked);
+                  }}
+                  label={isPublic ? '公開' : '非公開'}
+                />
+              </div>
+              <p className="mt-1 text-sm text-gray-600">
+                公開すると他の人もページを見ることができます
+              </p>
             </div>
 
             {/* カラーテーマ設定 */}

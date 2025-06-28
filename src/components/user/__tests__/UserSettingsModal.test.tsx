@@ -39,7 +39,18 @@ describe('UserSettingsModal', () => {
 
   beforeEach(() => {
     queryClient = new QueryClient();
-    (useAuthStore as any).mockReturnValue({ user: mockUser });
+    vi.mocked(useAuthStore).mockReturnValue({
+      user: mockUser,
+      profile: null,
+      setUser: vi.fn(),
+      setProfile: vi.fn(),
+      signOut: vi.fn().mockResolvedValue(undefined),
+      fetchProfile: vi.fn().mockResolvedValue(undefined),
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   const renderModal = (props = {}) => {
@@ -86,6 +97,30 @@ describe('UserSettingsModal', () => {
     });
   });
 
+  it('プロフィール更新が失敗したときにエラーを処理する', async () => {
+    // Supabaseのupdateがエラーを返すようにモックを上書き
+    const updateMock = vi.fn().mockResolvedValue({ error: new Error('Update failed') });
+    vi.mocked(supabase.from).mockReturnValue({
+      update: () => ({
+        eq: updateMock,
+      }),
+    } as any); // as any はモックの型を簡略化するため
+
+    // window.alertをスパイ
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    renderModal();
+
+    fireEvent.change(screen.getByLabelText('飼い主さんのニックネーム'), { target: { value: '新しい名前' } });
+    fireEvent.click(screen.getByText('更新する'));
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith('Update failed');
+    });
+
+    alertSpy.mockRestore();
+  });
+
   it('メールアドレス更新が正しく動作する', async () => {
     const onClose = vi.fn();
     renderModal({ onClose });
@@ -104,6 +139,54 @@ describe('UserSettingsModal', () => {
       });
       expect(onClose).toHaveBeenCalled();
     });
+  });
+
+  it('メールアドレス更新が失敗したときにエラーを処理する', async () => {
+    // SupabaseのupdateUserがエラーを返すようにモックを上書き
+    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({ error: new Error('Email update failed') } as any);
+
+    // window.alertをスパイ
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    renderModal();
+
+    fireEvent.click(screen.getByText('メール'));
+
+    const emailInput = screen.getByLabelText('新しいメールアドレス');
+    fireEvent.change(emailInput, { target: { value: 'fail@example.com' } });
+
+    const submitButton = screen.getByText('更新する');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith('Email update failed');
+    });
+
+    alertSpy.mockRestore();
+  });
+
+  it('メールアドレス更新が失敗したときにエラーを処理する', async () => {
+    // SupabaseのupdateUserがエラーを返すようにモックを上書き
+    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({ error: new Error('Email update failed') } as any);
+
+    // window.alertをスパイ
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    renderModal();
+
+    fireEvent.click(screen.getByText('メール'));
+
+    const emailInput = screen.getByLabelText('新しいメールアドレス');
+    fireEvent.change(emailInput, { target: { value: 'fail@example.com' } });
+
+    const submitButton = screen.getByText('更新する');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith('Email update failed');
+    });
+
+    alertSpy.mockRestore();
   });
 
   it('パスワード更新が正しく動作する', async () => {
@@ -145,9 +228,7 @@ describe('UserSettingsModal', () => {
     const submitButton = screen.getByText('更新する');
     fireEvent.click(submitButton);
 
-    await waitFor(() => {
-      expect(screen.getByText('パスワードが一致しません')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('パスワードが一致しません')).toBeInTheDocument();
   });
 
   it('バリデーションエラーを正しく表示する', async () => {
@@ -159,8 +240,6 @@ describe('UserSettingsModal', () => {
     const submitButton = screen.getByText('更新する');
     fireEvent.click(submitButton);
 
-    await waitFor(() => {
-      expect(screen.getByText('飼い主さんのニックネームは2文字以上で入力してください')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('飼い主さんのニックネームは2文字以上で入力してください')).toBeInTheDocument();
   });
 }); 

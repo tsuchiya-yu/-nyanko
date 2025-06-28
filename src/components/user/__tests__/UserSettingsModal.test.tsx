@@ -101,15 +101,17 @@ describe('UserSettingsModal', () => {
     // Supabaseのfrom().update().eq()がエラーを返すようにモックを上書き
     vi.mocked(supabase).from.mockReturnValue({
       update: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({
-          data: null,
-          error: {
-            code: '23505',
-            details: 'duplicate key value violates unique constraint "profiles_name_key"',
-            hint: null,
-            message: 'duplicate key value violates unique constraint "profiles_name_key"',
-          },
-        })),
+        eq: vi.fn(() =>
+          Promise.resolve({
+            data: null,
+            error: {
+              code: '23505',
+              details: 'duplicate key value violates unique constraint "profiles_name_key"',
+              hint: null,
+              message: 'duplicate key value violates unique constraint "profiles_name_key"',
+            },
+          })
+        ),
       })),
     } as any); // as any は後で修正
 

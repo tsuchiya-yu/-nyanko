@@ -235,7 +235,10 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
           {mode === 'password' && (
             <>
               <div>
-                <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="currentPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   現在のパスワード
                 </label>
                 <input
@@ -253,7 +256,10 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               </div>
 
               <div>
-                <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="newPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   新しいパスワード
                 </label>
                 <input
@@ -275,7 +281,10 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   新しいパスワード（確認）
                 </label>
                 <input

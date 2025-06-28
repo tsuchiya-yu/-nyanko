@@ -111,7 +111,9 @@ describe('UserSettingsModal', () => {
 
     renderModal();
 
-    fireEvent.change(screen.getByLabelText('飼い主さんのニックネーム'), { target: { value: '新しい名前' } });
+    fireEvent.change(screen.getByLabelText('飼い主さんのニックネーム'), {
+      target: { value: '新しい名前' },
+    });
     fireEvent.click(screen.getByText('更新する'));
 
     await waitFor(() => {
@@ -126,7 +128,7 @@ describe('UserSettingsModal', () => {
     renderModal({ onClose });
 
     fireEvent.click(screen.getByText('メール'));
-    
+
     const emailInput = screen.getByLabelText('新しいメールアドレス');
     fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
 
@@ -143,7 +145,9 @@ describe('UserSettingsModal', () => {
 
   it('メールアドレス更新が失敗したときにエラーを処理する', async () => {
     // SupabaseのupdateUserがエラーを返すようにモックを上書き
-    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({ error: new Error('Email update failed') } as any);
+    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({
+      error: new Error('Email update failed'),
+    } as any);
 
     // window.alertをスパイ
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
@@ -167,7 +171,9 @@ describe('UserSettingsModal', () => {
 
   it('メールアドレス更新が失敗したときにエラーを処理する', async () => {
     // SupabaseのupdateUserがエラーを返すようにモックを上書き
-    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({ error: new Error('Email update failed') } as any);
+    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({
+      error: new Error('Email update failed'),
+    } as any);
 
     // window.alertをスパイ
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
@@ -194,7 +200,7 @@ describe('UserSettingsModal', () => {
     renderModal({ onClose });
 
     fireEvent.click(screen.getByText('パスワード'));
-    
+
     const currentPasswordInput = screen.getByLabelText('現在のパスワード');
     const newPasswordInput = screen.getByLabelText('新しいパスワード');
     const confirmPasswordInput = screen.getByLabelText('新しいパスワード（確認）');
@@ -218,7 +224,7 @@ describe('UserSettingsModal', () => {
     renderModal();
 
     fireEvent.click(screen.getByText('パスワード'));
-    
+
     const newPasswordInput = screen.getByLabelText('新しいパスワード');
     const confirmPasswordInput = screen.getByLabelText('新しいパスワード（確認）');
 
@@ -240,6 +246,8 @@ describe('UserSettingsModal', () => {
     const submitButton = screen.getByText('更新する');
     fireEvent.click(submitButton);
 
-    expect(await screen.findByText('飼い主さんのニックネームは2文字以上で入力してください')).toBeInTheDocument();
+    expect(
+      await screen.findByText('飼い主さんのニックネームは2文字以上で入力してください')
+    ).toBeInTheDocument();
   });
-}); 
+});

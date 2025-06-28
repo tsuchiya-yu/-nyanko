@@ -1,9 +1,10 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import UserSettingsModal from '../UserSettingsModal';
+
 import { supabase } from '../../../lib/supabase';
 import { useAuthStore } from '../../../store/authStore';
+import UserSettingsModal from '../UserSettingsModal';
 
 // Supabaseのモック
 vi.mock('../../../lib/supabase', () => ({

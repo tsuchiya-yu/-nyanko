@@ -113,7 +113,7 @@ describe('UserSettingsModal', () => {
           })
         ),
       })),
-    } as any); // as any は後で修正
+    } as unknown as ReturnType<typeof supabase.from>);
 
     // window.alertをスパイ
     const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
@@ -151,37 +151,6 @@ describe('UserSettingsModal', () => {
       });
       expect(onClose).toHaveBeenCalled();
     });
-  });
-
-  it('メールアドレス更新が失敗したときにエラーを処理する', async () => {
-    // SupabaseのupdateUserがエラーを返すようにモックを上書き
-    vi.mocked(supabase.auth).updateUser.mockResolvedValueOnce({
-      data: { user: null },
-      error: {
-        name: 'AuthApiError',
-        message: 'Email update failed',
-        status: 400,
-      },
-    });
-
-    // window.alertをスパイ
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-
-    renderModal();
-
-    fireEvent.click(screen.getByText('メール'));
-
-    const emailInput = screen.getByLabelText('新しいメールアドレス');
-    fireEvent.change(emailInput, { target: { value: 'fail@example.com' } });
-
-    const submitButton = screen.getByText('更新する');
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('更新に失敗しました');
-    });
-
-    alertSpy.mockRestore();
   });
 
   it('メールアドレス更新が失敗したときにエラーを処理する', async () => {

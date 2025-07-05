@@ -190,10 +190,11 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
           {mode === 'profile' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                 飼い主さんのニックネーム
               </label>
               <input
+                id="name"
                 type="text"
                 {...register('name', {
                   required: '飼い主さんのニックネームは必須です',
@@ -211,10 +212,11 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
 
           {mode === 'email' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 新しいメールアドレス
               </label>
               <input
+                id="email"
                 type="email"
                 {...register('email', {
                   required: 'メールアドレスは必須です',
@@ -226,17 +228,25 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+              {errors.email && (
+                <p data-testid="email-error" className="mt-1 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
           )}
 
           {mode === 'password' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="currentPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   現在のパスワード
                 </label>
                 <input
+                  id="currentPassword"
                   type="password"
                   {...register('currentPassword', {
                     required: '現在のパスワードは必須です',
@@ -250,10 +260,14 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="newPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   新しいパスワード
                 </label>
                 <input
+                  id="newPassword"
                   type="password"
                   {...register('newPassword', {
                     required: '新しいパスワードは必須です',
@@ -271,10 +285,14 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   新しいパスワード（確認）
                 </label>
                 <input
+                  id="confirmPassword"
                   type="password"
                   {...register('confirmPassword', {
                     validate: value => value === watch('newPassword') || 'パスワードが一致しません',

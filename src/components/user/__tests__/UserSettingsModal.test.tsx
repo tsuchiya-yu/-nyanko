@@ -153,9 +153,9 @@ describe('UserSettingsModal', () => {
       const submitButton = screen.getByText('更新する');
       fireEvent.click(submitButton);
 
-      expect(
-        await screen.findByText('飼い主さんのニックネームは2文字以上で入力してください')
-      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('飼い主さんのニックネームは2文字以上で入力してください')).toBeInTheDocument();
+      });
     });
   });
 
@@ -200,9 +200,38 @@ describe('UserSettingsModal', () => {
         expect(alertSpy).toHaveBeenCalledWith('更新に失敗しました');
       });
     });
+
+    it('無効な形式のメールアドレスの場合にエラーを表示する', async () => {
+      const { getByText } = renderModal();
+      fireEvent.click(screen.getByText('メール'));
+
+      const emailInput = screen.getByLabelText('新しいメールアドレス');
+      fireEvent.change(emailInput, { target: { value: '' } });
+
+      const submitButton = screen.getByText('更新する');
+      const form = submitButton.closest('form');
+      if (!form) throw new Error('Form not found');
+      await fireEvent.submit(form);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('email-error')).toHaveTextContent('メールアドレスは必須です');
+      });
+    });
   });
 
   describe('パスワード更新', () => {
+    const fillPasswordForm = (current: string, newPass: string, confirm: string) => {
+      fireEvent.change(screen.getByLabelText('現在のパスワード'), {
+        target: { value: current },
+      });
+      fireEvent.change(screen.getByLabelText('新しいパスワード'), {
+        target: { value: newPass },
+      });
+      fireEvent.change(screen.getByLabelText('新しいパスワード（確認）'), {
+        target: { value: confirm },
+      });
+    };
+
     it('正常に更新される', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: mockSupabaseUser },
@@ -212,15 +241,7 @@ describe('UserSettingsModal', () => {
       renderModal();
       fireEvent.click(screen.getByText('パスワード'));
 
-      fireEvent.change(screen.getByLabelText('現在のパスワード'), {
-        target: { value: 'oldpassword' },
-      });
-      fireEvent.change(screen.getByLabelText('新しいパスワード'), {
-        target: { value: 'newpassword' },
-      });
-      fireEvent.change(screen.getByLabelText('新しいパスワード（確認）'), {
-        target: { value: 'newpassword' },
-      });
+      fillPasswordForm('oldpassword', 'newpassword', 'newpassword');
 
       const submitButton = screen.getByText('更新する');
       fireEvent.click(submitButton);
@@ -240,15 +261,7 @@ describe('UserSettingsModal', () => {
       renderModal();
       fireEvent.click(screen.getByText('パスワード'));
 
-      fireEvent.change(screen.getByLabelText('現在のパスワード'), {
-        target: { value: 'wrongpassword' },
-      });
-      fireEvent.change(screen.getByLabelText('新しいパスワード'), {
-        target: { value: 'newpassword' },
-      });
-      fireEvent.change(screen.getByLabelText('新しいパスワード（確認）'), {
-        target: { value: 'newpassword' },
-      });
+      fillPasswordForm('wrongpassword', 'newpassword', 'newpassword');
 
       const submitButton = screen.getByText('更新する');
       fireEvent.click(submitButton);
@@ -262,17 +275,14 @@ describe('UserSettingsModal', () => {
       renderModal();
       fireEvent.click(screen.getByText('パスワード'));
 
-      fireEvent.change(screen.getByLabelText('新しいパスワード'), {
-        target: { value: 'newpassword' },
-      });
-      fireEvent.change(screen.getByLabelText('新しいパスワード（確認）'), {
-        target: { value: 'differentpassword' },
-      });
+      fillPasswordForm('oldpassword', 'newpassword', 'differentpassword');
 
       const submitButton = screen.getByText('更新する');
       fireEvent.click(submitButton);
 
-      expect(await screen.findByText('パスワードが一致しません')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('パスワードが一致しません')).toBeInTheDocument();
+      });
     });
   });
 });

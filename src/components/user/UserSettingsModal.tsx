@@ -228,7 +228,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               />
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+              {errors.email && <p data-testid="email-error" className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
           )}
 

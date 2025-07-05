@@ -154,7 +154,9 @@ describe('UserSettingsModal', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('飼い主さんのニックネームは2文字以上で入力してください')).toBeInTheDocument();
+        expect(
+          screen.getByText('飼い主さんのニックネームは2文字以上で入力してください')
+        ).toBeInTheDocument();
       });
     });
   });

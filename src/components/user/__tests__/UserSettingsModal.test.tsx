@@ -204,19 +204,21 @@ describe('UserSettingsModal', () => {
     });
 
     it('無効な形式のメールアドレスの場合にエラーを表示する', async () => {
-      const { getByText } = renderModal();
+      renderModal();
       fireEvent.click(screen.getByText('メール'));
 
       const emailInput = screen.getByLabelText('新しいメールアドレス');
-      fireEvent.change(emailInput, { target: { value: '' } });
+      fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
 
       const submitButton = screen.getByText('更新する');
       const form = submitButton.closest('form');
       if (!form) throw new Error('Form not found');
-      await fireEvent.submit(form);
+      fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(screen.queryByTestId('email-error')).toHaveTextContent('メールアドレスは必須です');
+        expect(screen.queryByTestId('email-error')).toHaveTextContent(
+          '有効なメールアドレスを入力してください'
+        );
       });
     });
   });

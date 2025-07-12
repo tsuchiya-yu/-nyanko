@@ -177,14 +177,19 @@ export default function CatProfile() {
     queryFn: async () => {
       if (!user || !id) return false;
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('favorites')
         .select('id')
         .eq('cat_id', id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
-      return !!data;
+      if (error) {
+        console.error('Error fetching favorite status:', error);
+        return false;
+      }
+
+      return Boolean(data);
     },
     enabled: !!user && !!id,
   });

@@ -5,60 +5,77 @@
     <base href="/" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- リソースの事前接続 -->
-    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <!-- Supabaseへの事前接続 -->
-    <link rel="preconnect" href="https://mypvypmyjcrxiovdejqj.supabase.co" crossorigin>
-    <link rel="dns-prefetch" href="https://mypvypmyjcrxiovdejqj.supabase.co">
-    
+    <link rel="preconnect" href="https://mypvypmyjcrxiovdejqj.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://mypvypmyjcrxiovdejqj.supabase.co" />
+
     <!-- 画像のプリロード -->
-    <link rel="preload" href="/images/top/webp/main.webp" as="image" type="image/webp" fetchpriority="high">
-    
+    <link
+      rel="preload"
+      href="/images/top/webp/main.webp"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
+
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://*.supabase.co http://127.0.0.1:54321; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co http://127.0.0.1:54321; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self';">
-    
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://*.supabase.co http://127.0.0.1:54321; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co http://127.0.0.1:54321; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self';"
+    />
+
     <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
-    <meta name="description" content="CAT LINK|愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。" />
-    <meta name="keywords" content="猫, プロフィール, ペット, 写真, ギャラリー, 猫写真, 愛猫, 猫好き, 猫コミュニティ" />
-    
+    <meta
+      name="description"
+      content="CAT LINK|愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。"
+    />
+    <meta
+      name="keywords"
+      content="猫, プロフィール, ペット, 写真, ギャラリー, 猫写真, 愛猫, 猫好き, 猫コミュニティ"
+    />
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_TRACKING_ID%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() {
+        dataLayer.push(arguments);
+      }
       gtag('js', new Date());
-      
+
       // Cookieを完全に無効化する設定
       gtag('config', '%VITE_GA_TRACKING_ID%', {
-        'client_storage': 'none',
-        'debug_mode': false,
-        'anonymize_ip': true,
-        'cookie_domain': 'none',
-        'cookie_expires': 0,
-        'cookie_flags': 'SameSite=None;Secure',
-        'send_page_view': false // 初期ページビューを送信しない（重複を避けるため）
+        client_storage: 'none',
+        debug_mode: false,
+        anonymize_ip: true,
+        cookie_domain: 'none',
+        cookie_expires: 0,
+        cookie_flags: 'SameSite=None;Secure',
+        send_page_view: false, // 初期ページビューを送信しない（重複を避けるため）
       });
-      
+
       // Consent Mode - Cookieを使用しない設定
       gtag('consent', 'default', {
-        'analytics_storage': 'denied',
-        'ad_storage': 'denied',
-        'functionality_storage': 'denied', // 機能的なストレージも拒否
-        'personalization_storage': 'denied', // パーソナライズストレージも拒否
-        'security_storage': 'granted', // セキュリティのみ許可
-        'wait_for_update': 500
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        functionality_storage: 'denied', // 機能的なストレージも拒否
+        personalization_storage: 'denied', // パーソナライズストレージも拒否
+        security_storage: 'granted', // セキュリティのみ許可
+        wait_for_update: 500,
       });
-      setTimeout(function() {
+      setTimeout(function () {
         gtag('consent', 'update', {
-          'analytics_storage': 'granted'
+          analytics_storage: 'granted',
         });
       }, 5000);
     </script>
-    
+
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="%VITE_SEARCH_CONSOLE_VERIFICATION%" />
 
@@ -68,72 +85,79 @@
     <meta property="og:url" content="https://cat-link.catnote.tokyo/" />
     <meta property="og:image" content="https://cat-link.catnote.tokyo/images/ogp.png" />
     <meta property="og:site_name" content="CAT LINK" />
-    <meta property="og:description" content="愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。" />
+    <meta
+      property="og:description"
+      content="愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。"
+    />
     <meta property="og:locale" content="ja_JP" />
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@cat_link_jp" />
     <meta name="twitter:title" content="CAT LINK - 愛猫のプロフィールページを簡単に作成・共有" />
-    <meta name="twitter:description" content="愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。" />
+    <meta
+      name="twitter:description"
+      content="愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。"
+    />
     <meta name="twitter:image" content="https://cat-link.catnote.tokyo/images/ogp.png" />
-    
+
     <!-- その他のメタタグ -->
     <meta name="author" content="CAT LINK" />
     <meta name="application-name" content="CAT LINK" />
     <meta name="theme-color" content="#1f2937" />
     <meta name="robots" content="index, follow" />
     <meta name="format-detection" content="telephone=no" />
-    
+
     <!-- モバイル対応 -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="CAT LINK" />
-    
+
     <!-- 構造化データ -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "CAT LINK - 愛猫のプロフィールページを簡単に作成・共有",
-      "description": "愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。",
-      "applicationCategory": "LifestyleApplication",
-      "operatingSystem": "All",
-      "url": "https://cat-link.catnote.tokyo",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "JPY"
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "CAT LINK"
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "CAT LINK - 愛猫のプロフィールページを簡単に作成・共有",
+        "description": "愛猫のプロフィールページを簡単に作成・共有できるサービス。写真ギャラリーやSNS連携機能で、大切な思い出を残しましょう。",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "All",
+        "url": "https://cat-link.catnote.tokyo",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "JPY"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "CAT LINK"
+        }
       }
-    }
     </script>
-    
+
     <!-- ファビコン関連 -->
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
     <style>
-      html, body {
+      html,
+      body {
         width: 100%;
         overflow-x: hidden;
         position: relative;
         margin: 0;
         padding: 0;
       }
-      
+
       /* Safari用の三角形マーカーを非表示にする */
       details summary::-webkit-details-marker,
       details summary::marker {
         display: none;
       }
-      
+
       /* iOS Safariでの余分なパディングを削除 */
       details summary {
         list-style: none;
       }
-      
+
       /* 開いた状態のdetailsのChevronアイコンを回転させる */
       details[open] summary svg {
         transform: rotate(180deg);

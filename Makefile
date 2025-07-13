@@ -114,4 +114,6 @@ _stop-edge-functions:
 		echo "Supabase Edge Functions のPIDファイルが見つからないか、既に停止しています。"; \
 	fi
 
-.PHONY: build up down restart status app ps logs lint format test test-coverage deploy-ga-pageviews deploy-sitemap deploy-gemini functions-serve _stop-edge-functions
+.PHONY: build up down restart status app ps logs lint format test test-coverage \
+	deploy-ga-pageviews deploy-sitemap deploy-gemini functions-serve _stop-edge-functions
+

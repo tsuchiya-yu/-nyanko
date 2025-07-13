@@ -1,32 +1,24 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/index.html" }
-    ],
-    "headers": [
-      {
-        "source": "/(.*)\\.js",
-        "headers": [
-          { "key": "Content-Type", "value": "application/javascript" }
-        ]
-      },
-      {
-        "source": "/(.*)\\.css",
-        "headers": [
-          { "key": "Content-Type", "value": "text/css" }
-        ]
-      },
-      {
-        "source": "/(.*)\\.(jpg|jpeg|png|gif|webp|svg|ico)",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-        ]
-      }
-    ],
-    "redirects": [
-      {
-        "source": "/sitemap.xml",
-        "destination": "https://mypvypmyjcrxiovdejqj.supabase.co/storage/v1/object/public/pet-photos/sitemaps/sitemap.xml",
-        "permanent": false
-      }
-    ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/(.*)\\.js",
+      "headers": [{ "key": "Content-Type", "value": "application/javascript" }]
+    },
+    {
+      "source": "/(.*)\\.css",
+      "headers": [{ "key": "Content-Type", "value": "text/css" }]
+    },
+    {
+      "source": "/(.*)\\.(jpg|jpeg|png|gif|webp|svg|ico)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://mypvypmyjcrxiovdejqj.supabase.co/storage/v1/object/public/pet-photos/sitemaps/sitemap.xml",
+      "permanent": false
+    }
+  ]
 }

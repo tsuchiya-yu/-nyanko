@@ -2,7 +2,7 @@ name: Bump Version and Create PR
 
 on:
   schedule:
-    - cron: '0 19 * * 5'  # 毎週金曜日の19:00に実行
+    - cron: '0 19 * * 5' # 毎週金曜日の19:00に実行
   push:
     branches:
       - main
@@ -67,11 +67,11 @@ jobs:
             ## 変更内容
             - パッケージのバージョンを${{ steps.version-bump.outputs.bump-type }}アップしました
             - 現在のバージョン: ${{ steps.version-bump.outputs.bump-type }}
-            
+
             ## 変更の種類
             ${{ steps.version-bump.outputs.bump-type == 'major' && '⚠️ メジャーバージョンアップ' || '' }}
             ${{ steps.version-bump.outputs.bump-type == 'minor' && 'マイナーバージョンアップ' || '' }}
-            
+
             ---
             このPRはGitHub Actionsワークフローによって自動生成されました。
             レビュー後、問題なければマージしてください。
@@ -86,4 +86,4 @@ jobs:
         run: |
           git add package.json package-lock.json
           git commit -m "chore: bump patch version"
-          git push 
+          git push

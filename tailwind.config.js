@@ -10,7 +10,5 @@ export default {
       },
     },
   },
-  plugins: [
-    typography,
-  ],
+  plugins: [typography],
 };

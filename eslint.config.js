@@ -11,9 +11,9 @@ export default [
     files: ['**/*.{ts,tsx,js,jsx}'],
     plugins: {
       '@typescript-eslint': tseslint,
-      'react': reactPlugin,
+      react: reactPlugin,
       'react-hooks': reactHooksPlugin,
-      'import': importPlugin
+      import: importPlugin,
     },
     languageOptions: {
       parser: tsParser,
@@ -22,8 +22,8 @@ export default [
         sourceType: 'module',
         project: './tsconfig.json',
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         window: 'readonly',
@@ -35,8 +35,8 @@ export default [
         clearTimeout: 'readonly',
         setInterval: 'readonly',
         clearInterval: 'readonly',
-        React: 'readonly'
-      }
+        React: 'readonly',
+      },
     },
     rules: {
       'react/prop-types': 'off',
@@ -50,21 +50,29 @@ export default [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
-          ignoreRestSiblings: true
-        }
+          ignoreRestSiblings: true,
+        },
       ],
       'import/order': [
         'error',
         {
-          'groups': ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'object', 'type'],
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling'],
+            'index',
+            'object',
+            'type',
+          ],
           'newlines-between': 'always',
-          'alphabetize': {
-            'order': 'asc',
-            'caseInsensitive': true
-          }
-        }
-      ]
-    }
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
+    },
   },
   {
     files: ['**/*.test.{ts,tsx}'],
@@ -79,8 +87,8 @@ export default [
         beforeAll: 'readonly',
         afterAll: 'readonly',
         vi: 'readonly',
-        vitest: 'readonly'
+        vitest: 'readonly',
       },
     },
-  }
-]; 
+  },
+];

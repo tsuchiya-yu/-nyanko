@@ -12,32 +12,40 @@
 ### 環境構築手順
 
 1. **リポジトリのクローン**
+
 ```bash
 git clone https://github.com/tsuchiya-yu/-nyanko.git
 cd cat-link
 ```
 
 2. **環境変数の設定**
+
 ```bash
 cp .env.example .env
 ```
+
 `.env`ファイルを開き、必要な環境変数を設定してください。
 
 3. **開発環境の起動**
+
 ```bash
 make up
 ```
+
 このコマンドで以下の処理が実行されます：
+
 - Supabaseサービスの起動（Docker Desktop/Colima環境自動検出）
 - アプリケーションコンテナの起動
 
 4. **データベースのリストア（必要な場合）**
-プロジェクトルートに`production.sql`の名前でダンプファイルを配置して、以下のコマンドを実行してください。
+   プロジェクトルートに`production.sql`の名前でダンプファイルを配置して、以下のコマンドを実行してください。
+
 ```bash
 make db-restore
 ```
 
 1. **アプリケーションの確認**
+
 - ブラウザで http://localhost:5173 にアクセス
 - Supabase Studio: http://localhost:54323
 - Supabase API: http://localhost:54321
@@ -45,6 +53,7 @@ make db-restore
 ## 開発コマンド
 
 ### Makefileコマンド
+
 開発環境を操作するためのMakefileコマンドが用意されています：
 
 ```bash
@@ -90,6 +99,7 @@ make deploy-gemini
 Edge Functionsには以下の環境変数を設定してください：
 
 1. **ga-pageviews**
+
 ```bash
 # Supabaseダッシュボードで設定
 GA_PROPERTY_ID=<GOOGLE_ANALYTICS_PROPERTY_ID>
@@ -97,6 +107,7 @@ GA_CREDENTIALS=<GOOGLE_SERVICE_ACCOUNT_JSON>
 ```
 
 2. **generate-sitemap**
+
 ```bash
 # Supabaseダッシュボードで設定
 PROJECT_URL=<SUPABASE_PROJECT_URL>
@@ -104,6 +115,7 @@ SERVICE_ROLE_KEY=<SUPABASE_SERVICE_ROLE_KEY>
 ```
 
 3. **image-to-gemini**
+
 ```bash
 # Supabaseダッシュボードで設定
 GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
@@ -112,6 +124,7 @@ GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
 ## 技術スタック
 
 ### フロントエンド
+
 - React 18
 - TypeScript
 - Vite
@@ -124,17 +137,20 @@ GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
 - React Zoom Pan Pinch
 
 ### バックエンド
+
 - Supabase
 - Edge Functions (Vercel Edge)
 - Google Analytics API
 - Google Gemini API
 
 ### 開発環境
+
 - Docker
 - Docker Compose
 - Make
 
 ### テスト・品質管理
+
 - Vitest
 - Testing Library
 - ESLint
@@ -178,24 +194,32 @@ supabase/
 ## トラブルシューティング
 
 ### 開発環境の問題
+
 - コンテナの状態確認
+
 ```bash
 make ps
 ```
+
 - ログの確認
+
 ```bash
 make logs
 ```
+
 - 開発環境の再起動
+
 ```bash
 make down
 make up
 ```
 
 ### データベース周りで問題が発生した場合
+
 - Supabaseのダッシュボードでデータベースの状態を確認
 - SQLエディタで`schema.sql`を再実行（データが消えるので注意）
 
 ### テストの実行に関する問題
+
 - `make test`で個別のテストを実行して問題を特定
 - `coverage`ディレクトリを削除して`make test-coverage`を再実行

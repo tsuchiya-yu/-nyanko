@@ -1,23 +1,23 @@
-import { next } from "@vercel/edge";
+import { next } from '@vercel/edge';
 
 export const config = {
-  matcher: "/(.*)",  // すべてのルートに適用
+  matcher: '/(.*)', // すべてのルートに適用
 };
 
 export default function middleware(request: Request) {
   // 環境変数が未設定または空の場合は認証をスキップ
   if (
-    (process.env.BASIC_AUTH_USER === "" || process.env.BASIC_AUTH_USER === undefined) &&
-    (process.env.BASIC_AUTH_PASSWORD === "" || process.env.BASIC_AUTH_PASSWORD === undefined)
+    (process.env.BASIC_AUTH_USER === '' || process.env.BASIC_AUTH_USER === undefined) &&
+    (process.env.BASIC_AUTH_PASSWORD === '' || process.env.BASIC_AUTH_PASSWORD === undefined)
   ) {
     return next();
   }
 
-  const authorizationHeader = request.headers.get("authorization");
+  const authorizationHeader = request.headers.get('authorization');
 
   if (authorizationHeader) {
-    const basicAuth = authorizationHeader.split(" ")[1];
-    const [user, password] = atob(basicAuth).toString().split(":");
+    const basicAuth = authorizationHeader.split(' ')[1];
+    const [user, password] = atob(basicAuth).toString().split(':');
 
     if (user === process.env.BASIC_AUTH_USER && password === process.env.BASIC_AUTH_PASSWORD) {
       return next();
@@ -25,7 +25,8 @@ export default function middleware(request: Request) {
   }
 
   // 認証失敗時はHTML形式で返す
-  return new Response(`<!DOCTYPE html>
+  return new Response(
+    `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -40,11 +41,13 @@ export default function middleware(request: Request) {
   <h1>Basic認証が必要です</h1>
   <p>このページにアクセスするには認証が必要です。</p>
 </body>
-</html>`, {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": "Basic",
-      "Content-Type": "text/html; charset=utf-8"
-    },
-  });
-} 
+</html>`,
+    {
+      status: 401,
+      headers: {
+        'WWW-Authenticate': 'Basic',
+        'Content-Type': 'text/html; charset=utf-8',
+      },
+    }
+  );
+}

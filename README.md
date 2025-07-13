@@ -14,7 +14,7 @@
 1. **リポジトリのクローン**
 ```bash
 git clone https://github.com/tsuchiya-yu/-nyanko.git
-cd cat-link
+cd -nyanko
 ```
 
 2. **環境変数の設定**

@@ -186,7 +186,7 @@ export default function CatProfile() {
 
       if (error) {
         console.error('Error fetching favorite status:', error);
-        return false;
+        throw error;
       }
 
       return Boolean(data);

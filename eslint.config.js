@@ -99,5 +99,11 @@ export default [
       },
     },
   },
-  prettierConfig,
+  // Prettierの設定を最後に適用して、他のルールとの競合を防ぐ
+  {
+    files: ['**/*.{ts,tsx,js,jsx}'],
+    rules: {
+      ...prettierConfig.rules,
+    },
+  },
 ];

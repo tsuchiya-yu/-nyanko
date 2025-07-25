@@ -4,6 +4,7 @@ import tsParser from '@typescript-eslint/parser';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import importPlugin from 'eslint-plugin-import';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
   eslint.configs.recommended,
@@ -36,6 +37,11 @@ export default [
         setInterval: 'readonly',
         clearInterval: 'readonly',
         React: 'readonly',
+      },
+    },
+    settings: {
+      react: {
+        version: 'detect',
       },
     },
     rules: {
@@ -72,6 +78,8 @@ export default [
           },
         },
       ],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
     },
   },
   {
@@ -91,4 +99,5 @@ export default [
       },
     },
   },
+  prettierConfig,
 ];

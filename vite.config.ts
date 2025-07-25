@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default ({ mode }: { mode: string }) => {
   // 環境変数の読み込み
   const env = loadEnv(mode, process.cwd(), '');
-  
+
   return defineConfig({
     base: '/',
     plugins: [react()],

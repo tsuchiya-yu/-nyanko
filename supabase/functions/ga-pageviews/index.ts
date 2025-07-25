@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { create, getNumericDate } from "https://deno.land/x/djwt@v3.0.1/mod.ts";
+import { create, getNumericDate } from 'https://deno.land/x/djwt@v3.0.1/mod.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // CORSヘッダーの設定
@@ -20,7 +20,7 @@ function pemToDer(pem: string): Uint8Array {
     .replace(/-----BEGIN PRIVATE KEY-----/, '')
     .replace(/-----END PRIVATE KEY-----/, '')
     .replace(/\n/g, '');
-  
+
   return new Uint8Array(
     atob(pemContents)
       .split('')
@@ -31,7 +31,7 @@ function pemToDer(pem: string): Uint8Array {
 async function getAccessToken(): Promise<string> {
   const clientEmail = Deno.env.get('GA_CLIENT_EMAIL');
   const privateKey = Deno.env.get('GA_PRIVATE_KEY')?.replace(/\\n/g, '\n');
-  
+
   if (!clientEmail || !privateKey) {
     throw new Error('Missing credentials');
   }
@@ -42,7 +42,7 @@ async function getAccessToken(): Promise<string> {
     derKey,
     {
       name: 'RSASSA-PKCS1-v1_5',
-      hash: { name: 'SHA-256' }
+      hash: { name: 'SHA-256' },
     },
     true,
     ['sign']
@@ -55,7 +55,7 @@ async function getAccessToken(): Promise<string> {
       scope: 'https://www.googleapis.com/auth/analytics.readonly',
       aud: 'https://oauth2.googleapis.com/token',
       exp: getNumericDate(3600),
-      iat: getNumericDate(0)
+      iat: getNumericDate(0),
     },
     key
   );
@@ -81,7 +81,7 @@ async function getPageViewsFromGA4(catId: string): Promise<number> {
     {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -102,7 +102,9 @@ async function getPageViewsFromGA4(catId: string): Promise<number> {
   );
 
   const data = await response.json();
-  return data.rows?.[0]?.metricValues?.[0]?.value ? parseInt(data.rows[0].metricValues[0].value, 10) : 0;
+  return data.rows?.[0]?.metricValues?.[0]?.value
+    ? parseInt(data.rows[0].metricValues[0].value, 10)
+    : 0;
 }
 
 async function getPageViews(catId: string): Promise<{ pageViews: number; cached: boolean }> {
@@ -125,45 +127,42 @@ async function getPageViews(catId: string): Promise<{ pageViews: number; cached:
   const now = new Date();
   const expires = new Date(now.getTime() + 3600000); // 1時間後
 
-  await supabase
-    .from('cache')
-    .upsert({
-      key: `pageviews:${catId}`,
-      value: pageViews,
-      created_at: now.toISOString(),
-      expires_at: expires.toISOString()
-    });
+  await supabase.from('cache').upsert({
+    key: `pageviews:${catId}`,
+    value: pageViews,
+    created_at: now.toISOString(),
+    expires_at: expires.toISOString(),
+  });
 
   return { pageViews, cached: false };
 }
 
 // メインのハンドラー関数
-serve(async (req) => {
+serve(async req => {
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
-      headers: corsHeaders
+      headers: corsHeaders,
     });
   }
 
   try {
     const { catId } = await req.json();
     if (!catId) {
-      return new Response(
-        JSON.stringify({ error: 'catId is required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'catId is required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const result = await getPageViews(catId);
-    return new Response(
-      JSON.stringify(result),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify(result), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
-}); 
+});

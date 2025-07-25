@@ -2,9 +2,9 @@ name: Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -38,7 +38,7 @@ jobs:
           name: coverage-report
           path: coverage/
           retention-days: 7
-          
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
@@ -46,4 +46,4 @@ jobs:
           directory: ./coverage/
           fail_ci_if_error: false
           verbose: true
-        continue-on-error: true 
+        continue-on-error: true

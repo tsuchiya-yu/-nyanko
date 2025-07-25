@@ -248,7 +248,7 @@ values
 
 insert into public.cats (id, name, birthdate, is_birthdate_estimated, breed, catchphrase, description, image_url, instagram_url, youtube_url, tiktok_url, x_url, homepage_url, owner_id, gender)
 values
-    ('897badee-71fd-40f9-a006-f8d7606f38d2', 'モカ', '2020-04-15', false, 'スコティッシュフォールド', 'いつも元気いっぱい！甘えん坊な女の子♪', '人懐っこくて、来客時もすぐに膝の上に乗ってきます。おやつの時間が大好きで、音を聞くとどこからともなく現れます。', 'https://images.unsplash.com/photo-1513245543132-31f507417b26', 'https://www.instagram.com/moka_scottish/', 'https://www.youtube.com/@moka_scottish', 'https://www.tiktok.com/@moka_scottish', 'https://x.com/moka_chan', 'https://caitsith22.com/', '3e07891a-4d8b-4d8f-9748-bc59b3d02e1b', '男の子'),
+    ('897badee-71fd-40f9-a006-f8d7606f38d2', 'モカ', '2020-04-15', false, 'スコティッシュフォールド', 'いつも元気いっぱい！甘えん坊な女の子♪', '人懐っこくて、来客時もすぐに膝の上に乗ってきます。おやつの時間が大好きで、音を聞くとどこからともなく現れます。', 'https://images.unsplash.com/photo-1513245543132-31f507417b26', 'https://www.instagram.com/moka_scottish/', 'https://www.youtube.com/@moka_scottish', 'https://www.tiktok.com/@moka_scottish', 'https://x.com/moka_chan', 'https://caitsith22.com/', '3e07891a-4d8b-4d8f-9748-bc59b3d02e1b', '女の子'),
     ('b49cb104-9c63-4b45-a5b3-76c13d3b6f8c', 'ソラ', '2021-07-20', true, '雑種', '空のように自由な男の子', '保護猫として迎えました。最初は人見知りでしたが、今では家族の一員として毎日楽しく過ごしています。', 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba', 'https://www.instagram.com/sora_freedom/', 'https://www.youtube.com/@sora_freedom', null, null, null, 'fae59c15-b0a4-4681-9e0a-083bf285bac6', '女の子');
 
 insert into public.cat_photos (cat_id, image_url, comment)

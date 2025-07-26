@@ -1,80 +1,79 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
+import { supabase } from '../../lib/supabase';
 import { usePageViewCount } from '../usePageViewCount';
 
-// fetchのモック
-const originalFetch = window.fetch;
-
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
     },
-  });
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
+  },
+});
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 describe('usePageViewCount', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    window.fetch = originalFetch;
+    queryClient.clear();
+    vi.restoreAllMocks();
   });
 
   it('ページビュー数が正しく取得される', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ pageViews: 5 }),
+    const mockInvoke = vi.spyOn(supabase.functions, 'invoke').mockResolvedValue({
+      data: { pageViews: 42 },
+      error: null,
     });
-    window.fetch = mockFetch;
 
     const { result } = renderHook(() => usePageViewCount('test-page'), {
-      wrapper: createWrapper(),
+      wrapper,
     });
 
-    await waitFor(() => {
-      expect(result.current.data).toBe(5);
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeNull();
+    expect(result.current.data).toBe(undefined);
+    await vi.waitFor(() => {
+      expect(result.current.data).toBe(42);
     });
-    expect(mockFetch).toHaveBeenCalled();
+
+    expect(mockInvoke).toHaveBeenCalledWith('ga-pageviews', {
+      body: { catId: 'test-page' },
+    });
+  });
+
+  it('APIエラー時にエラーハンドリングが正しく行われる', async () => {
+    const mockError = new Error('Internal Server Error');
+    vi.spyOn(supabase.functions, 'invoke').mockResolvedValue({
+      data: null,
+      error: mockError,
+    });
+
+    const { result } = renderHook(() => usePageViewCount('test-page-error'), {
+      wrapper,
+    });
+
+    expect(result.current.data).toBe(undefined);
+    await vi.waitFor(() => {
+      expect(result.current.isError).toBe(true);
+      expect(result.current.error).toBe(mockError);
+    });
   });
 
   it('ページビュー数が0の場合、正しく処理される', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ pageViews: 0 }),
-    });
-    window.fetch = mockFetch;
-
-    const { result } = renderHook(() => usePageViewCount('test-page'), {
-      wrapper: createWrapper(),
+    vi.spyOn(supabase.functions, 'invoke').mockResolvedValue({
+      data: { pageViews: 0 },
+      error: null,
     });
 
-    await waitFor(() => {
+    const { result } = renderHook(() => usePageViewCount('test-page-zero'), {
+      wrapper,
+    });
+
+    await vi.waitFor(() => {
       expect(result.current.data).toBe(0);
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeNull();
-    });
-  });
-
-  it('エラーが発生した場合、dataが0になる', async () => {
-    const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
-    window.fetch = mockFetch;
-
-    const { result } = renderHook(() => usePageViewCount('test-page'), {
-      wrapper: createWrapper(),
-    });
-
-    await waitFor(() => {
-      expect(result.current.data).toBe(0);
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeNull();
     });
   });
 });

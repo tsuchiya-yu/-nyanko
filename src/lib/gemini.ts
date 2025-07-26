@@ -7,8 +7,6 @@
  */
 // cross-fetchはブラウザ環境では不要なため削除
 
-/* global fetch */
-
 export async function getCatMood(imageUrl: string): Promise<string | null> {
   try {
     const response = await fetch(

@@ -107,7 +107,7 @@ export default function ColumnDetail() {
               href={`${column.image_url}?transform=resize&width=800&quality=75&format=webp`}
               type="image/webp"
               media="(min-width: 768px)"
-              fetchpriority="high"
+              fetchPriority="high"
             />
             <link
               rel="preload"
@@ -115,7 +115,7 @@ export default function ColumnDetail() {
               href={`${column.image_url}?transform=resize&width=600&quality=75&format=webp`}
               type="image/webp"
               media="(max-width: 767px)"
-              fetchpriority="high"
+              fetchPriority="high"
             />
             <meta property="og:image" content={column.image_url} />
           </>
@@ -168,8 +168,8 @@ export default function ColumnDetail() {
                 width="800"
                 height="450"
                 className="w-full h-full object-cover rounded-lg"
+                fetchPriority="high"
                 loading="eager"
-                fetchpriority="high"
               />
             </picture>
           </div>

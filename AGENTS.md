@@ -441,10 +441,12 @@ const response = await fetch(
 - **ドキュメント更新** 確認
 
 ### ブランチガイド
+
 - 作業ブランチは main ブランチから作成する
 - 作業ブランチ名は`{feat/fix/refactor/doc/chore}/{issue number}-{branch overview}`のフォーマットにする
 
 ### コミットガイド
+
 - コミットメッセージは`{feat/fix/refactor/doc/chore}/{commit overview}`のフォーマットにする
 - コミットのたびに`テスト実行`と`コード品質チェック`を実行して、エラーがあれば修正をして追加のコミットを行う
 

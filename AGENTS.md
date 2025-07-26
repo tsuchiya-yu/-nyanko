@@ -121,7 +121,7 @@ export default function Component({
 - **コンポーネント**: PascalCase（例: `CatCard.tsx`）
 - **フック**: camelCase + `use` プレフィックス（例: `useFavorites.ts`）
 - **ユーティリティ**: camelCase（例: `calculateAge.ts`）
-- **型定義**: camelCase（例: `index.ts`）
+- **型定義**: camelCase（例: `catTypes.ts`）
 - **テスト**: `.test.ts` または `.test.tsx` サフィックス
 
 ### インポート順序
@@ -443,11 +443,23 @@ const response = await fetch(
 ### ブランチガイド
 
 - 作業ブランチは main ブランチから作成する
-- 作業ブランチ名は`{feat/fix/refactor/doc/chore}/{issue number}-{branch overview}`のフォーマットにする
+- 作業ブランチ名は`<type>/<issue-number>-<branch-overview>`のフォーマットにします（例: `feat/123-add-new-feature`）
+  - `type`は以下のいずれかを使用します：
+    - `feat`: 新機能の追加
+    - `fix`: バグ修正
+    - `refactor`: リファクタリング
+    - `doc`: ドキュメントの更新
+    - `chore`: その他の変更
 
 ### コミットガイド
 
-- コミットメッセージは`{feat/fix/refactor/doc/chore}/{commit overview}`のフォーマットにする
+- コミットメッセージは[Conventional Commits](https://www.conventionalcommits.org/)の仕様に従い、`<type>: <commit-overview>`のフォーマットにします（例: `feat: add new button`）
+  - `type`はコミット内容に応じて以下のいずれかを使用します：
+    - `feat`: 新機能の追加
+    - `fix`: バグ修正
+    - `refactor`: リファクタリング
+    - `doc`: ドキュメントの更新
+    - `chore`: その他の変更
 - コミットのたびに`テスト実行`と`コード品質チェック`を実行して、エラーがあれば修正をして追加のコミットを行う
 
 ### プルリクエストガイド

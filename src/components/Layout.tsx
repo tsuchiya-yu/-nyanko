@@ -5,7 +5,6 @@ import { create } from 'zustand';
 
 import { useHeaderFooter } from '../context/HeaderContext';
 import { useAuthStore } from '../store/authStore';
-
 import AuthModal from './auth/AuthModal';
 
 // グローバルなモーダル状態管理

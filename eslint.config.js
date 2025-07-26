@@ -45,6 +45,7 @@ export default [
         sessionStorage: 'readonly',
         fetch: 'readonly',
         Request: 'readonly',
+        Response: 'readonly',
         Headers: 'readonly',
         FormData: 'readonly',
         Blob: 'readonly',
@@ -54,14 +55,13 @@ export default [
       },
     },
     rules: {
-      ...tseslint.configs.recommended.rules,
-      ...reactPlugin.configs.recommended.rules,
       ...reactHooksPlugin.configs.recommended.rules,
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'no-console': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
       'import/order': [
         'error',
         {
@@ -69,8 +69,7 @@ export default [
             'builtin',
             'external',
             'internal',
-            'parent',
-            'sibling',
+            ['parent', 'sibling'],
             'index',
             'object',
             'type',
@@ -100,9 +99,11 @@ export default [
         vitest: 'readonly',
       },
     },
+  },
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
+      ...prettierConfig.rules,
     },
   },
-  prettierConfig,
 ];

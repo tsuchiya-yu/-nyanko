@@ -36,7 +36,7 @@ describe('usePageViewCount', () => {
 
     expect(result.current.data).toBe(undefined);
     await vi.waitFor(() => {
-      expect(result.current.data?.pageViews).toBe(42);
+      expect(result.current.data).toBe(42);
     });
 
     expect(mockInvoke).toHaveBeenCalledWith('ga-pageviews', {
@@ -73,7 +73,7 @@ describe('usePageViewCount', () => {
     });
 
     await vi.waitFor(() => {
-      expect(result.current.data?.pageViews).toBe(0);
+      expect(result.current.data).toBe(0);
     });
   });
 });

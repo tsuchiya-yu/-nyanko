@@ -16,7 +16,8 @@ export function usePageViewCount(catId: string) {
         throw error;
       }
 
-      return data;
+      // pageViewsプロパティを返すことで、フックの以前のインターフェースを維持します
+      return data.pageViews;
     },
     enabled: !!catId,
     staleTime: 1000 * 60 * 60, // 1時間

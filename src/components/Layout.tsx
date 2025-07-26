@@ -3,9 +3,10 @@ import { type ReactNode, useEffect } from 'react';
 import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
 import { create } from 'zustand';
 
-import { useAuthStore } from '../store/authStore';
-import AuthModal from './auth/AuthModal';
 import { useHeaderFooter } from '../context/HeaderContext';
+import { useAuthStore } from '../store/authStore';
+
+import AuthModal from './auth/AuthModal';
 
 // グローバルなモーダル状態管理
 interface AuthModalStore {

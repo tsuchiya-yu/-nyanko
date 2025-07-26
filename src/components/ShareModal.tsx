@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '../store/authStore';
+
 import AuthModal from './auth/AuthModal';
 
 interface ShareModalProps {

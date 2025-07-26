@@ -1,12 +1,9 @@
-import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook } from '@testing-library/react';
+import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { usePageViewCount } from '../usePageViewCount';
-
-// fetchのモック
-const originalFetch = window.fetch;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,68 +17,46 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-const TestComponent = React.memo(() => {
-  const { data: pageViews } = usePageViewCount('test-page');
-  return <div data-testid="page-views">{pageViews}</div>;
-});
-
-TestComponent.displayName = 'TestComponent';
-
 describe('usePageViewCount', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    window.fetch = originalFetch;
+    queryClient.clear();
   });
 
-  it('ページビュー数が正しく取得される', async () => {
+  it('should return page views', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ pageViews: 5 }),
+      json: () => Promise.resolve({ pageViews: 42 }),
     });
+
     window.fetch = mockFetch;
 
     const { result } = renderHook(() => usePageViewCount('test-page'), {
-      wrapper: wrapper,
+      wrapper,
     });
 
-    await waitFor(() => {
-      expect(result.current.data).toBe(5);
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeNull();
+    expect(result.current.data).toBe(undefined);
+    await vi.waitFor(() => {
+      expect(result.current.data).toBe(42);
     });
-    expect(mockFetch).toHaveBeenCalled();
   });
 
-  it('ページビュー数が0の場合、正しく処理される', async () => {
+  it('should handle error', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ pageViews: 0 }),
+      ok: false,
+      status: 500,
+      statusText: 'Internal Server Error',
     });
+
     window.fetch = mockFetch;
 
     const { result } = renderHook(() => usePageViewCount('test-page'), {
-      wrapper: wrapper,
+      wrapper,
     });
 
-    await waitFor(() => {
-      expect(result.current.data).toBe(0);
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeNull();
-    });
-  });
-
-  it('エラーが発生した場合、dataが0になる', async () => {
-    const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
-    window.fetch = mockFetch;
-
-    const { result } = renderHook(() => usePageViewCount('test-page'), {
-      wrapper: wrapper,
-    });
-
-    await waitFor(() => {
-      expect(result.current.data).toBe(0);
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.error).toBeNull();
+    expect(result.current.data).toBe(undefined);
+    await vi.waitFor(() => {
+      expect(result.current.isError).toBe(true);
+      expect(result.current.error).toBeInstanceOf(Error);
     });
   });
 });

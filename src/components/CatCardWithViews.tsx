@@ -1,8 +1,9 @@
 import { Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import CatCard from './CatCard/index';
 import { usePageViewCount } from '../hooks/usePageViewCount';
+
+import CatCard from './CatCard/index';
 
 import type { Cat } from '../types';
 

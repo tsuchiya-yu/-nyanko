@@ -104,7 +104,7 @@ export default function ColumnDetail() {
             <link
               rel="preload"
               as="image"
-              href={`${column.image_url}?transform=resize&width=800&quality=75&format=webp`}
+              href={`${column.image_url}?transform=resize&width=800&quality=75`}
               type="image/webp"
               media="(min-width: 768px)"
               fetchPriority="high"
@@ -112,7 +112,7 @@ export default function ColumnDetail() {
             <link
               rel="preload"
               as="image"
-              href={`${column.image_url}?transform=resize&width=600&quality=75&format=webp`}
+              href={`${column.image_url}?transform=resize&width=600&quality=75`}
               type="image/webp"
               media="(max-width: 767px)"
               fetchPriority="high"
@@ -163,8 +163,10 @@ export default function ColumnDetail() {
                 media="(max-width: 767px)"
               />
               <img
-                src={`${import.meta.env.VITE_SUPABASE_STORAGE_URL}/columns/${column.id}/main.webp`}
+                src={`${column.image_url}?transform=resize&width=800&quality=75`}
                 alt={column.title}
+                width="800"
+                height="450"
                 className="w-full h-auto"
                 fetchPriority="high"
                 loading="eager"

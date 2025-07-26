@@ -22,7 +22,7 @@ describe('usePageViewCount', () => {
     queryClient.clear();
   });
 
-  it('should return page views', async () => {
+  it('ページビュー数が正しく取得される', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({ pageViews: 42 }),
@@ -40,7 +40,7 @@ describe('usePageViewCount', () => {
     });
   });
 
-  it('should handle error', async () => {
+  it('ページビュー数が0の場合、正しく処理される', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 500,

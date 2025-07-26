@@ -2,9 +2,8 @@ import { X } from 'lucide-react';
 import { BlockPicker } from 'react-color';
 import { createPortal } from 'react-dom';
 
-import { backgroundColors, textColors } from '../utils/constants';
-
 import styles from './colorPickerStyles.module.css';
+import { backgroundColors, textColors } from '../utils/constants';
 
 // CSSモジュールとしてスタイルをインポート
 

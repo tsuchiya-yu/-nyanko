@@ -3,8 +3,6 @@ import { BlockPicker } from 'react-color';
 import { createPortal } from 'react-dom';
 
 import styles from './colorPickerStyles.module.css';
-import { backgroundColors, textColors } from '../utils/constants';
-
 
 // CSSモジュールとしてスタイルをインポート
 

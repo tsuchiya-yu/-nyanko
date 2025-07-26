@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
+import { supabase } from '../../lib/supabase';
 import { usePageViewCount } from '../usePageViewCount';
 
 const queryClient = new QueryClient({
@@ -20,15 +21,14 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('usePageViewCount', () => {
   beforeEach(() => {
     queryClient.clear();
+    vi.restoreAllMocks();
   });
 
   it('ページビュー数が正しく取得される', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ pageViews: 42 }),
+    const mockInvoke = vi.spyOn(supabase.functions, 'invoke').mockResolvedValue({
+      data: { pageViews: 42 },
+      error: null,
     });
-
-    window.fetch = mockFetch;
 
     const { result } = renderHook(() => usePageViewCount('test-page'), {
       wrapper,
@@ -36,18 +36,20 @@ describe('usePageViewCount', () => {
 
     expect(result.current.data).toBe(undefined);
     await vi.waitFor(() => {
-      expect(result.current.data).toBe(42);
+      expect(result.current.data?.pageViews).toBe(42);
+    });
+
+    expect(mockInvoke).toHaveBeenCalledWith('ga-pageviews', {
+      body: { catId: 'test-page' },
     });
   });
 
   it('APIエラー時にエラーハンドリングが正しく行われる', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 500,
-      statusText: 'Internal Server Error',
+    const mockError = new Error('Internal Server Error');
+    vi.spyOn(supabase.functions, 'invoke').mockResolvedValue({
+      data: null,
+      error: mockError,
     });
-
-    window.fetch = mockFetch;
 
     const { result } = renderHook(() => usePageViewCount('test-page-error'), {
       wrapper,
@@ -56,23 +58,22 @@ describe('usePageViewCount', () => {
     expect(result.current.data).toBe(undefined);
     await vi.waitFor(() => {
       expect(result.current.isError).toBe(true);
-      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error).toBe(mockError);
     });
   });
 
   it('ページビュー数が0の場合、正しく処理される', async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ pageViews: 0 }),
+    vi.spyOn(supabase.functions, 'invoke').mockResolvedValue({
+      data: { pageViews: 0 },
+      error: null,
     });
-    window.fetch = mockFetch;
 
     const { result } = renderHook(() => usePageViewCount('test-page-zero'), {
       wrapper,
     });
 
     await vi.waitFor(() => {
-      expect(result.current.data).toBe(0);
+      expect(result.current.data?.pageViews).toBe(0);
     });
   });
 });

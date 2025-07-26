@@ -16,7 +16,7 @@ export function usePageViewCount(catId: string) {
         throw error;
       }
 
-      return data.pageViews;
+      return data;
     },
     enabled: !!catId,
     staleTime: 1000 * 60 * 60, // 1時間

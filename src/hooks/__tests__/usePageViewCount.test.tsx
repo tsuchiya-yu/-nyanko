@@ -40,7 +40,7 @@ describe('usePageViewCount', () => {
     });
   });
 
-  it('ページビュー数が0の場合、正しく処理される', async () => {
+  it('APIエラー時にエラーハンドリングが正しく行われる', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 500,
@@ -49,7 +49,7 @@ describe('usePageViewCount', () => {
 
     window.fetch = mockFetch;
 
-    const { result } = renderHook(() => usePageViewCount('test-page'), {
+    const { result } = renderHook(() => usePageViewCount('test-page-error'), {
       wrapper,
     });
 
@@ -57,6 +57,22 @@ describe('usePageViewCount', () => {
     await vi.waitFor(() => {
       expect(result.current.isError).toBe(true);
       expect(result.current.error).toBeInstanceOf(Error);
+    });
+  });
+
+  it('ページビュー数が0の場合、正しく処理される', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ pageViews: 0 }),
+    });
+    window.fetch = mockFetch;
+
+    const { result } = renderHook(() => usePageViewCount('test-page-zero'), {
+      wrapper,
+    });
+
+    await vi.waitFor(() => {
+      expect(result.current.data).toBe(0);
     });
   });
 });

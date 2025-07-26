@@ -104,7 +104,7 @@ export default function ColumnDetail() {
             <link
               rel="preload"
               as="image"
-              href={`${column.image_url}?transform=resize&width=800&quality=75`}
+              href={`${column.image_url}?transform=resize&width=800&quality=75&format=webp`}
               type="image/webp"
               media="(min-width: 768px)"
               fetchPriority="high"
@@ -112,7 +112,7 @@ export default function ColumnDetail() {
             <link
               rel="preload"
               as="image"
-              href={`${column.image_url}?transform=resize&width=600&quality=75`}
+              href={`${column.image_url}?transform=resize&width=600&quality=75&format=webp`}
               type="image/webp"
               media="(max-width: 767px)"
               fetchPriority="high"
@@ -167,7 +167,7 @@ export default function ColumnDetail() {
                 alt={column.title}
                 width="800"
                 height="450"
-                className="w-full h-auto"
+                className="w-full h-full object-cover rounded-lg"
                 fetchPriority="high"
                 loading="eager"
               />

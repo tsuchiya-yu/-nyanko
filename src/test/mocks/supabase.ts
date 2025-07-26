@@ -15,6 +15,9 @@ export const mockSupabaseClient = {
     getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
     signOut: vi.fn().mockResolvedValue({ error: null }),
   },
+  functions: {
+    invoke: vi.fn().mockResolvedValue({ data: null, error: null }),
+  },
 };
 
 // Supabaseモジュールのモック
@@ -36,6 +39,9 @@ vi.mock('../../lib/supabase', () => ({
         upload: vi.fn(),
         getPublicUrl: vi.fn(),
       })),
+    },
+    functions: {
+      invoke: vi.fn().mockResolvedValue({ data: null, error: null }),
     },
   },
 }));

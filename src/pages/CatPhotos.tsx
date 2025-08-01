@@ -238,14 +238,14 @@ export default function CatPhotos() {
         </Helmet>
       )}
 
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
         <Link
           to={`/cats/${id}`}
-          className="flex items-center text-gray-600 hover:text-gray-900 hover:underline transition-colors"
+          className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
-          <ArrowLeft className="h-5 w-5 mr-2" />
-          {cat ? `${cat.name}のプロフィールページ` : 'プロフィールページ'}
+          <ArrowLeft className="h-5 w-5" />
         </Link>
+        {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
       </h1>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-4">

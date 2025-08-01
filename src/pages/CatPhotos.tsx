@@ -244,7 +244,7 @@ export default function CatPhotos() {
           className="flex items-center text-gray-600 hover:text-gray-900 hover:underline transition-colors"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
-          {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
+          {cat ? `${cat.name}のプロフィールページ` : 'プロフィールページ'}
         </Link>
       </h1>
 

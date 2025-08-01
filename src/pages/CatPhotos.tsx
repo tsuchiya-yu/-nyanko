@@ -240,7 +240,7 @@ export default function CatPhotos() {
 
       <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
         <Link
-          to={`/profile/${cat?.owner_id}`}
+          to={`/cats/${id}`}
           className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />

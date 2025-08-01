@@ -238,7 +238,7 @@ export default function CatPhotos() {
         </Helmet>
       )}
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+      <h1 className="text-2xl font-bold mb-6">
         <Link
           to={`/cats/${id}`}
           className="flex items-center text-gray-600 hover:text-gray-900 hover:underline transition-colors"

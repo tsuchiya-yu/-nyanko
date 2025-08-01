@@ -245,7 +245,9 @@ export default function CatPhotos() {
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
+        <Link to={`/cats/${id}`} className="hover:underline">
+          {cat ? `${cat.name}の写真ギャラリー` : '写真ギャラリー'}
+        </Link>
       </h1>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-4">

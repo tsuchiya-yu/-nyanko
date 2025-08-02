@@ -428,16 +428,23 @@ export default function CatProfile() {
             </button>
           </div>
           <div className="relative">
-            <OptimizedImage
-              src={cat.image_url}
-              alt={cat.name}
-              width={88}
-              height={88}
-              className="w-[88px] h-[88px] rounded-full object-cover"
-              loading="eager"
-              decoding="async"
-              options={{ resize: 'fill', quality: 85 }}
-            />
+            <button
+              type="button"
+              onClick={() => setIsShareModalOpen(true)}
+              className="p-0 bg-transparent"
+              aria-label="シェアする"
+            >
+              <OptimizedImage
+                src={cat.image_url}
+                alt={cat.name}
+                width={88}
+                height={88}
+                className="w-[88px] h-[88px] rounded-full object-cover"
+                loading="eager"
+                decoding="async"
+                options={{ resize: 'fill', quality: 85 }}
+              />
+            </button>
             <button
               onClick={handleFavoriteClick}
               className="absolute -bottom-1 -right-1 p-1.5 bg-white/90 rounded-full hover:bg-white transition-colors shadow-sm"

@@ -5,6 +5,7 @@ import { create } from 'zustand';
 
 import { useHeaderFooter } from '../context/HeaderContext';
 import { useAuthStore } from '../store/authStore';
+import { paths } from '../utils/paths';
 import AuthModal from './auth/AuthModal';
 
 // グローバルなモーダル状態管理
@@ -33,7 +34,7 @@ export function handleAuthAction(
 ) {
   if (user) {
     // ユーザーがログイン済みの場合はUserProfileページに遷移
-    navigate(`/profile/${user.id}`);
+    navigate(paths.userProfile(user.id));
   } else {
     // 未ログインの場合は認証モーダルを表示
     const authStore = useAuthModalStore.getState();
@@ -60,7 +61,7 @@ export default function Layout({ children }: LayoutProps) {
 
   const handleLoginAction = () => {
     if (user) {
-      navigate(`/profile/${user.id}`);
+      navigate(paths.userProfile(user.id));
     } else {
       setAuthMode('login');
       setIsAuthModalOpen(true);
@@ -69,7 +70,7 @@ export default function Layout({ children }: LayoutProps) {
 
   const handleRegisterAction = () => {
     if (user) {
-      navigate(`/profile/${user.id}`);
+      navigate(paths.userProfile(user.id));
     } else {
       setAuthMode('register');
       setIsAuthModalOpen(true);
@@ -85,7 +86,7 @@ export default function Layout({ children }: LayoutProps) {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-12">
-              <Link to="/" className="flex items-center">
+              <Link to={paths.home()} className="flex items-center">
                 <picture>
                   <source srcSet="/images/webp/logo.webp" type="image/webp" />
                   <img
@@ -100,7 +101,7 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
               <div className="flex items-center space-x-2 text-sm">
                 <Link
-                  to="/columns"
+                  to={paths.columns()}
                   className="px-1 py-4 rounded-full text-gray-700 hover:text-gray-900 font-medium"
                 >
                   コラム
@@ -108,7 +109,7 @@ export default function Layout({ children }: LayoutProps) {
                 {user ? (
                   <>
                     <Link
-                      to={`/profile/${user.id}`}
+                      to={paths.userProfile(user.id)}
                       className="px-1 py-4 rounded-full text-gray-700 hover:text-gray-900 font-medium"
                     >
                       マイページ
@@ -153,7 +154,7 @@ export default function Layout({ children }: LayoutProps) {
                 <ul className="space-y-1 sm:space-y-2">
                   <li>
                     <Link
-                      to="/"
+                      to={paths.home()}
                       className="text-base text-gray-600 hover:text-primary-600 flex items-center"
                     >
                       <svg
@@ -169,7 +170,7 @@ export default function Layout({ children }: LayoutProps) {
                   </li>
                   <li>
                     <Link
-                      to="/columns"
+                      to={paths.columns()}
                       className="text-base text-gray-600 hover:text-primary-600 flex items-center"
                     >
                       <svg
@@ -189,7 +190,7 @@ export default function Layout({ children }: LayoutProps) {
                   </li>
                   <li>
                     <Link
-                      to="/news"
+                      to={paths.news()}
                       className="text-base text-gray-600 hover:text-primary-600 flex items-center"
                     >
                       <svg
@@ -217,7 +218,7 @@ export default function Layout({ children }: LayoutProps) {
                 <ul className="space-y-1 sm:space-y-2">
                   <li>
                     <Link
-                      to="/terms"
+                      to={paths.terms()}
                       className="text-base text-gray-600 hover:text-primary-600 flex items-center"
                     >
                       <svg
@@ -237,7 +238,7 @@ export default function Layout({ children }: LayoutProps) {
                   </li>
                   <li>
                     <Link
-                      to="/privacy"
+                      to={paths.privacy()}
                       className="text-base text-gray-600 hover:text-primary-600 flex items-center"
                     >
                       <svg

@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
+import { paths } from '../utils/paths';
 
 import type { News } from '../types/index';
 
@@ -80,8 +81,8 @@ export default function NewsDetail() {
         <meta property="og:title" content={`${article.title} - CAT LINK`} />
         <meta property="og:description" content={article.content} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo/news/${article.slug}`} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo/news/${article.slug}`} />
+        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`} />
+        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -89,7 +90,7 @@ export default function NewsDetail() {
             headline: article.title,
             articleBody: article.content,
             datePublished: article.published_at,
-            url: `https://cat-link.catnote.tokyo/news/${article.slug}`,
+            url: `https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`,
             publisher: {
               '@type': 'Organization',
               name: 'CAT LINK',
@@ -101,7 +102,7 @@ export default function NewsDetail() {
 
       <div className="mb-8">
         <Link
-          to="/news"
+          to={paths.news()}
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

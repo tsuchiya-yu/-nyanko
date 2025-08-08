@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '../store/authStore';
+import { paths } from '../utils/paths';
 import AuthModal from './auth/AuthModal';
 
 interface ShareModalProps {
@@ -74,7 +75,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
       setIsAuthModalOpen(true);
     } else {
       // ユーザープロフィールページに遷移
-      navigate(`/profile/${user.id}`);
+      navigate(paths.userProfile(user.id));
     }
   };
 
@@ -166,7 +167,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
         onSuccess={() => {
           setIsAuthModalOpen(false);
           if (user) {
-            navigate(`/profile/${user.id}`);
+            navigate(paths.userProfile(user.id));
           }
         }}
       />

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
 import { stripHtml } from '../utils/html';
+import { paths } from '../utils/paths';
 
 import type { Column } from '../types/index';
 
@@ -42,13 +43,13 @@ export default function Columns() {
           content="猫との暮らしに役立つ情報、猫の行動や健康に関するコラムなど、猫好きのための読みものコンテンツをお届けします。"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://cat-link.catnote.tokyo/columns" />
-        <link rel="canonical" href="https://cat-link.catnote.tokyo/columns" />
+        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.columns()}`} />
+        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.columns()}`} />
       </Helmet>
 
       <div className="mb-8">
         <Link
-          to="/"
+          to={paths.home()}
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +83,7 @@ export default function Columns() {
               className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
             >
               {column.image_url && (
-                <Link to={`/columns/${column.slug}`} className="block aspect-video">
+                <Link to={paths.columnDetail(column.slug)} className="block aspect-video">
                   <picture>
                     <source
                       type="image/webp"
@@ -110,12 +111,12 @@ export default function Columns() {
                     .replace(/\//g, '.')}
                 </time>
                 <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors">
-                  <Link to={`/columns/${column.slug}`}>{column.title}</Link>
+                  <Link to={paths.columnDetail(column.slug)}>{column.title}</Link>
                 </h2>
                 <p className="mt-3 text-gray-600 line-clamp-3">{stripHtml(column.content)}</p>
                 <div className="mt-4">
                   <Link
-                    to={`/columns/${column.slug}`}
+                    to={paths.columnDetail(column.slug)}
                     className="text-sm text-gray-500 hover:text-gray-600 transition-colors inline-flex items-center"
                     aria-label={`${column.title}の続きを読む`}
                   >

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSessionRefresh } from '../../hooks/useSessionRefresh';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import { paths } from '../../utils/paths';
 import Modal from '../common/Modal';
 import { useAuthModalStore } from '../Layout';
 
@@ -39,7 +40,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       onSuccess();
     }
     console.log(localMode === 'login' ? 'ログインしました' : 'アカウントを作成しました');
-    navigate(`/profile/${userId}`);
+    navigate(paths.userProfile(userId));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

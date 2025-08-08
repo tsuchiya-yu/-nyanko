@@ -9,6 +9,7 @@ import UserSettingsModal from '../components/user/UserSettingsModal';
 import { useFavorites } from '../hooks/useFavorites';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import { paths } from '../utils/paths';
 
 import type { Cat } from '../types';
 
@@ -81,7 +82,7 @@ export default function UserProfile() {
           <meta name="robots" content="noindex" />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
-          <meta property="og:url" content={`https://cat-link.catnote.tokyo/profile/${id}`} />
+          <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.userProfile(id!)}`} />
           <meta
             property="og:image"
             content={
@@ -93,7 +94,7 @@ export default function UserProfile() {
             content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
           />
           <meta property="profile:username" content={profile.name} />
-          <link rel="canonical" href={`https://cat-link.catnote.tokyo/profile/${id}`} />
+          <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.userProfile(id!)}`} />
         </Helmet>
       )}
 
@@ -113,7 +114,7 @@ export default function UserProfile() {
           {isOwnProfile && (
             <div className="flex flex-wrap gap-3">
               <Link
-                to="/register-cat"
+                to={paths.registerCat()}
                 className="flex items-center px-5 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 font-medium text-sm"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -143,7 +144,7 @@ export default function UserProfile() {
               <p className="text-gray-500 text-sm">まだ猫ちゃんが登録されていません。</p>
               {isOwnProfile && (
                 <Link
-                  to="/register-cat"
+                  to={paths.registerCat()}
                   className="inline-block mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 text-sm font-medium"
                 >
                   猫ちゃんを登録する

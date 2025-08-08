@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
+import { paths } from '../utils/paths';
 
 import type { Column } from '../types/index';
 
@@ -98,7 +99,7 @@ export default function ColumnDetail() {
         <meta property="og:title" content={`${column.title} | CAT LINK`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo/columns/${column.slug}`} />
+        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`} />
         {column.image_url && (
           <>
             <link
@@ -120,13 +121,13 @@ export default function ColumnDetail() {
             <meta property="og:image" content={column.image_url} />
           </>
         )}
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo/columns/${column.slug}`} />
+        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`} />
         <script type="application/ld+json">{jsonLd}</script>
       </Helmet>
 
       <div className="mb-8">
         <Link
-          to="/columns"
+          to={paths.columns()}
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -183,7 +184,7 @@ export default function ColumnDetail() {
 
       <div className="mt-12 pt-8 border-t border-gray-200">
         <Link
-          to="/columns"
+          to={paths.columns()}
           className="inline-flex items-center text-gray-500 hover:text-gray-600 transition-colors"
         >
           他の記事を読む

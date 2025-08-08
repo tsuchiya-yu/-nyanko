@@ -17,6 +17,7 @@ import {
   backgroundColors,
   textColors,
 } from '../utils/constants';
+import { paths } from '../utils/paths';
 
 interface CatFormData {
   name: string;
@@ -274,9 +275,9 @@ export default function EditCat() {
 
       // is_publicの値に応じて遷移先を変更
       if (updatedData.is_public) {
-        navigate(`/cats/${id}`);
+        navigate(paths.catProfile(id!));
       } else {
-        navigate(`/profile/${cat?.owner_id}`);
+        navigate(paths.userProfile(cat?.owner_id ?? ''));
       }
     },
   });
@@ -306,7 +307,7 @@ export default function EditCat() {
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">猫の情報を取得できませんでした</p>
-          <Link to="/" className="inline-flex items-center text-gray-700 hover:text-gray-900">
+            <Link to={paths.home()} className="inline-flex items-center text-gray-700 hover:text-gray-900">
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -328,20 +329,20 @@ export default function EditCat() {
           content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`}
         />
         <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
-        <meta property="og:url" content={`https://cat-link.com/cats/${cat.id}/edit`} />
+        <meta property="og:url" content={`https://cat-link.com${paths.editCat(cat.id)}`} />
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
           content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href={`https://cat-link.com/cats/${cat.id}`} />
+        <link rel="canonical" href={`https://cat-link.com${paths.catProfile(cat.id)}`} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
           <Link
-            to={`/profile/${cat.owner_id}`}
+            to={paths.userProfile(cat.owner_id)}
             className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />

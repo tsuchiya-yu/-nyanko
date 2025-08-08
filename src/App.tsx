@@ -19,6 +19,7 @@ import Privacy from './pages/Privacy';
 import RegisterCat from './pages/RegisterCat';
 import Terms from './pages/Terms';
 import UserProfile from './pages/UserProfile';
+import { paths } from './utils/paths';
 
 // ローディングコンポーネント
 const LoadingFallback = () => (
@@ -50,18 +51,18 @@ export default function App() {
     <HeaderProvider>
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path={paths.home()} element={<Home />} />
           <Route
-            path="/profile/:id"
+            path={paths.userProfile(':id')}
             element={
               <ProtectedRoute>
                 <UserProfile />
               </ProtectedRoute>
             }
           />
-          <Route path="/cats/:id" element={<CatProfile />} />
+          <Route path={paths.catProfile(':id')} element={<CatProfile />} />
           <Route
-            path="/cats/:id/edit"
+            path={paths.editCat(':id')}
             element={
               <ProtectedRoute>
                 <EditCat />
@@ -69,7 +70,7 @@ export default function App() {
             }
           />
           <Route
-            path="/register-cat"
+            path={paths.registerCat()}
             element={
               <ProtectedRoute>
                 <RegisterCat />
@@ -77,19 +78,19 @@ export default function App() {
             }
           />
           <Route
-            path="/cats/:id/photos"
+            path={paths.catPhotos(':id')}
             element={
               <ProtectedRoute>
                 <CatPhotos />
               </ProtectedRoute>
             }
           />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/news/:slug" element={<NewsDetail />} />
+          <Route path={paths.terms()} element={<Terms />} />
+          <Route path={paths.privacy()} element={<Privacy />} />
+          <Route path={paths.news()} element={<News />} />
+          <Route path={paths.newsDetail(':slug')} element={<NewsDetail />} />
           <Route
-            path="/columns"
+            path={paths.columns()}
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <Columns />
@@ -97,7 +98,7 @@ export default function App() {
             }
           />
           <Route
-            path="/columns/:slug"
+            path={paths.columnDetail(':slug')}
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <ColumnDetail />

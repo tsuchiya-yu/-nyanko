@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useAuthStore } from '../../store/authStore';
 import { calculateAge } from '../../utils/calculateAge';
+import { paths } from '../../utils/paths';
 import OptimizedImage from '../OptimizedImage';
 
 import type { Cat } from '../../types';
@@ -23,7 +24,7 @@ export default function CatCard({ cat, actions, footer }: CatCardProps) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/cats/${cat.id}`);
+    navigate(paths.catProfile(cat.id));
   };
 
   return (

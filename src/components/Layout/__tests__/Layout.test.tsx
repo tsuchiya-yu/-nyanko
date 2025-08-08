@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { useAuthStore } from '../../../store/authStore';
 import { renderWithProviders } from '../../../test/utils';
+import { paths } from '../../../utils/paths';
 import Layout from '../../Layout';
 
 // モックの設定
@@ -144,7 +145,7 @@ describe('Layoutコンポーネント', () => {
     const termsLink = screen.getByText('利用規約').closest('a');
     const privacyLink = screen.getByText('プライバシーポリシー').closest('a');
 
-    expect(termsLink).toHaveAttribute('href', '/terms');
-    expect(privacyLink).toHaveAttribute('href', '/privacy');
+    expect(termsLink).toHaveAttribute('href', paths.terms());
+    expect(privacyLink).toHaveAttribute('href', paths.privacy());
   });
 });

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import OptimizedImage from './OptimizedImage';
 import styles from './OwnerCatsSection.module.css';
+import { paths } from '../utils/paths';
 
 interface Cat {
   id: string;
@@ -42,7 +43,7 @@ export default function OwnerCatsSection({
         <div className="flex gap-3">
           {cats.map(cat => (
             <div key={cat.id} className="w-[140px] sm:w-[160px] flex-shrink-0">
-              <Link to={`/cats/${cat.id}`} className="block">
+              <Link to={paths.catProfile(cat.id)} className="block">
                 <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all hover:scale-[1.02]">
                   <div className="aspect-square overflow-hidden">
                     <OptimizedImage

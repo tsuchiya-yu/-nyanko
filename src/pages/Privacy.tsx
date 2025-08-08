@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+import { paths } from '../utils/paths';
+
 export default function Privacy() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -19,12 +21,12 @@ export default function Privacy() {
           content="CAT LINK, プライバシーポリシー, 個人情報保護, 猫, ペット, プロフィール"
         />
         <meta property="og:title" content="プライバシーポリシー | CAT LINK" />
-        <meta property="og:url" content="https://cat-link.catnote.tokyo/privacy" />
+        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.privacy()}`} />
         <meta
           property="og:description"
           content="CAT LINKのプライバシーポリシーです。個人情報の取り扱いについて説明しています。"
         />
-        <link rel="canonical" href="https://cat-link.catnote.tokyo/privacy" />
+        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.privacy()}`} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">

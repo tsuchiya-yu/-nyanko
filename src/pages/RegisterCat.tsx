@@ -17,6 +17,7 @@ import {
   backgroundColors,
   textColors,
 } from '../utils/constants';
+import { paths } from '../utils/paths';
 
 interface CatFormData {
   name: string;
@@ -192,9 +193,9 @@ export default function RegisterCat() {
 
       // 登録成功 - is_publicの値に応じて遷移先を変更
       if (data.is_public && insertedCat) {
-        navigate(`/cats/${insertedCat.id}`);
+        navigate(paths.catProfile(insertedCat.id));
       } else {
-        navigate(`/profile/${user?.id}`);
+        navigate(paths.userProfile(user?.id ?? ''));
       }
     } catch (error) {
       console.error('Error registering cat:', error);
@@ -218,18 +219,18 @@ export default function RegisterCat() {
         />
         <meta name="keywords" content="猫登録, 猫プロフィール作成, ペット登録, 猫情報, CAT LINK" />
         <meta property="og:title" content="愛猫を登録する | CAT LINK" />
-        <meta property="og:url" content="https://cat-link.com/register-cat" />
+        <meta property="og:url" content={`https://cat-link.com${paths.registerCat()}`} />
         <meta
           property="og:description"
           content="CAT LINKで愛猫のプロフィールを作成しましょう。名前、年齢、品種、写真などの情報を登録して、素敵なプロフィールページを作成できます。"
         />
-        <link rel="canonical" href="https://cat-link.com/register-cat" />
+        <link rel="canonical" href={`https://cat-link.com${paths.registerCat()}`} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
           <Link
-            to={`/profile/${user?.id}`}
+            to={paths.userProfile(user?.id ?? '')}
             className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />

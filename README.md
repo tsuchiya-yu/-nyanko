@@ -182,6 +182,8 @@ supabase/
       └── image-to-gemini/   # 画像生成AI連携
 ```
 
+ルーティングに使用するパスは `src/utils/paths.ts` で一元管理しています。
+
 ## 主な機能
 
 - 猫のプロフィール登録・編集

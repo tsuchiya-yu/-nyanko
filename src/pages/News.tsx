@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
+import { paths } from '../utils/paths';
 
 import type { News as NewsType } from '../types/index';
 
@@ -40,8 +41,8 @@ export default function News() {
           content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://cat-link.catnote.tokyo/news" />
-        <link rel="canonical" href="https://cat-link.catnote.tokyo/news" />
+        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.news()}`} />
+        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.news()}`} />
         {news && news.length > 0 && (
           <script type="application/ld+json">
             {JSON.stringify({
@@ -57,7 +58,7 @@ export default function News() {
                     headline: item.title,
                     articleBody: item.content,
                     datePublished: item.published_at,
-                    url: `https://cat-link.catnote.tokyo/news/${item.slug}`,
+                    url: `https://cat-link.catnote.tokyo${paths.newsDetail(item.slug)}`,
                     publisher: {
                       '@type': 'Organization',
                       name: 'CAT LINK',
@@ -73,7 +74,7 @@ export default function News() {
 
       <div className="mb-8">
         <Link
-          to="/"
+          to={paths.home()}
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,12 +115,12 @@ export default function News() {
                   .replace(/\//g, '.')}
               </time>
               <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors">
-                <Link to={`/news/${item.slug}`}>{item.title}</Link>
+                <Link to={paths.newsDetail(item.slug)}>{item.title}</Link>
               </h2>
               <p className="mt-3 text-gray-600 line-clamp-2">{item.content}</p>
               <div className="mt-4">
                 <Link
-                  to={`/news/${item.slug}`}
+                  to={paths.newsDetail(item.slug)}
                   className="text-sm text-gray-500 hover:text-gray-600 transition-colors inline-flex items-center"
                 >
                   続きを読む

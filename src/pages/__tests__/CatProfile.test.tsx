@@ -79,4 +79,20 @@ describe('CatProfile', () => {
       await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })
     ).toBeInTheDocument();
   });
+
+  it('右上のシェアボタンをクリックするとShareModalが表示される', async () => {
+    const Wrapper = createWrapper();
+    render(<CatProfile />, { wrapper: Wrapper });
+
+    expect(
+      screen.queryByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+    ).not.toBeInTheDocument();
+
+    const shareButton = screen.getByRole('button', { name: 'シェアする' });
+    fireEvent.click(shareButton);
+
+    expect(
+      await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+    ).toBeInTheDocument();
+  });
 });

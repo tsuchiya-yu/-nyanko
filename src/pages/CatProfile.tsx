@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Share2, ArrowLeft, Instagram, Heart } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
@@ -110,6 +110,10 @@ export default function CatProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<CatPhoto | null>(null);
   const { setHeaderFooterVisible } = useHeaderFooter();
+
+  const handleOpenShareModal = useCallback(() => {
+    setIsShareModalOpen(true);
+  }, []);
 
   const {
     data: cat,
@@ -419,7 +423,7 @@ export default function CatProfile() {
         <div className="flex flex-col items-center text-center">
           <div className="fixed top-4 right-4 z-40">
             <button
-              onClick={() => setIsShareModalOpen(true)}
+              onClick={handleOpenShareModal}
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
               style={{ color: textColor }}
               aria-label="シェアする"
@@ -430,7 +434,7 @@ export default function CatProfile() {
           <div className="relative">
             <button
               type="button"
-              onClick={() => setIsShareModalOpen(true)}
+              onClick={handleOpenShareModal}
               className="p-0 bg-transparent rounded-full transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-500"
               aria-label="プロフィール画像をシェアする"
             >

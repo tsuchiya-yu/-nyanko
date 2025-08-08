@@ -67,10 +67,8 @@ describe('CatProfile', () => {
     const Wrapper = createWrapper();
     render(<CatProfile />, { wrapper: Wrapper });
 
-    const avatarImg = screen.getByAltText(mockCat.name);
-    const avatarButton = avatarImg.closest('button');
-    expect(avatarButton).not.toBeNull();
-    fireEvent.click(avatarButton!);
+    const avatarButton = screen.getByRole('button', { name: 'プロフィール画像をシェアする' });
+    fireEvent.click(avatarButton);
 
     expect(await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })).toBeInTheDocument();
   });

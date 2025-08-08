@@ -70,6 +70,8 @@ describe('CatProfile', () => {
     const avatarButton = screen.getByRole('button', { name: 'プロフィール画像をシェアする' });
     fireEvent.click(avatarButton);
 
-    expect(await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+    ).toBeInTheDocument();
   });
 });

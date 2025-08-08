@@ -81,8 +81,14 @@ export default function NewsDetail() {
         <meta property="og:title" content={`${article.title} - CAT LINK`} />
         <meta property="og:description" content={article.content} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`} />
+        <meta
+          property="og:url"
+          content={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`}
+        />
+        <link
+          rel="canonical"
+          href={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`}
+        />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',

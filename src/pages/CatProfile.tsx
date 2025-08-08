@@ -291,7 +291,10 @@ export default function CatProfile() {
           <p className="text-gray-600 mb-4">
             {error instanceof Error ? error.message : '猫の情報を取得できませんでした'}
           </p>
-          <Link to={paths.home()} className="inline-flex items-center text-pink-500 hover:text-pink-600">
+          <Link
+            to={paths.home()}
+            className="inline-flex items-center text-pink-500 hover:text-pink-600"
+          >
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -322,7 +325,10 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`} />
+        <meta
+          property="og:url"
+          content={`https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`}
+        />
         <meta
           property="og:image"
           content={`${cat.image_url}?width=1200&height=630&resize=contain`}

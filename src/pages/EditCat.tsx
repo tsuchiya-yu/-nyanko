@@ -307,7 +307,10 @@ export default function EditCat() {
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">猫の情報を取得できませんでした</p>
-            <Link to={paths.home()} className="inline-flex items-center text-gray-700 hover:text-gray-900">
+          <Link
+            to={paths.home()}
+            className="inline-flex items-center text-gray-700 hover:text-gray-900"
+          >
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>

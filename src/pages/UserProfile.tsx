@@ -82,7 +82,10 @@ export default function UserProfile() {
           <meta name="robots" content="noindex" />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
-          <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.userProfile(id!)}`} />
+          <meta
+            property="og:url"
+            content={`https://cat-link.catnote.tokyo${paths.userProfile(id!)}`}
+          />
           <meta
             property="og:image"
             content={

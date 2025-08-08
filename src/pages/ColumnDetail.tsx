@@ -99,7 +99,10 @@ export default function ColumnDetail() {
         <meta property="og:title" content={`${column.title} | CAT LINK`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`} />
+        <meta
+          property="og:url"
+          content={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`}
+        />
         {column.image_url && (
           <>
             <link
@@ -121,7 +124,10 @@ export default function ColumnDetail() {
             <meta property="og:image" content={column.image_url} />
           </>
         )}
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`} />
+        <link
+          rel="canonical"
+          href={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`}
+        />
         <script type="application/ld+json">{jsonLd}</script>
       </Helmet>
 

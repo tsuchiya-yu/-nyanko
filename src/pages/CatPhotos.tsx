@@ -221,7 +221,10 @@ export default function CatPhotos() {
             content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`}
           />
           <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
-          <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.catPhotos(id!)}`} />
+          <meta
+            property="og:url"
+            content={`https://cat-link.catnote.tokyo${paths.catPhotos(id!)}`}
+          />
           <meta
             property="og:image"
             content={

@@ -72,6 +72,8 @@ describe('CatProfile', () => {
     expect(avatarButton).not.toBeNull();
     fireEvent.click(avatarButton!);
 
-    expect(await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+    ).toBeInTheDocument();
   });
 });

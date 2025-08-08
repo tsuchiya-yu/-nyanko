@@ -21,7 +21,7 @@ vi.mock('react-router-dom', async () => {
 const mockedUseParams = useParams as unknown as vi.Mock;
 const mockedUseAuthStore = useAuthStore as unknown as vi.Mock;
 
-const createWrapper = () => {
+const createWrapper = ({ cat = mockCat, photos = [], ownerCats = [] } = {}) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -31,16 +31,16 @@ const createWrapper = () => {
     },
   });
 
-  queryClient.setQueryData(['cat', mockCat.id], mockCat);
-  queryClient.setQueryData(['cat-photos', mockCat.id], []);
-  queryClient.setQueryData(['owner-cats', mockCat.owner_id, mockCat.id], []);
+  queryClient.setQueryData(['cat', cat.id], cat);
+  queryClient.setQueryData(['cat-photos', cat.id], photos);
+  queryClient.setQueryData(['owner-cats', cat.owner_id, cat.id], ownerCats);
 
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <HeaderProvider>
-            <MemoryRouter initialEntries={[`/cats/${mockCat.id}`]}>{children}</MemoryRouter>
+            <MemoryRouter initialEntries={[`/cats/${cat.id}`]}>{children}</MemoryRouter>
           </HeaderProvider>
         </QueryClientProvider>
       </HelmetProvider>

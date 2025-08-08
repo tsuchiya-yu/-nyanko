@@ -67,6 +67,11 @@ describe('CatProfile', () => {
     const Wrapper = createWrapper();
     render(<CatProfile />, { wrapper: Wrapper });
 
+    // モーダルが初期状態では表示されていないことを確認
+    expect(
+      screen.queryByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+    ).not.toBeInTheDocument();
+
     const avatarButton = screen.getByRole('button', { name: 'プロフィール画像をシェアする' });
     fireEvent.click(avatarButton);
 

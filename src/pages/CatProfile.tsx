@@ -431,8 +431,8 @@ export default function CatProfile() {
             <button
               type="button"
               onClick={() => setIsShareModalOpen(true)}
-              className="p-0 bg-transparent"
-              aria-label="シェアする"
+              className="p-0 bg-transparent rounded-full transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              aria-label="プロフィール画像をシェアする"
             >
               <OptimizedImage
                 src={cat.image_url}

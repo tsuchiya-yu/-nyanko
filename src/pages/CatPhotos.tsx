@@ -226,10 +226,8 @@ export default function CatPhotos() {
           <meta
             property="og:image"
             content={
-              photos && photos.length > 0
-                ? photos[0].image_url
-                : `${getBaseUrl()}/images/ogp.png`
-          }
+              photos && photos.length > 0 ? photos[0].image_url : `${getBaseUrl()}/images/ogp.png`
+            }
           />
           <meta
             property="og:description"

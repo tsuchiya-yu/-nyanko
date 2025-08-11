@@ -4,8 +4,10 @@ export function getBaseUrl(): string {
     try {
       const url = new URL(envUrl);
       return url.origin;
-    } catch {
-      // 不正な環境変数の値は無視する
+    } catch (e) {
+      // 不正な環境変数の値は警告を出して無視する
+      // eslint-disable-next-line no-console
+      console.warn(`VITE_SITE_URL の値 "${envUrl}" が不正です。`, e);
     }
   }
 

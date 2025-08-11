@@ -1,5 +1,5 @@
 export function getBaseUrl(): string {
-  const envUrl = (import.meta as any)?.env?.VITE_SITE_URL as string | undefined;
+  const envUrl = import.meta.env.VITE_SITE_URL;
   if (envUrl) {
     try {
       const url = new URL(envUrl);

@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
 import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 import type { Column } from '../types/index';
 
@@ -44,12 +45,12 @@ export default function ColumnDetail() {
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: column.title,
-      image: column.image_url || 'https://cat-link.catnote.tokyo/images/logo.png',
+      image: column.image_url || `${getBaseUrl()}/images/logo.png`,
       datePublished: column.published_at,
       author: {
         '@type': 'Organization',
         name: 'CAT LINK',
-        url: 'https://cat-link.catnote.tokyo',
+        url: getBaseUrl(),
       },
     });
   }, [column]);
@@ -99,10 +100,7 @@ export default function ColumnDetail() {
         <meta property="og:title" content={`${column.title} | CAT LINK`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="article" />
-        <meta
-          property="og:url"
-          content={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`}
-        />
+        <meta property="og:url" content={absoluteUrl(paths.columnDetail(column.slug))} />
         {column.image_url && (
           <>
             <link
@@ -124,10 +122,7 @@ export default function ColumnDetail() {
             <meta property="og:image" content={column.image_url} />
           </>
         )}
-        <link
-          rel="canonical"
-          href={`https://cat-link.catnote.tokyo${paths.columnDetail(column.slug)}`}
-        />
+        <link rel="canonical" href={absoluteUrl(paths.columnDetail(column.slug))} />
         <script type="application/ld+json">{jsonLd}</script>
       </Helmet>
 

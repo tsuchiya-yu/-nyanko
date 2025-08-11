@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
 import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 import type { News as NewsType } from '../types/index';
 
@@ -41,8 +42,8 @@ export default function News() {
           content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.news()}`} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.news()}`} />
+        <meta property="og:url" content={absoluteUrl(paths.news())} />
+        <link rel="canonical" href={absoluteUrl(paths.news())} />
         {news && news.length > 0 && (
           <script type="application/ld+json">
             {JSON.stringify({
@@ -58,11 +59,11 @@ export default function News() {
                     headline: item.title,
                     articleBody: item.content,
                     datePublished: item.published_at,
-                    url: `https://cat-link.catnote.tokyo${paths.newsDetail(item.slug)}`,
+                    url: absoluteUrl(paths.newsDetail(item.slug)),
                     publisher: {
                       '@type': 'Organization',
                       name: 'CAT LINK',
-                      url: 'https://cat-link.catnote.tokyo',
+                      url: absoluteUrl(paths.home()),
                     },
                   },
                 })),

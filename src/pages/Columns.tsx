@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { stripHtml } from '../utils/html';
 import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 import type { Column } from '../types/index';
 
@@ -43,8 +44,8 @@ export default function Columns() {
           content="猫との暮らしに役立つ情報、猫の行動や健康に関するコラムなど、猫好きのための読みものコンテンツをお届けします。"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.columns()}`} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.columns()}`} />
+        <meta property="og:url" content={absoluteUrl(paths.columns())} />
+        <link rel="canonical" href={absoluteUrl(paths.columns())} />
       </Helmet>
 
       <div className="mb-8">

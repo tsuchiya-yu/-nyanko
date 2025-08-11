@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
 import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 import type { News } from '../types/index';
 
@@ -81,14 +82,8 @@ export default function NewsDetail() {
         <meta property="og:title" content={`${article.title} - CAT LINK`} />
         <meta property="og:description" content={article.content} />
         <meta property="og:type" content="article" />
-        <meta
-          property="og:url"
-          content={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`}
-        />
-        <link
-          rel="canonical"
-          href={`https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`}
-        />
+        <meta property="og:url" content={absoluteUrl(paths.newsDetail(article.slug))} />
+        <link rel="canonical" href={absoluteUrl(paths.newsDetail(article.slug))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -96,11 +91,11 @@ export default function NewsDetail() {
             headline: article.title,
             articleBody: article.content,
             datePublished: article.published_at,
-            url: `https://cat-link.catnote.tokyo${paths.newsDetail(article.slug)}`,
+            url: absoluteUrl(paths.newsDetail(article.slug)),
             publisher: {
               '@type': 'Organization',
               name: 'CAT LINK',
-              url: 'https://cat-link.catnote.tokyo',
+              url: getBaseUrl(),
             },
           })}
         </script>

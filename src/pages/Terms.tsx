@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 export default function Terms() {
   useEffect(() => {
@@ -18,12 +19,12 @@ export default function Terms() {
         />
         <meta name="keywords" content="CAT LINK, 利用規約, 猫, ペット, プロフィール, 写真" />
         <meta property="og:title" content="利用規約 | CAT LINK" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo${paths.terms()}`} />
+        <meta property="og:url" content={absoluteUrl(paths.terms())} />
         <meta
           property="og:description"
           content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
         />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.terms()}`} />
+        <link rel="canonical" href={absoluteUrl(paths.terms())} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">

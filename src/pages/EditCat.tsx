@@ -18,6 +18,7 @@ import {
   textColors,
 } from '../utils/constants';
 import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 interface CatFormData {
   name: string;
@@ -277,7 +278,11 @@ export default function EditCat() {
       if (updatedData.is_public) {
         navigate(paths.catProfile(id!));
       } else {
-        navigate(paths.userProfile(cat?.owner_id ?? ''));
+        if (cat?.owner_id) {
+          navigate(paths.userProfile(cat.owner_id));
+        } else {
+          navigate(paths.home());
+        }
       }
     },
   });
@@ -332,14 +337,14 @@ export default function EditCat() {
           content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`}
         />
         <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
-        <meta property="og:url" content={`https://cat-link.com${paths.editCat(cat.id)}`} />
+        <meta property="og:url" content={absoluteUrl(paths.editCat(cat.id))} />
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
           content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href={`https://cat-link.com${paths.catProfile(cat.id)}`} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">

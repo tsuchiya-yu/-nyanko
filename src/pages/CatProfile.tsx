@@ -19,6 +19,7 @@ import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
 import { defaultBackgroundColor, defaultTextColor } from '../utils/constants';
 import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 interface CatWithOwner {
   id: string;
@@ -325,10 +326,7 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta
-          property="og:url"
-          content={`https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`}
-        />
+        <meta property="og:url" content={absoluteUrl(paths.catProfile(cat.id))} />
         <meta
           property="og:image"
           content={`${cat.image_url}?width=1200&height=630&resize=contain`}
@@ -338,7 +336,7 @@ export default function CatProfile() {
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',

@@ -12,6 +12,7 @@ import { getCatMood } from '../lib/gemini';
 import { supabase } from '../lib/supabase';
 import { optimizeImageForUpload } from '../utils/imageUtils';
 import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 interface PhotoFormData {
   imageFile: File | null;
@@ -221,24 +222,21 @@ export default function CatPhotos() {
             content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`}
           />
           <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
-          <meta
-            property="og:url"
-            content={`https://cat-link.catnote.tokyo${paths.catPhotos(id!)}`}
-          />
+          <meta property="og:url" content={absoluteUrl(paths.catPhotos(id!))} />
           <meta
             property="og:image"
             content={
               photos && photos.length > 0
                 ? photos[0].image_url
-                : 'https://cat-link.catnote.tokyo/images/ogp.png'
-            }
+                : `${getBaseUrl()}/images/ogp.png`
+          }
           />
           <meta
             property="og:description"
             content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`}
           />
           <meta name="robots" content="noindex, follow" />
-          <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.catProfile(id!)}`} />
+          <link rel="canonical" href={absoluteUrl(paths.catProfile(id!))} />
         </Helmet>
       )}
 

@@ -9,6 +9,7 @@ import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { stripHtml } from '../utils/html';
 import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 import type { Cat, News, Column } from '../types/index';
 
@@ -74,7 +75,7 @@ export default function Home() {
     <div className="space-y-16 pb-12">
       <Helmet>
         <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
-        <link rel="canonical" href="https://cat-link.catnote.tokyo/" />
+        <link rel="canonical" href={absoluteUrl(paths.home())} />
         <meta
           name="description"
           content="CAT LINKで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。AIが猫の気持ちを分析する「ねこのひとこと」機能も搭載！"
@@ -89,24 +90,24 @@ export default function Home() {
             '@graph': [
               {
                 '@type': 'WebSite',
-                '@id': 'https://cat-link.catnote.tokyo/#website',
-                url: 'https://cat-link.catnote.tokyo/',
+                '@id': `${getBaseUrl()}/#website`,
+                url: `${getBaseUrl()}/`,
                 name: 'CAT LINK',
                 description: '愛猫のプロフィールページを簡単に作成・共有',
                 potentialAction: {
                   '@type': 'SearchAction',
-                  target: 'https://cat-link.catnote.tokyo/search?q={search_term_string}',
+                  target: `${getBaseUrl()}/search?q={search_term_string}`,
                   'query-input': 'required name=search_term_string',
                 },
               },
               {
                 '@type': 'Organization',
-                '@id': 'https://cat-link.catnote.tokyo/#organization',
+                '@id': `${getBaseUrl()}/#organization`,
                 name: 'CAT LINK',
-                url: 'https://cat-link.catnote.tokyo/',
+                url: `${getBaseUrl()}/`,
                 logo: {
                   '@type': 'ImageObject',
-                  url: 'https://cat-link.catnote.tokyo/images/logo_title.png',
+                  url: `${getBaseUrl()}/images/logo_title.png`,
                   width: 160,
                   height: 20,
                 },
@@ -124,7 +125,7 @@ export default function Home() {
                 },
                 description:
                   '愛猫のプロフィールページを簡単に作成・共有できるウェブアプリ。AIで猫の気持ちを分析する「ねこのひとこと」機能搭載。',
-                screenshot: 'https://cat-link.catnote.tokyo/images/top/main.jpg',
+                screenshot: `${getBaseUrl()}/images/top/main.jpg`,
                 featureList: [
                   '愛猫のプロフィールページ作成',
                   '写真ギャラリー',
@@ -179,9 +180,9 @@ export default function Home() {
                   image: cat.image_url,
                   mainEntityOfPage: {
                     '@type': 'WebPage',
-                    '@id': `https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`,
+                    '@id': absoluteUrl(paths.catProfile(cat.id)),
                   },
-                  url: `https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`,
+                  url: absoluteUrl(paths.catProfile(cat.id)),
                 },
               })),
             })}

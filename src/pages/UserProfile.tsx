@@ -10,6 +10,7 @@ import { useFavorites } from '../hooks/useFavorites';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 import type { Cat } from '../types';
 
@@ -82,22 +83,17 @@ export default function UserProfile() {
           <meta name="robots" content="noindex" />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
-          <meta
-            property="og:url"
-            content={`https://cat-link.catnote.tokyo${paths.userProfile(id!)}`}
-          />
+          <meta property="og:url" content={absoluteUrl(paths.userProfile(id!))} />
           <meta
             property="og:image"
-            content={
-              profile.avatar_url || 'https://cat-link.catnote.tokyo/images/default-avatar.jpg'
-            }
+            content={profile.avatar_url || `${getBaseUrl()}/images/default-avatar.jpg`}
           />
           <meta
             property="og:description"
             content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
           />
           <meta property="profile:username" content={profile.name} />
-          <link rel="canonical" href={`https://cat-link.catnote.tokyo${paths.userProfile(id!)}`} />
+          <link rel="canonical" href={absoluteUrl(paths.userProfile(id!))} />
         </Helmet>
       )}
 

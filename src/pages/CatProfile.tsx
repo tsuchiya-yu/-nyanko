@@ -369,11 +369,11 @@ export default function CatProfile() {
             ].filter(Boolean),
             subjectOf: {
               '@type': 'WebPage',
-              url: `https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`,
+              url: absoluteUrl(paths.catProfile(cat.id)),
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://cat-link.catnote.tokyo${paths.catProfile(cat.id)}`,
+              '@id': absoluteUrl(paths.catProfile(cat.id)),
             },
             owner: {
               '@type': 'Person',

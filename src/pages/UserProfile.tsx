@@ -29,9 +29,6 @@ const getGreetingMessage = () => {
 
 export default function UserProfile() {
   const { id } = useParams();
-  if (!id) {
-    return <Navigate to={paths.home()} replace />;
-  }
   const { user, signOut } = useAuthStore();
   const isOwnProfile = user?.id === id;
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -40,21 +37,25 @@ export default function UserProfile() {
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', id],
     queryFn: async () => {
+      if (!id) throw new Error('ユーザーIDが見つかりません');
       const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data;
     },
+    enabled: !!id,
   });
 
   const { data: cats, isLoading: catsLoading } = useQuery({
     queryKey: ['user-cats', id],
     queryFn: async () => {
+      if (!id) return [];
       const { data, error } = await supabase.from('cats').select('*').eq('owner_id', id);
 
       if (error) throw error;
       return data as Cat[];
     },
+    enabled: !!id,
   });
 
   const handleSignOut = async () => {
@@ -72,6 +73,7 @@ export default function UserProfile() {
 
   return (
     <div className="max-w-5xl mx-auto px-2 sm:px-6 lg:px-8">
+      {!id && <Navigate to={paths.home()} replace />}
       {profile && (
         <Helmet>
           <title>{`${profile.name}のプロフィール | CAT LINK`}</title>

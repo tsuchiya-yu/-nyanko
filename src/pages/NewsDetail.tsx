@@ -37,9 +37,6 @@ const convertUrlsToLinks = (text: string) => {
 
 export default function NewsDetail() {
   const { slug } = useParams<{ slug: string }>();
-  if (!slug) {
-    return <Navigate to={paths.home()} replace />;
-  }
 
   const {
     data: news,
@@ -48,11 +45,13 @@ export default function NewsDetail() {
   } = useQuery({
     queryKey: ['news', slug],
     queryFn: async () => {
+      if (!slug) return [] as News[];
       const { data, error } = await supabase.from('news').select('*').eq('slug', slug);
 
       if (error) throw error;
       return data as News[];
     },
+    enabled: !!slug,
   });
 
   if (isLoading) {
@@ -79,6 +78,7 @@ export default function NewsDetail() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {!slug && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{article.title} - CAT LINK</title>
         <meta name="description" content={article.content} />

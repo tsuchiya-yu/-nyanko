@@ -35,9 +35,9 @@ declare global {
       command: string,
       action: string,
       params?: {
-        [key: string]: any;
+        [key: string]: string | number | undefined;
       }
     ) => void;
-    dataLayer: any[];
+    dataLayer: unknown[];
   }
 }

@@ -52,9 +52,6 @@ function sanitizeFileName(fileName: string): string {
 
 export default function EditCat() {
   const { id } = useParams<{ id: string }>();
-  if (!id) {
-    return <Navigate to={paths.home()} replace />;
-  }
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
@@ -97,6 +94,7 @@ export default function EditCat() {
 
       return data;
     },
+    enabled: !!id,
   });
 
   useEffect(() => {
@@ -329,6 +327,7 @@ export default function EditCat() {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {!id && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィールを編集 | CAT LINK`}</title>
         <meta

@@ -32,9 +32,6 @@ function sanitizeFileName(fileName: string): string {
 
 export default function CatPhotos() {
   const { id } = useParams<{ id: string }>();
-  if (!id) {
-    return <Navigate to={paths.home()} replace />;
-  }
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm<PhotoFormData>();
 
@@ -52,6 +49,7 @@ export default function CatPhotos() {
       if (error) throw error;
       return data;
     },
+    enabled: !!id,
   });
 
   const { data: photos, isLoading } = useQuery({
@@ -68,6 +66,7 @@ export default function CatPhotos() {
       if (error) throw error;
       return data;
     },
+    enabled: !!id,
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -213,6 +212,7 @@ export default function CatPhotos() {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {!id && <Navigate to={paths.home()} replace />}
       {cat && (
         <Helmet>
           <title>{`${cat.name}の写真ギャラリー | CAT LINK`}</title>

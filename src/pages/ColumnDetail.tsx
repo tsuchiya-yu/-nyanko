@@ -11,9 +11,6 @@ import type { Column } from '../types/index';
 
 export default function ColumnDetail() {
   const { slug } = useParams<{ slug: string }>();
-  if (!slug) {
-    return <Navigate to={paths.home()} replace />;
-  }
 
   const {
     data: column,
@@ -22,6 +19,7 @@ export default function ColumnDetail() {
   } = useQuery<Column>({
     queryKey: ['column', slug],
     queryFn: async () => {
+      if (!slug) throw new Error('スラッグが見つかりません');
       const { data, error } = await supabase
         .from('columns')
         .select('id, title, content, image_url, published_at, slug') // 必要なフィールドのみ選択
@@ -31,6 +29,7 @@ export default function ColumnDetail() {
       if (error) throw error;
       return data;
     },
+    enabled: !!slug,
     staleTime: 1000 * 60 * 5, // 5分間キャッシュを保持
     gcTime: 1000 * 60 * 30, // 30分間キャッシュを保持
   });
@@ -97,6 +96,7 @@ export default function ColumnDetail() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {!slug && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{column.title} | CAT LINK</title>
         <meta name="description" content={metaDescription} />

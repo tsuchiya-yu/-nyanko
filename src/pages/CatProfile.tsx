@@ -105,9 +105,6 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
 
 export default function CatProfile() {
   const { id } = useParams<{ id: string }>();
-  if (!id) {
-    return <Navigate to={paths.home()} replace />;
-  }
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -155,6 +152,7 @@ export default function CatProfile() {
         throw error;
       }
     },
+    enabled: !!id,
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60 * 0.5, // 30秒はキャッシュを使用
@@ -175,6 +173,7 @@ export default function CatProfile() {
       if (error) throw error;
       return data as CatPhoto[];
     },
+    enabled: !!id,
   });
 
   const { data: isFavorited } = useQuery({
@@ -317,6 +316,7 @@ export default function CatProfile() {
       className="max-w-[480px] mx-auto space-y-6 relative min-h-screen"
       style={{ color: textColor }}
     >
+      {!id && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta

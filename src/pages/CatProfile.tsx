@@ -3,7 +3,7 @@ import { Share2, ArrowLeft, Instagram, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import TiktokIcon from '../components/icons/TiktokIcon';
@@ -105,6 +105,9 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
 
 export default function CatProfile() {
   const { id } = useParams<{ id: string }>();
+  if (!id) {
+    return <Navigate to={paths.home()} replace />;
+  }
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);

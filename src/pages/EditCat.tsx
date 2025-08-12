@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPickerModal } from '../components/ColorPickerModal';
@@ -52,6 +52,9 @@ function sanitizeFileName(fileName: string): string {
 
 export default function EditCat() {
   const { id } = useParams<{ id: string }>();
+  if (!id) {
+    return <Navigate to={paths.home()} replace />;
+  }
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
@@ -276,7 +279,7 @@ export default function EditCat() {
 
       // is_publicの値に応じて遷移先を変更
       if (updatedData.is_public) {
-        navigate(paths.catProfile(id!));
+        navigate(paths.catProfile(id));
       } else {
         if (cat?.owner_id) {
           navigate(paths.userProfile(cat.owner_id));

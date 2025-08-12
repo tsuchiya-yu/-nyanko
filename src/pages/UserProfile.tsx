@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Plus, Image, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 
 import CatCardWithViews from '../components/CatCardWithViews';
 import UserSettingsModal from '../components/user/UserSettingsModal';
@@ -29,6 +29,9 @@ const getGreetingMessage = () => {
 
 export default function UserProfile() {
   const { id } = useParams();
+  if (!id) {
+    return <Navigate to={paths.home()} replace />;
+  }
   const { user, signOut } = useAuthStore();
   const isOwnProfile = user?.id === id;
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -83,7 +86,7 @@ export default function UserProfile() {
           <meta name="robots" content="noindex" />
           <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
           <meta property="og:type" content="profile" />
-          <meta property="og:url" content={absoluteUrl(paths.userProfile(id!))} />
+          <meta property="og:url" content={absoluteUrl(paths.userProfile(id))} />
           <meta
             property="og:image"
             content={profile.avatar_url || `${getBaseUrl()}/images/default-avatar.jpg`}
@@ -93,7 +96,7 @@ export default function UserProfile() {
             content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
           />
           <meta property="profile:username" content={profile.name} />
-          <link rel="canonical" href={absoluteUrl(paths.userProfile(id!))} />
+          <link rel="canonical" href={absoluteUrl(paths.userProfile(id))} />
         </Helmet>
       )}
 

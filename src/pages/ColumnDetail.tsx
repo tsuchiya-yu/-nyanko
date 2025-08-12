@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
 import { paths } from '../utils/paths';
@@ -11,6 +11,9 @@ import type { Column } from '../types/index';
 
 export default function ColumnDetail() {
   const { slug } = useParams<{ slug: string }>();
+  if (!slug) {
+    return <Navigate to={paths.home()} replace />;
+  }
 
   const {
     data: column,

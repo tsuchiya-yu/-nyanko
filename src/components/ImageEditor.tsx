@@ -14,7 +14,7 @@ interface ImageEditorProps {
 }
 
 // 画像をキャンバスに描画する関数
-function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
+function toCanvas(image: HTMLImageElement, crop: PixelCrop) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d', {
     alpha: false,
@@ -81,35 +81,6 @@ function toCanvas(image: HTMLImageElement, crop: PixelCrop, scale = 1) {
     console.error('Canvas処理エラー:', error);
     throw error;
   }
-}
-
-// 初期のクロップ状態を作成する関数
-function centerAspectCrop(
-  mediaWidth: number,
-  mediaHeight: number,
-  aspect: number | undefined
-): Crop {
-  // アスペクト比が指定されている場合はそれに合わせる
-  if (aspect) {
-    return makeAspectCrop(
-      {
-        unit: '%',
-        width: 90,
-      },
-      aspect,
-      mediaWidth,
-      mediaHeight
-    );
-  }
-
-  // アスペクト比が指定されていない場合は自由なクロップを許可
-  return {
-    unit: '%' as const,
-    x: 5,
-    y: 5,
-    width: 90,
-    height: 90,
-  };
 }
 
 export default function ImageEditor({
@@ -323,7 +294,7 @@ export default function ImageEditor({
         imgRef.current.style.display = 'none';
       }
 
-      const canvas = toCanvas(imgRef.current, completedCrop, scale);
+      const canvas = toCanvas(imgRef.current, completedCrop);
       const blob = await new Promise<Blob | null>(resolve => {
         canvas.toBlob(
           result => {

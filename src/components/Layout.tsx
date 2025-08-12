@@ -47,7 +47,6 @@ export default function Layout({ children }: LayoutProps) {
   const {
     isOpen: isAuthModalOpen,
     setIsOpen: setIsAuthModalOpen,
-    mode: authMode,
     setMode: setAuthMode,
   } = useAuthModalStore();
   const { user } = useAuthStore();

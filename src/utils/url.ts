@@ -1,3 +1,5 @@
+import { FALLBACK_BASE_URL } from './constants';
+
 export function getBaseUrl(): string {
   const envUrl = import.meta.env.VITE_SITE_URL;
   if (envUrl) {
@@ -16,7 +18,7 @@ export function getBaseUrl(): string {
   }
 
   // ブラウザ環境でない、または環境変数未設定時のフォールバック
-  return 'https://cat-link.catnote.tokyo';
+  return FALLBACK_BASE_URL;
 }
 
 export function absoluteUrl(path: string): string {

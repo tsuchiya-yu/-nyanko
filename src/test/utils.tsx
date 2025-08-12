@@ -70,6 +70,7 @@ export const mockCat = {
   gender: '女の子',
   background_color: '#ffffff',
   text_color: '#000000',
+  is_public: true,
 };
 
 export const mockUser = {

@@ -187,7 +187,13 @@ describe('UserSettingsModal', () => {
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: null },
-        error: { name: 'AuthApiError', message: 'Email update failed', status: 400, code: 'email_update_failed', __isAuthError: true } as any,
+        error: {
+          name: 'AuthApiError',
+          message: 'Email update failed',
+          status: 400,
+          code: 'email_update_failed',
+          __isAuthError: true,
+        } as any,
       });
 
       renderModal();
@@ -260,7 +266,13 @@ describe('UserSettingsModal', () => {
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: null },
-        error: { name: 'AuthApiError', message: 'Password update failed', status: 400, code: 'password_update_failed', __isAuthError: true } as any,
+        error: {
+          name: 'AuthApiError',
+          message: 'Password update failed',
+          status: 400,
+          code: 'password_update_failed',
+          __isAuthError: true,
+        } as any,
       });
 
       renderModal();

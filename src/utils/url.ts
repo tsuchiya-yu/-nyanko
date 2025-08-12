@@ -22,7 +22,6 @@ export function getBaseUrl(): string {
 }
 
 export function absoluteUrl(path: string): string {
-  const base = getBaseUrl().replace(/\/$/, '');
-  const p = path.startsWith('/') ? path : `/${path}`;
-  return `${base}${p}`;
+  const base = getBaseUrl();
+  return new URL(path, base).href;
 }

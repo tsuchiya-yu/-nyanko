@@ -8,7 +8,7 @@ export function getBaseUrl(): string {
       return url.origin;
     } catch (e) {
       // 不正な環境変数の値は警告を出して無視する
-      // eslint-disable-next-line no-console
+
       console.warn(`VITE_SITE_URL の値 "${envUrl}" が不正です。`, e);
     }
   }

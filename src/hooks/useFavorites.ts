@@ -19,10 +19,7 @@ export const useFavorites = () => {
   const { data: favorites, isLoading } = useQuery({
     queryKey: ['favorites', user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('favorites')
-        .select('*')
-        .eq('user_id', user!.id);
+      const { data, error } = await supabase.from('favorites').select('*').eq('user_id', user!.id);
 
       if (error) {
         setError(error.message);

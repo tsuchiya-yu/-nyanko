@@ -1,3 +1,4 @@
+import { AuthApiError } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
@@ -6,7 +7,6 @@ import { supabase } from '../../../lib/supabase';
 import { useAuthStore } from '../../../store/authStore';
 import UserSettingsModal from '../UserSettingsModal';
 
-import { AuthApiError } from '@supabase/supabase-js';
 import type { PostgrestError, User } from '@supabase/supabase-js';
 
 // Supabaseのモック

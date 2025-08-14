@@ -39,17 +39,17 @@ export default function NewsDetail() {
   const { slug } = useParams<{ slug: string }>();
 
   const {
-    data: news,
+    data: article,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<News>({
     queryKey: ['news', slug],
     queryFn: async () => {
-      if (!slug) return [] as News[];
-      const { data, error } = await supabase.from('news').select('*').eq('slug', slug);
+      if (!slug) throw new Error('Slug is required');
+      const { data, error } = await supabase.from('news').select('*').eq('slug', slug).single();
 
       if (error) throw error;
-      return data as News[];
+      return data;
     },
     enabled: !!slug,
   });
@@ -70,11 +70,9 @@ export default function NewsDetail() {
     return <div className="text-center py-12 text-red-600">エラーが発生しました</div>;
   }
 
-  if (!news || news.length === 0) {
+  if (!article) {
     return <div className="text-center py-12">404 - Not Found</div>;
   }
-
-  const article = news[0];
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

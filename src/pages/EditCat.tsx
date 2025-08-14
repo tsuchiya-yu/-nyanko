@@ -277,7 +277,7 @@ export default function EditCat() {
 
       // is_publicの値に応じて遷移先を変更
       if (updatedData.is_public) {
-        navigate(paths.catProfile(id));
+        navigate(paths.catProfile(id!));
       } else {
         if (cat?.owner_id) {
           navigate(paths.userProfile(cat.owner_id));

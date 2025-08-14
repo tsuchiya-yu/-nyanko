@@ -225,7 +225,7 @@ export default function CatPhotos() {
             content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`}
           />
           <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
-          <meta property="og:url" content={absoluteUrl(paths.catPhotos(id))} />
+          <meta property="og:url" content={absoluteUrl(paths.catPhotos(id!))} />
           <meta
             property="og:image"
             content={
@@ -237,13 +237,13 @@ export default function CatPhotos() {
             content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`}
           />
           <meta name="robots" content="noindex, follow" />
-          <link rel="canonical" href={absoluteUrl(paths.catProfile(id))} />
+          <link rel="canonical" href={absoluteUrl(paths.catProfile(id!))} />
         </Helmet>
       )}
 
       <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
         <Link
-          to={paths.catProfile(id)}
+          to={paths.catProfile(id!)}
           className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />

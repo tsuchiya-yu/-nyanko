@@ -12,3 +12,19 @@ export const paths = {
   terms: () => '/terms',
   privacy: () => '/privacy',
 };
+
+// Router route patterns (for <Route path=...>)
+export const routePatterns = {
+  home: '/',
+  userProfile: '/profile/:id',
+  catProfile: '/cats/:id',
+  editCat: '/cats/:id/edit',
+  catPhotos: '/cats/:id/photos',
+  registerCat: '/register-cat',
+  columns: '/columns',
+  columnDetail: '/columns/:slug',
+  news: '/news',
+  newsDetail: '/news/:slug',
+  terms: '/terms',
+  privacy: '/privacy',
+} as const;

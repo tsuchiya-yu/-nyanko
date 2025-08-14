@@ -19,7 +19,7 @@ import Privacy from './pages/Privacy';
 import RegisterCat from './pages/RegisterCat';
 import Terms from './pages/Terms';
 import UserProfile from './pages/UserProfile';
-import { paths } from './utils/paths';
+import { routePatterns } from './utils/paths';
 
 // ローディングコンポーネント
 const LoadingFallback = () => (
@@ -51,18 +51,18 @@ export default function App() {
     <HeaderProvider>
       <Layout>
         <Routes>
-          <Route path={paths.home()} element={<Home />} />
+          <Route path={routePatterns.home} element={<Home />} />
           <Route
-            path={paths.userProfile(':id')}
+            path={routePatterns.userProfile}
             element={
               <ProtectedRoute>
                 <UserProfile />
               </ProtectedRoute>
             }
           />
-          <Route path={paths.catProfile(':id')} element={<CatProfile />} />
+          <Route path={routePatterns.catProfile} element={<CatProfile />} />
           <Route
-            path={paths.editCat(':id')}
+            path={routePatterns.editCat}
             element={
               <ProtectedRoute>
                 <EditCat />
@@ -70,7 +70,7 @@ export default function App() {
             }
           />
           <Route
-            path={paths.registerCat()}
+            path={routePatterns.registerCat}
             element={
               <ProtectedRoute>
                 <RegisterCat />
@@ -78,19 +78,19 @@ export default function App() {
             }
           />
           <Route
-            path={paths.catPhotos(':id')}
+            path={routePatterns.catPhotos}
             element={
               <ProtectedRoute>
                 <CatPhotos />
               </ProtectedRoute>
             }
           />
-          <Route path={paths.terms()} element={<Terms />} />
-          <Route path={paths.privacy()} element={<Privacy />} />
-          <Route path={paths.news()} element={<News />} />
-          <Route path={paths.newsDetail(':slug')} element={<NewsDetail />} />
+          <Route path={routePatterns.terms} element={<Terms />} />
+          <Route path={routePatterns.privacy} element={<Privacy />} />
+          <Route path={routePatterns.news} element={<News />} />
+          <Route path={routePatterns.newsDetail} element={<NewsDetail />} />
           <Route
-            path={paths.columns()}
+            path={routePatterns.columns}
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <Columns />
@@ -98,7 +98,7 @@ export default function App() {
             }
           />
           <Route
-            path={paths.columnDetail(':slug')}
+            path={routePatterns.columnDetail}
             element={
               <Suspense fallback={<LoadingFallback />}>
                 <ColumnDetail />

@@ -1,4 +1,3 @@
-import type { User } from '@supabase/supabase-js';
 import { type ReactNode, useEffect } from 'react';
 import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
 import { create } from 'zustand';
@@ -7,6 +6,8 @@ import { useHeaderFooter } from '../context/HeaderContext';
 import { useAuthStore } from '../store/authStore';
 import { paths } from '../utils/paths';
 import AuthModal from './auth/AuthModal';
+
+import type { User } from '@supabase/supabase-js';
 
 // グローバルなモーダル状態管理
 interface AuthModalStore {

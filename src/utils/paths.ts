@@ -17,12 +17,9 @@ export const routePatterns = {
 // Centralized path builders derived from routePatterns
 export const paths = {
   home: () => routePatterns.home,
-  catProfile: (catId: string) =>
-    routePatterns.catProfile.replace(':id', encodeURIComponent(catId)),
-  editCat: (catId: string) =>
-    routePatterns.editCat.replace(':id', encodeURIComponent(catId)),
-  catPhotos: (catId: string) =>
-    routePatterns.catPhotos.replace(':id', encodeURIComponent(catId)),
+  catProfile: (catId: string) => routePatterns.catProfile.replace(':id', encodeURIComponent(catId)),
+  editCat: (catId: string) => routePatterns.editCat.replace(':id', encodeURIComponent(catId)),
+  catPhotos: (catId: string) => routePatterns.catPhotos.replace(':id', encodeURIComponent(catId)),
   registerCat: () => routePatterns.registerCat,
   userProfile: (userId: string) =>
     routePatterns.userProfile.replace(':id', encodeURIComponent(userId)),
@@ -30,8 +27,7 @@ export const paths = {
   columnDetail: (slug: string) =>
     routePatterns.columnDetail.replace(':slug', encodeURIComponent(slug)),
   news: () => routePatterns.news,
-  newsDetail: (slug: string) =>
-    routePatterns.newsDetail.replace(':slug', encodeURIComponent(slug)),
+  newsDetail: (slug: string) => routePatterns.newsDetail.replace(':slug', encodeURIComponent(slug)),
   terms: () => routePatterns.terms,
   privacy: () => routePatterns.privacy,
 };

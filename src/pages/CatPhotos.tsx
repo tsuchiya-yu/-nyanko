@@ -38,12 +38,10 @@ export default function CatPhotos() {
   const { data: cat } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
-
       const { data, error } = await supabase
         .from('cats')
         .select('name, owner_id')
-        .eq('id', id)
+        .eq('id', id!)
         .single();
 
       if (error) throw error;
@@ -55,12 +53,10 @@ export default function CatPhotos() {
   const { data: photos, isLoading } = useQuery({
     queryKey: ['cat-photos', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
-
       const { data, error } = await supabase
         .from('cat_photos')
         .select('*')
-        .eq('cat_id', id)
+        .eq('cat_id', id!)
         .order('created_at', { ascending: false });
 
       if (error) throw error;

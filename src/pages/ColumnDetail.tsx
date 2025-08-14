@@ -19,11 +19,10 @@ export default function ColumnDetail() {
   } = useQuery<Column>({
     queryKey: ['column', slug],
     queryFn: async () => {
-      if (!slug) throw new Error('スラッグが見つかりません');
       const { data, error } = await supabase
         .from('columns')
         .select('id, title, content, image_url, published_at, slug') // 必要なフィールドのみ選択
-        .eq('slug', slug)
+        .eq('slug', slug!)
         .single();
 
       if (error) throw error;

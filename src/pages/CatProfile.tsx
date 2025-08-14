@@ -122,8 +122,6 @@ export default function CatProfile() {
     queryKey: ['cat', id],
     queryFn: async () => {
       try {
-        if (!id) throw new Error('猫IDが見つかりません');
-
         const { data, error: fetchError } = await supabase
           .from('cats')
           .select(
@@ -134,7 +132,7 @@ export default function CatProfile() {
             )
           `
           )
-          .eq('id', id)
+          .eq('id', id!)
           .single();
 
         if (fetchError) throw fetchError;
@@ -161,12 +159,10 @@ export default function CatProfile() {
   const { data: photos } = useQuery({
     queryKey: ['cat-photos', id],
     queryFn: async () => {
-      if (!id) return [];
-
       const { data, error } = await supabase
         .from('cat_photos')
         .select('*')
-        .eq('cat_id', id)
+        .eq('cat_id', id!)
         .order('created_at', { ascending: false })
         .limit(6);
 
@@ -179,13 +175,11 @@ export default function CatProfile() {
   const { data: isFavorited } = useQuery({
     queryKey: ['favorite', id, user?.id],
     queryFn: async () => {
-      if (!user || !id) return false;
-
       const { data, error } = await supabase
         .from('favorites')
         .select('id')
-        .eq('cat_id', id)
-        .eq('user_id', user.id)
+        .eq('cat_id', id!)
+        .eq('user_id', user!.id)
         .maybeSingle();
 
       if (error) {
@@ -236,12 +230,10 @@ export default function CatProfile() {
   const { data: ownerCats } = useQuery({
     queryKey: ['owner-cats', cat?.owner_id, id],
     queryFn: async () => {
-      if (!cat?.owner_id || !id) return [];
-
-      let query = supabase.from('cats').select('*').eq('owner_id', cat.owner_id).neq('id', id); // 現在表示中の猫を除外
+      let query = supabase.from('cats').select('*').eq('owner_id', cat!.owner_id).neq('id', id!); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
-      if (!user || cat.owner_id !== user.id) {
+      if (!user || cat!.owner_id !== user.id) {
         query = query.eq('is_public', true);
       }
 

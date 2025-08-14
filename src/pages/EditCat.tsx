@@ -80,9 +80,7 @@ export default function EditCat() {
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
-
-      const { data, error } = await supabase.from('cats').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('cats').select('*').eq('id', id!).single();
 
       if (error) throw error;
       if (!data) throw new Error('猫が見つかりません');

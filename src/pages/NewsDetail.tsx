@@ -45,8 +45,11 @@ export default function NewsDetail() {
   } = useQuery<News>({
     queryKey: ['news', slug],
     queryFn: async () => {
-      if (!slug) throw new Error('Slug is required');
-      const { data, error } = await supabase.from('news').select('*').eq('slug', slug).single();
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .eq('slug', slug!)
+        .single();
 
       if (error) throw error;
       return data;

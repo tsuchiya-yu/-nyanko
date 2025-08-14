@@ -19,9 +19,10 @@ export const useFavorites = () => {
   const { data: favorites, isLoading } = useQuery({
     queryKey: ['favorites', user?.id],
     queryFn: async () => {
-      if (!user) return [];
-
-      const { data, error } = await supabase.from('favorites').select('*').eq('user_id', user.id);
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('*')
+        .eq('user_id', user!.id);
 
       if (error) {
         setError(error.message);
@@ -40,8 +41,6 @@ export const useFavorites = () => {
   const { data: favoriteCats } = useQuery({
     queryKey: ['favorite-cats', favoriteCatIds],
     queryFn: async () => {
-      if (!user || favoriteCatIds.length === 0) return [];
-
       const { data, error } = await supabase.from('cats').select('*').in('id', favoriteCatIds);
 
       if (error) {

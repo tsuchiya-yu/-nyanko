@@ -37,8 +37,7 @@ export default function UserProfile() {
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', id],
     queryFn: async () => {
-      if (!id) throw new Error('ユーザーIDが見つかりません');
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', id!).single();
 
       if (error) throw error;
       return data;
@@ -49,8 +48,7 @@ export default function UserProfile() {
   const { data: cats, isLoading: catsLoading } = useQuery({
     queryKey: ['user-cats', id],
     queryFn: async () => {
-      if (!id) return [];
-      const { data, error } = await supabase.from('cats').select('*').eq('owner_id', id);
+      const { data, error } = await supabase.from('cats').select('*').eq('owner_id', id!);
 
       if (error) throw error;
       return data as Cat[];

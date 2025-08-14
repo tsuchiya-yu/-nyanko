@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { type ReactNode, useEffect } from 'react';
 import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
 import { create } from 'zustand';
@@ -58,31 +58,14 @@ export default function Layout({ children }: LayoutProps) {
     setIsAuthModalOpen(false);
   }, []);
 
-  const handleLoginAction = () => {
-    if (user) {
-      navigate(paths.userProfile(user.id));
-    } else {
-      setAuthMode('login');
-      setIsAuthModalOpen(true);
-    }
-  };
+  const handleLoginAction = () => handleAuthAction(user, navigate, 'login');
 
-  const handleRegisterAction = () => {
-    if (user) {
-      navigate(paths.userProfile(user.id));
-    } else {
-      setAuthMode('register');
-      setIsAuthModalOpen(true);
-    }
-  };
+  const handleRegisterAction = () => handleAuthAction(user, navigate, 'register');
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {isHeaderFooterVisible && (
-        <header
-          className="fixed top-0 left-0 right-0 bg-white shadow z-40 w-full"
-          style={{ position: 'fixed', top: 0, left: 0, right: 0 }}
-        >
+        <header className="fixed top-0 left-0 right-0 bg-white shadow z-40 w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-12">
               <Link to={paths.home()} className="flex items-center">
@@ -124,7 +107,7 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                     <button
                       onClick={handleRegisterAction}
-                      className="px-3 py-2 rounded-full bg-gray-800 text-white hover:bg-gray500 font-medium transition-colors"
+                      className="px-3 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-500 font-medium transition-colors"
                     >
                       新規登録
                     </button>

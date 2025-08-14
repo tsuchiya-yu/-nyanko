@@ -6,6 +6,7 @@ import { supabase } from '../../../lib/supabase';
 import { useAuthStore } from '../../../store/authStore';
 import UserSettingsModal from '../UserSettingsModal';
 
+import { AuthApiError } from '@supabase/supabase-js';
 import type { PostgrestError, User } from '@supabase/supabase-js';
 
 // Supabaseのモック
@@ -187,13 +188,7 @@ describe('UserSettingsModal', () => {
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: null },
-        error: {
-          name: 'AuthApiError',
-          message: 'Email update failed',
-          status: 400,
-          code: 'email_update_failed',
-          __isAuthError: true,
-        } as any,
+        error: new AuthApiError('Email update failed', 400, 'email_update_failed'),
       });
 
       renderModal();
@@ -266,13 +261,7 @@ describe('UserSettingsModal', () => {
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: null },
-        error: {
-          name: 'AuthApiError',
-          message: 'Password update failed',
-          status: 400,
-          code: 'password_update_failed',
-          __isAuthError: true,
-        } as any,
+        error: new AuthApiError('Password update failed', 400, 'password_update_failed'),
       });
 
       renderModal();

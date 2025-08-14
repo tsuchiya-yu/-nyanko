@@ -1,18 +1,3 @@
-export const paths = {
-  home: () => '/',
-  catProfile: (catId: string) => `/cats/${encodeURIComponent(catId)}`,
-  editCat: (catId: string) => `/cats/${encodeURIComponent(catId)}/edit`,
-  catPhotos: (catId: string) => `/cats/${encodeURIComponent(catId)}/photos`,
-  registerCat: () => '/register-cat',
-  userProfile: (userId: string) => `/profile/${encodeURIComponent(userId)}`,
-  columns: () => '/columns',
-  columnDetail: (slug: string) => `/columns/${encodeURIComponent(slug)}`,
-  news: () => '/news',
-  newsDetail: (slug: string) => `/news/${encodeURIComponent(slug)}`,
-  terms: () => '/terms',
-  privacy: () => '/privacy',
-};
-
 // Router route patterns (for <Route path=...>)
 export const routePatterns = {
   home: '/',
@@ -28,3 +13,25 @@ export const routePatterns = {
   terms: '/terms',
   privacy: '/privacy',
 } as const;
+
+// Centralized path builders derived from routePatterns
+export const paths = {
+  home: () => routePatterns.home,
+  catProfile: (catId: string) =>
+    routePatterns.catProfile.replace(':id', encodeURIComponent(catId)),
+  editCat: (catId: string) =>
+    routePatterns.editCat.replace(':id', encodeURIComponent(catId)),
+  catPhotos: (catId: string) =>
+    routePatterns.catPhotos.replace(':id', encodeURIComponent(catId)),
+  registerCat: () => routePatterns.registerCat,
+  userProfile: (userId: string) =>
+    routePatterns.userProfile.replace(':id', encodeURIComponent(userId)),
+  columns: () => routePatterns.columns,
+  columnDetail: (slug: string) =>
+    routePatterns.columnDetail.replace(':slug', encodeURIComponent(slug)),
+  news: () => routePatterns.news,
+  newsDetail: (slug: string) =>
+    routePatterns.newsDetail.replace(':slug', encodeURIComponent(slug)),
+  terms: () => routePatterns.terms,
+  privacy: () => routePatterns.privacy,
+};

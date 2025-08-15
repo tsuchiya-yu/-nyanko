@@ -1,11 +1,12 @@
 import { screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { MockedFunction } from 'vitest';
 
 import { useAuthStore } from '../../../store/authStore';
 import { renderWithProviders } from '../../../test/utils';
 import { paths } from '../../../utils/paths';
 import Layout from '../../Layout';
+
+import type { MockedFunction } from 'vitest';
 
 // モックの設定
 vi.mock('../../../store/authStore');

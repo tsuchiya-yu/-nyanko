@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { MockedFunction } from 'vitest';
 
 import { useAuthStore } from '../../../store/authStore';
 import { renderWithProviders } from '../../../test/utils';
@@ -38,10 +39,11 @@ vi.mock('../../../lib/supabase', () => ({
 describe('Layoutコンポーネント', () => {
   const mockSetUser = vi.fn();
   const mockSignOut = vi.fn();
+  const useAuthStoreMock = useAuthStore as unknown as MockedFunction<typeof useAuthStore>;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: null,
       profile: null,
       setUser: mockSetUser,
@@ -63,7 +65,7 @@ describe('Layoutコンポーネント', () => {
   });
 
   it('ログインしている場合、マイページリンクが表示されること', () => {
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: { id: 'user-1', email: 'test@example.com' },
       profile: { name: 'テストユーザー' },
       setUser: mockSetUser,
@@ -103,7 +105,7 @@ describe('Layoutコンポーネント', () => {
   });
 
   it('ログアウトボタンが存在しないことを確認', () => {
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: { id: 'user-1', email: 'test@example.com' },
       profile: { name: 'テストユーザー' },
       setUser: mockSetUser,

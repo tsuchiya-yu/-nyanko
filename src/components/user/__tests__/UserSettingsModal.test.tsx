@@ -1,3 +1,4 @@
+import { AuthApiError } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
@@ -124,6 +125,7 @@ describe('UserSettingsModal', () => {
 
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       const mockError: PostgrestError = {
+        name: 'PostgrestError',
         message: 'Update failed',
         details: 'Something went wrong',
         hint: '',
@@ -186,7 +188,7 @@ describe('UserSettingsModal', () => {
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: null },
-        error: { name: 'AuthApiError', message: 'Email update failed' },
+        error: new AuthApiError('Email update failed', 400, 'email_update_failed'),
       });
 
       renderModal();
@@ -259,7 +261,7 @@ describe('UserSettingsModal', () => {
     it('更新に失敗した場合にエラーメッセージを表示する', async () => {
       vi.mocked(supabase.auth.updateUser).mockResolvedValue({
         data: { user: null },
-        error: { name: 'AuthApiError', message: 'Password update failed' },
+        error: new AuthApiError('Password update failed', 400, 'password_update_failed'),
       });
 
       renderModal();

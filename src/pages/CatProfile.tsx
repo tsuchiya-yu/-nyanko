@@ -3,7 +3,7 @@ import { Share2, ArrowLeft, Instagram, Heart } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import TiktokIcon from '../components/icons/TiktokIcon';
@@ -18,6 +18,8 @@ import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
 import { defaultBackgroundColor, defaultTextColor } from '../utils/constants';
+import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 interface CatWithOwner {
   id: string;
@@ -124,8 +126,6 @@ export default function CatProfile() {
     queryKey: ['cat', id],
     queryFn: async () => {
       try {
-        if (!id) throw new Error('猫IDが見つかりません');
-
         const { data, error: fetchError } = await supabase
           .from('cats')
           .select(
@@ -136,7 +136,7 @@ export default function CatProfile() {
             )
           `
           )
-          .eq('id', id)
+          .eq('id', id!)
           .single();
 
         if (fetchError) throw fetchError;
@@ -154,6 +154,7 @@ export default function CatProfile() {
         throw error;
       }
     },
+    enabled: !!id,
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60 * 0.5, // 30秒はキャッシュを使用
@@ -162,30 +163,27 @@ export default function CatProfile() {
   const { data: photos } = useQuery({
     queryKey: ['cat-photos', id],
     queryFn: async () => {
-      if (!id) return [];
-
       const { data, error } = await supabase
         .from('cat_photos')
         .select('*')
-        .eq('cat_id', id)
+        .eq('cat_id', id!)
         .order('created_at', { ascending: false })
         .limit(6);
 
       if (error) throw error;
       return data as CatPhoto[];
     },
+    enabled: !!id,
   });
 
   const { data: isFavorited } = useQuery({
     queryKey: ['favorite', id, user?.id],
     queryFn: async () => {
-      if (!user || !id) return false;
-
       const { data, error } = await supabase
         .from('favorites')
         .select('id')
-        .eq('cat_id', id)
-        .eq('user_id', user.id)
+        .eq('cat_id', id!)
+        .eq('user_id', user!.id)
         .maybeSingle();
 
       if (error) {
@@ -236,12 +234,10 @@ export default function CatProfile() {
   const { data: ownerCats } = useQuery({
     queryKey: ['owner-cats', cat?.owner_id, id],
     queryFn: async () => {
-      if (!cat?.owner_id || !id) return [];
-
-      let query = supabase.from('cats').select('*').eq('owner_id', cat.owner_id).neq('id', id); // 現在表示中の猫を除外
+      let query = supabase.from('cats').select('*').eq('owner_id', cat!.owner_id).neq('id', id!); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
-      if (!user || cat.owner_id !== user.id) {
+      if (!user || cat!.owner_id !== user.id) {
         query = query.eq('is_public', true);
       }
 
@@ -294,7 +290,10 @@ export default function CatProfile() {
           <p className="text-gray-600 mb-4">
             {error instanceof Error ? error.message : '猫の情報を取得できませんでした'}
           </p>
-          <Link to="/" className="inline-flex items-center text-pink-500 hover:text-pink-600">
+          <Link
+            to={paths.home()}
+            className="inline-flex items-center text-pink-500 hover:text-pink-600"
+          >
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -313,6 +312,7 @@ export default function CatProfile() {
       className="max-w-[480px] mx-auto space-y-6 relative min-h-screen"
       style={{ color: textColor }}
     >
+      {!id && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
@@ -325,7 +325,7 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
+        <meta property="og:url" content={absoluteUrl(paths.catProfile(cat.id))} />
         <meta
           property="og:image"
           content={`${cat.image_url}?width=1200&height=630&resize=contain`}
@@ -335,7 +335,7 @@ export default function CatProfile() {
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${cat.id}`} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -368,11 +368,11 @@ export default function CatProfile() {
             ].filter(Boolean),
             subjectOf: {
               '@type': 'WebPage',
-              url: `https://cat-link.catnote.tokyo/cats/${cat.id}`,
+              url: absoluteUrl(paths.catProfile(cat.id)),
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://cat-link.catnote.tokyo/cats/${cat.id}`,
+              '@id': absoluteUrl(paths.catProfile(cat.id)),
             },
             owner: {
               '@type': 'Person',
@@ -403,7 +403,7 @@ export default function CatProfile() {
       </Helmet>
 
       <div className="text-center mt-6">
-        <Link to="/">
+        <Link to={paths.home()}>
           <picture>
             <source srcSet="/images/webp/logo_title.webp" type="image/webp" />
             <img
@@ -582,7 +582,7 @@ export default function CatProfile() {
           className="text-center mt-20 h-[80px] min-h-[80px] flex flex-col items-center justify-center"
           style={{ contentVisibility: 'auto', containIntrinsicSize: '0 80px' }}
         >
-          <Link to="/">
+          <Link to={paths.home()}>
             <img
               src="/images/logo_title.png"
               alt="ロゴ"

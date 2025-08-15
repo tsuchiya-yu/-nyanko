@@ -3,7 +3,7 @@ import { X, ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import ImageEditor from '../components/ImageEditor';
@@ -11,6 +11,8 @@ import OptimizedImage from '../components/OptimizedImage';
 import { getCatMood } from '../lib/gemini';
 import { supabase } from '../lib/supabase';
 import { optimizeImageForUpload } from '../utils/imageUtils';
+import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 interface PhotoFormData {
   imageFile: File | null;
@@ -36,33 +38,31 @@ export default function CatPhotos() {
   const { data: cat } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
-
       const { data, error } = await supabase
         .from('cats')
         .select('name, owner_id')
-        .eq('id', id)
+        .eq('id', id!)
         .single();
 
       if (error) throw error;
       return data;
     },
+    enabled: !!id,
   });
 
   const { data: photos, isLoading } = useQuery({
     queryKey: ['cat-photos', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
-
       const { data, error } = await supabase
         .from('cat_photos')
         .select('*')
-        .eq('cat_id', id)
+        .eq('cat_id', id!)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data;
     },
+    enabled: !!id,
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -208,6 +208,7 @@ export default function CatPhotos() {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {!id && <Navigate to={paths.home()} replace />}
       {cat && (
         <Helmet>
           <title>{`${cat.name}の写真ギャラリー | CAT LINK`}</title>
@@ -220,13 +221,11 @@ export default function CatPhotos() {
             content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`}
           />
           <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
-          <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${id}/photos`} />
+          <meta property="og:url" content={absoluteUrl(paths.catPhotos(id!))} />
           <meta
             property="og:image"
             content={
-              photos && photos.length > 0
-                ? photos[0].image_url
-                : 'https://cat-link.catnote.tokyo/images/ogp.png'
+              photos && photos.length > 0 ? photos[0].image_url : `${getBaseUrl()}/images/ogp.png`
             }
           />
           <meta
@@ -234,13 +233,13 @@ export default function CatPhotos() {
             content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`}
           />
           <meta name="robots" content="noindex, follow" />
-          <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${id}`} />
+          <link rel="canonical" href={absoluteUrl(paths.catProfile(id!))} />
         </Helmet>
       )}
 
       <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
         <Link
-          to={`/cats/${id}`}
+          to={paths.catProfile(id!)}
           className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />

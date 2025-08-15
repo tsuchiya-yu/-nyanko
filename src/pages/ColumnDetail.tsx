@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
+import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 import type { Column } from '../types/index';
 
@@ -20,12 +22,13 @@ export default function ColumnDetail() {
       const { data, error } = await supabase
         .from('columns')
         .select('id, title, content, image_url, published_at, slug') // 必要なフィールドのみ選択
-        .eq('slug', slug)
+        .eq('slug', slug!)
         .single();
 
       if (error) throw error;
       return data;
     },
+    enabled: !!slug,
     staleTime: 1000 * 60 * 5, // 5分間キャッシュを保持
     gcTime: 1000 * 60 * 30, // 30分間キャッシュを保持
   });
@@ -43,12 +46,12 @@ export default function ColumnDetail() {
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: column.title,
-      image: column.image_url || 'https://cat-link.catnote.tokyo/images/logo.png',
+      image: column.image_url || `${getBaseUrl()}/images/logo.png`,
       datePublished: column.published_at,
       author: {
         '@type': 'Organization',
         name: 'CAT LINK',
-        url: 'https://cat-link.catnote.tokyo',
+        url: getBaseUrl(),
       },
     });
   }, [column]);
@@ -92,13 +95,14 @@ export default function ColumnDetail() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {!slug && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{column.title} | CAT LINK</title>
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={`${column.title} | CAT LINK`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo/columns/${column.slug}`} />
+        <meta property="og:url" content={absoluteUrl(paths.columnDetail(column.slug))} />
         {column.image_url && (
           <>
             <link
@@ -120,13 +124,13 @@ export default function ColumnDetail() {
             <meta property="og:image" content={column.image_url} />
           </>
         )}
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo/columns/${column.slug}`} />
+        <link rel="canonical" href={absoluteUrl(paths.columnDetail(column.slug))} />
         <script type="application/ld+json">{jsonLd}</script>
       </Helmet>
 
       <div className="mb-8">
         <Link
-          to="/columns"
+          to={paths.columns()}
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -183,7 +187,7 @@ export default function ColumnDetail() {
 
       <div className="mt-12 pt-8 border-t border-gray-200">
         <Link
-          to="/columns"
+          to={paths.columns()}
           className="inline-flex items-center text-gray-500 hover:text-gray-600 transition-colors"
         >
           他の記事を読む

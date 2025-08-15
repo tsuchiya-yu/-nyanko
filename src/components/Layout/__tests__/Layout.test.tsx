@@ -6,6 +6,8 @@ import { renderWithProviders } from '../../../test/utils';
 import { paths } from '../../../utils/paths';
 import Layout from '../../Layout';
 
+import type { MockedFunction } from 'vitest';
+
 // モックの設定
 vi.mock('../../../store/authStore');
 vi.mock('../../../hooks/useAuth', () => ({
@@ -38,10 +40,11 @@ vi.mock('../../../lib/supabase', () => ({
 describe('Layoutコンポーネント', () => {
   const mockSetUser = vi.fn();
   const mockSignOut = vi.fn();
+  const useAuthStoreMock = useAuthStore as unknown as MockedFunction<typeof useAuthStore>;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: null,
       profile: null,
       setUser: mockSetUser,
@@ -63,7 +66,7 @@ describe('Layoutコンポーネント', () => {
   });
 
   it('ログインしている場合、マイページリンクが表示されること', () => {
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: { id: 'user-1', email: 'test@example.com' },
       profile: { name: 'テストユーザー' },
       setUser: mockSetUser,
@@ -103,7 +106,7 @@ describe('Layoutコンポーネント', () => {
   });
 
   it('ログアウトボタンが存在しないことを確認', () => {
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: { id: 'user-1', email: 'test@example.com' },
       profile: { name: 'テストユーザー' },
       setUser: mockSetUser,

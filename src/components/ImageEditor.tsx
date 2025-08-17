@@ -114,22 +114,29 @@ export default function ImageEditor({
     };
   }, [imgSrc]);
 
-  // ファイルからURLを生成（imgSrcに依存しない形にリファクタ）
+  // ファイルからURLを生成（imgSrcに依存しない形 + FileReaderのクリーンアップ追加）
   useEffect(() => {
-    if (!imageFile) return;
+    if (!imageFile) {
+      setImgSrc('');
+      return;
+    }
 
     // 一旦クリアしてから少し待って新しい画像を設定
     setImgSrc('');
+
+    const reader = new FileReader();
+    const handleLoad = () => {
+      const result = reader.result?.toString() || '';
+      setImgSrc(result);
+    };
+    reader.addEventListener('load', handleLoad);
+
     const timerId = window.setTimeout(() => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        const result = reader.result?.toString() || '';
-        setImgSrc(result);
-      });
       reader.readAsDataURL(imageFile);
     }, 100);
 
     return () => {
+      reader.removeEventListener('load', handleLoad);
       window.clearTimeout(timerId);
     };
   }, [imageFile]);

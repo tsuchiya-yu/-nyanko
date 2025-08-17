@@ -141,7 +141,9 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
           });
           break;
       }
-    } catch (_error) {
+    } catch (error) {
+      // 詳細は開発者向けにログ出力し、ユーザーには汎用メッセージを表示
+      console.error('更新処理に失敗しました:', error);
       alert('更新に失敗しました');
     }
   };

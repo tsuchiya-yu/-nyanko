@@ -99,20 +99,15 @@ export default function ImageEditor({
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // コンポーネントのクリーンアップ
+  // コンポーネントのクリーンアップ（Hammer.jsの解放のみ）
   useEffect(() => {
     return () => {
-      // URLを解放
-      if (imgSrc.startsWith('blob:')) {
-        URL.revokeObjectURL(imgSrc);
-      }
-      // Hammer.jsのインスタンスを解放
       if (hammerInstanceRef.current) {
         hammerInstanceRef.current.destroy();
         hammerInstanceRef.current = null;
       }
     };
-  }, [imgSrc]);
+  }, []);
 
   // ファイルからURLを生成（URL.createObjectURL + requestAnimationFrame）
   useEffect(() => {

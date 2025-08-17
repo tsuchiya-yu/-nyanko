@@ -114,30 +114,24 @@ export default function ImageEditor({
     };
   }, [imgSrc]);
 
-  // ファイルからURLを生成
+  // ファイルからURLを生成（imgSrcに依存しない形にリファクタ）
   useEffect(() => {
-    if (imageFile) {
-      // 既存のURLを解放
-      if (imgSrc) {
-        setImgSrc('');
-        // 少し待ってから新しい画像を設定
-        setTimeout(() => {
-          const reader = new FileReader();
-          reader.addEventListener('load', () => {
-            const result = reader.result?.toString() || '';
-            setImgSrc(result);
-          });
-          reader.readAsDataURL(imageFile);
-        }, 100);
-      } else {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          const result = reader.result?.toString() || '';
-          setImgSrc(result);
-        });
-        reader.readAsDataURL(imageFile);
-      }
-    }
+    if (!imageFile) return;
+
+    // 一旦クリアしてから少し待って新しい画像を設定
+    setImgSrc('');
+    const timerId = window.setTimeout(() => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        const result = reader.result?.toString() || '';
+        setImgSrc(result);
+      });
+      reader.readAsDataURL(imageFile);
+    }, 100);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
   }, [imageFile]);
 
   // 画像がロードされたときの処理

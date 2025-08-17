@@ -141,8 +141,8 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
           });
           break;
       }
-    } catch (error) {
-      alert(error instanceof Error ? error.message : '更新に失敗しました');
+    } catch (_error) {
+      alert('更新に失敗しました');
     }
   };
 

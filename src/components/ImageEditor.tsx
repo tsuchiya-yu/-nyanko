@@ -99,45 +99,35 @@ export default function ImageEditor({
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // コンポーネントのクリーンアップ
+  // コンポーネントのクリーンアップ（Hammer.jsの解放のみ）
   useEffect(() => {
     return () => {
-      // URLを解放
-      if (imgSrc.startsWith('blob:')) {
-        URL.revokeObjectURL(imgSrc);
-      }
-      // Hammer.jsのインスタンスを解放
       if (hammerInstanceRef.current) {
         hammerInstanceRef.current.destroy();
         hammerInstanceRef.current = null;
       }
     };
-  }, [imgSrc]);
+  }, []);
 
-  // ファイルからURLを生成
+  // ファイルからURLを生成（URL.createObjectURL + requestAnimationFrame）
   useEffect(() => {
-    if (imageFile) {
-      // 既存のURLを解放
-      if (imgSrc) {
-        setImgSrc('');
-        // 少し待ってから新しい画像を設定
-        setTimeout(() => {
-          const reader = new FileReader();
-          reader.addEventListener('load', () => {
-            const result = reader.result?.toString() || '';
-            setImgSrc(result);
-          });
-          reader.readAsDataURL(imageFile);
-        }, 100);
-      } else {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          const result = reader.result?.toString() || '';
-          setImgSrc(result);
-        });
-        reader.readAsDataURL(imageFile);
-      }
+    if (!imageFile) {
+      setImgSrc('');
+      return;
     }
+
+    // 一旦クリアしてから、次フレームで新しいURLを設定
+    setImgSrc('');
+
+    const objectUrl = URL.createObjectURL(imageFile);
+    const animationFrameId = window.requestAnimationFrame(() => {
+      setImgSrc(objectUrl);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+      URL.revokeObjectURL(objectUrl);
+    };
   }, [imageFile]);
 
   // 画像がロードされたときの処理

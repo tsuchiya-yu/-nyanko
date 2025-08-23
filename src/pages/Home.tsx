@@ -180,9 +180,9 @@ export default function Home() {
                   image: cat.image_url,
                   mainEntityOfPage: {
                     '@type': 'WebPage',
-                    '@id': `https://cat-link.catnote.tokyo/cats/${cat.prof_path_id}`,
+                    '@id': absoluteUrl(paths.catProfile(cat.prof_path_id)),
                   },
-                  url: `https://cat-link.catnote.tokyo/cats/${cat.prof_path_id}`,
+                  url: absoluteUrl(paths.catProfile(cat.prof_path_id)),
                 },
               })),
             })}

@@ -535,7 +535,6 @@ export default function RegisterCat() {
                   }}
                   label={isPublic ? '公開' : '非公開'}
                 />
-                <input type="hidden" {...register('is_public')} />
               </div>
               <p className="mt-1 text-sm text-gray-600">
                 公開すると他の人もページを見ることができます

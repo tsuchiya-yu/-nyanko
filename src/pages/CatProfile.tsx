@@ -130,7 +130,8 @@ export default function CatProfile() {
 
         const { data, error: fetchError } = await supabase
           .from('cats')
-          .select(`
+          .select(
+            `
             id,
             name,
             birthdate,
@@ -153,7 +154,8 @@ export default function CatProfile() {
             profiles:owner_id (
               name
             )
-          `)
+          `
+          )
           .eq('prof_path_id', path)
           .maybeSingle();
 

@@ -86,7 +86,8 @@ export default function EditCat() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cats')
-        .select(`
+        .select(
+          `
           id,
           name,
           birthdate,
@@ -106,7 +107,8 @@ export default function EditCat() {
           text_color,
           prof_path_id,
           is_public
-        `)
+        `
+        )
         .eq('id', id!)
         .maybeSingle();
 

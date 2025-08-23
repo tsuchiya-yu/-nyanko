@@ -237,11 +237,7 @@ export default function CatProfile() {
     queryFn: async () => {
       if (!cat?.owner_id || !cat?.id) return [];
 
-      let query = supabase
-        .from('cats')
-        .select('*')
-        .eq('owner_id', cat.owner_id)
-        .neq('id', cat.id); // 現在表示中の猫を除外
+      let query = supabase.from('cats').select('*').eq('owner_id', cat.owner_id).neq('id', cat.id); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
       if (!user || cat!.owner_id !== user.id) {

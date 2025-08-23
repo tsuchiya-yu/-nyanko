@@ -107,9 +107,9 @@ export default function RegisterCat() {
   useEffect(() => {
     if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
       profPathIdRef.current.focus();
-      profPathIdRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
+      profPathIdRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
       });
     }
   }, [mutationError]);
@@ -163,10 +163,10 @@ export default function RegisterCat() {
     mutationFn: async (data: CatFormData) => {
       console.log('Mutation started with data:', data);
       setMutationError(null); // エラーをクリア
-      
+
       // パスの重複チェック
       console.log('Checking prof_path_id duplication:', data.prof_path_id);
-      
+
       const { data: existingCat, error: checkError } = await supabase
         .from('cats')
         .select('id')
@@ -177,9 +177,11 @@ export default function RegisterCat() {
 
       if (!checkError && existingCat) {
         console.log('prof_path_id already exists, throwing error');
-        throw new Error('このプロフィールページURLは既に使用されています。別のURLを選択してください。');
+        throw new Error(
+          'このプロフィールページURLは既に使用されています。別のURLを選択してください。'
+        );
       }
-      
+
       let imageUrl = '';
 
       // 画像がある場合はアップロード
@@ -231,10 +233,10 @@ export default function RegisterCat() {
 
       return { data, insertedCat };
     },
-    onSuccess: async (result) => {
+    onSuccess: async result => {
       console.log('Mutation successful');
       setMutationError(null); // エラーをクリア
-      
+
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
@@ -388,21 +390,23 @@ export default function RegisterCat() {
                 <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
                 <input
                   type="text"
-                  {...register('prof_path_id', { 
+                  {...register('prof_path_id', {
                     required: 'プロフィールURLは必須です',
                     pattern: {
                       value: /^[a-zA-Z0-9_-]+$/,
-                      message: '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます'
-                    }
+                      message:
+                        '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
+                    },
                   })}
                   placeholder="my_cat"
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                  ref={(e) => {
+                  ref={e => {
                     const { ref } = register('prof_path_id');
                     ref(e);
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
+                        e;
                     }
                   }}
                 />
@@ -531,10 +535,7 @@ export default function RegisterCat() {
                   }}
                   label={isPublic ? '公開' : '非公開'}
                 />
-                <input
-                  type="hidden"
-                  {...register('is_public')}
-                />
+                <input type="hidden" {...register('is_public')} />
               </div>
               <p className="mt-1 text-sm text-gray-600">
                 公開すると他の人もページを見ることができます

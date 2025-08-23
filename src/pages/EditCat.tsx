@@ -154,9 +154,9 @@ export default function EditCat() {
   useEffect(() => {
     if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
       profPathIdRef.current.focus();
-      profPathIdRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
+      profPathIdRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
       });
     }
   }, [mutationError]);
@@ -194,11 +194,16 @@ export default function EditCat() {
     mutationFn: async (data: CatFormData) => {
       console.log('Mutation started with data:', data);
       setMutationError(null); // エラーをクリア
-      
+
       // URLパスの重複チェック
       if (data.prof_path_id !== cat?.prof_path_id) {
-        console.log('Checking prof_path_id duplication:', data.prof_path_id, 'vs current:', cat?.prof_path_id);
-        
+        console.log(
+          'Checking prof_path_id duplication:',
+          data.prof_path_id,
+          'vs current:',
+          cat?.prof_path_id
+        );
+
         const { data: existingCat, error: checkError } = await supabase
           .from('cats')
           .select('id')
@@ -208,7 +213,9 @@ export default function EditCat() {
         console.log('Duplication check result:', { existingCat, checkError });
 
         if (!checkError && existingCat) {
-          throw new Error('このプロフィールページURLは既に使用されています。別のURLを選択してください。');
+          throw new Error(
+            'このプロフィールページURLは既に使用されています。別のURLを選択してください。'
+          );
         }
       }
 
@@ -283,7 +290,7 @@ export default function EditCat() {
     onSuccess: updatedData => {
       console.log('Mutation successful:', updatedData);
       setMutationError(null); // エラーをクリア
-      
+
       // 個別の猫情報キャッシュを直接更新
       queryClient.setQueryData(['cat', id], (oldData: any) => {
         return { ...oldData, ...updatedData };
@@ -319,7 +326,6 @@ export default function EditCat() {
       } else {
         navigate(`/profile/${cat?.owner_id}`);
       }
-
     },
     onError: (error: Error) => {
       console.error('Mutation error:', error);
@@ -515,18 +521,20 @@ export default function EditCat() {
                 <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
                 <input
                   type="text"
-                  {...register('prof_path_id', { 
+                  {...register('prof_path_id', {
                     required: 'プロフィールURLは必須です',
                     pattern: {
                       value: /^[a-zA-Z0-9_-]+$/,
-                      message: '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます'
-                    }
+                      message:
+                        '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
+                    },
                   })}
-                  ref={(e) => {
+                  ref={e => {
                     const { ref } = register('prof_path_id');
                     ref(e);
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
+                        e;
                     }
                   }}
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg

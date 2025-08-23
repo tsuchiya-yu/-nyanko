@@ -71,6 +71,7 @@ export const mockCat = {
   background_color: '#ffffff',
   text_color: '#000000',
   is_public: true,
+  prof_path_id: 'tama',
 };
 
 export const mockUser = {

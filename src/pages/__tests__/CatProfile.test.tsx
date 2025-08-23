@@ -40,7 +40,7 @@ const createWrapper = ({ cat = mockCat, photos = [], ownerCats = [] } = {}) => {
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <HeaderProvider>
-            <MemoryRouter initialEntries={[`/cats/${cat.id}`]}>{children}</MemoryRouter>
+            <MemoryRouter initialEntries={[`/cats/${cat.prof_path_id}`]}>{children}</MemoryRouter>
           </HeaderProvider>
         </QueryClientProvider>
       </HelmetProvider>
@@ -52,7 +52,7 @@ const createWrapper = ({ cat = mockCat, photos = [], ownerCats = [] } = {}) => {
 
 describe('CatProfile', () => {
   beforeEach(() => {
-    mockedUseParams.mockReturnValue({ id: mockCat.id });
+    mockedUseParams.mockReturnValue({ path: mockCat.prof_path_id });
     mockedUseAuthStore.mockReturnValue({
       user: null,
       profile: null,

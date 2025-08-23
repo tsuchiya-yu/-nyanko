@@ -60,7 +60,12 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path={routePatterns.catProfile} element={<CatProfile />} />
+          <Route path={routePatterns.catProfile} element={
+            <>
+              {console.log('🚀 App.tsx routing to CatProfile with pattern:', routePatterns.catProfile)}
+              <CatProfile />
+            </>
+          } />
           <Route
             path={routePatterns.editCat}
             element={

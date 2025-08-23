@@ -126,6 +126,8 @@ export default function CatProfile() {
     queryKey: ['cat', path],
     queryFn: async () => {
       try {
+        console.log('🔍 CatProfile searching for path:', path);
+        
         if (!path) throw new Error('猫URLパスが見つかりません');
 
         const { data, error: fetchError } = await supabase
@@ -140,6 +142,16 @@ export default function CatProfile() {
           )
           .eq('prof_path_id', path)
           .single();
+
+        console.log('🔍 CatProfile query result:', { 
+          data: data ? { 
+            id: data.id, 
+            name: data.name, 
+            prof_path_id: data.prof_path_id,
+            is_public: data.is_public
+          } : null, 
+          fetchError 
+        });
 
         if (fetchError) throw fetchError;
         if (!data) throw new Error('猫が見つかりません');

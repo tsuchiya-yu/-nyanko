@@ -130,16 +130,32 @@ export default function CatProfile() {
 
         const { data, error: fetchError } = await supabase
           .from('cats')
-          .select(
-            `
-            *,
+          .select(`
+            id,
+            name,
+            birthdate,
+            is_birthdate_estimated,
+            breed,
+            catchphrase,
+            description,
+            image_url,
+            instagram_url,
+            youtube_url,
+            tiktok_url,
+            x_url,
+            homepage_url,
+            owner_id,
+            gender,
+            background_color,
+            text_color,
+            prof_path_id,
+            is_public,
             profiles:owner_id (
               name
             )
-          `
-          )
+          `)
           .eq('prof_path_id', path)
-          .single();
+          .maybeSingle();
 
         if (fetchError) throw fetchError;
         if (!data) throw new Error('猫が見つかりません');
@@ -237,7 +253,11 @@ export default function CatProfile() {
     queryFn: async () => {
       if (!cat?.owner_id || !cat?.id) return [];
 
-      let query = supabase.from('cats').select('*').eq('owner_id', cat.owner_id).neq('id', cat.id); // 現在表示中の猫を除外
+      let query = supabase
+        .from('cats')
+        .select('id, name, description, image_url, prof_path_id')
+        .eq('owner_id', cat.owner_id)
+        .neq('id', cat.id); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
       if (!user || cat!.owner_id !== user.id) {

@@ -347,9 +347,9 @@ export default function EditCat() {
 
       // is_publicの値に応じて遷移先を変更
       if (submittedData?.is_public) {
-        navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
+        navigate(paths.catProfile(submittedData?.prof_path_id || cat?.prof_path_id));
       } else {
-        navigate(`/profile/${cat?.owner_id}`);
+        navigate(paths.userProfile(cat.owner_id));
       }
     },
     onError: (error: Error) => {
@@ -360,7 +360,7 @@ export default function EditCat() {
       setTimeout(() => {
         // is_publicの値に応じて遷移先を変更
         if (submittedData?.is_public) {
-          navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
+          navigate(paths.catProfile(submittedData?.prof_path_id || cat?.prof_path_id));
         } else {
           if (cat?.owner_id) {
             navigate(paths.userProfile(cat.owner_id));

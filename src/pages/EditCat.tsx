@@ -569,7 +569,8 @@ export default function EditCat() {
                     ref(node);
                     // カスタムrefを設定
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
+                        node;
                     }
                   }}
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg

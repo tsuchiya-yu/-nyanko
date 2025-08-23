@@ -406,7 +406,8 @@ export default function RegisterCat() {
                     ref(node);
                     // カスタムrefを設定
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
+                        node;
                     }
                   }}
                 />

@@ -54,7 +54,9 @@ export default function UserProfile() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cats')
-        .select('id, name, image_url, description, breed, birthdate, is_birthdate_estimated, prof_path_id, is_public')
+        .select(
+          'id, name, image_url, description, breed, birthdate, is_birthdate_estimated, prof_path_id, is_public'
+        )
         .eq('owner_id', id!);
 
       if (error) throw error;

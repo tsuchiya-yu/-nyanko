@@ -360,7 +360,7 @@ export default function CatProfile() {
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo/cats/${path}`} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(path!))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -393,11 +393,11 @@ export default function CatProfile() {
             ].filter(Boolean),
             subjectOf: {
               '@type': 'WebPage',
-              url: `https://cat-link.catnote.tokyo/cats/${path}`,
+              url: absoluteUrl(paths.catProfile(path!)),
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://cat-link.catnote.tokyo/cats/${path}`,
+              '@id': absoluteUrl(paths.catProfile(path!)),
             },
             owner: {
               '@type': 'Person',

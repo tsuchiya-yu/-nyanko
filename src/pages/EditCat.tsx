@@ -556,10 +556,20 @@ export default function EditCat() {
                         '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
                     },
                   })}
-                  ref={e => {
+                  ref={node => {
+                    const { ref } = register('prof_path_id', {
+                      required: 'プロフィールURLは必須です',
+                      pattern: {
+                        value: /^[a-zA-Z0-9_-]+$/,
+                        message:
+                          '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
+                      },
+                    });
+                    // react-hook-formのrefを呼び出す
+                    ref(node);
+                    // カスタムrefを設定
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
-                        e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
                     }
                   }}
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg

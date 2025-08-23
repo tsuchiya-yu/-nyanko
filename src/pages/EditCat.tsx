@@ -355,6 +355,20 @@ export default function EditCat() {
     onError: (error: Error) => {
       console.error('Mutation error:', error);
       setMutationError(error.message);
+
+      // エラーメッセージを表示した後、適切な画面に遷移
+      setTimeout(() => {
+        // is_publicの値に応じて遷移先を変更
+        if (submittedData?.is_public) {
+          navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
+        } else {
+          if (cat?.owner_id) {
+            navigate(paths.userProfile(cat.owner_id));
+          } else {
+            navigate(paths.home());
+          }
+        }
+      }, 2000); // エラーメッセージを2秒間表示
     },
   });
 

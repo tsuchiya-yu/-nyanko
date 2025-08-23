@@ -17,11 +17,7 @@ export const routePatterns = {
 // Centralized path builders derived from routePatterns
 export const paths = {
   home: () => routePatterns.home,
-  catProfile: (profPathId: string) => {
-    const path = `/cats/${encodeURIComponent(profPathId)}`;
-    console.log('🔗 paths.catProfile called with:', { profPathId, generatedPath: path });
-    return path;
-  },
+  catProfile: (profPathId: string) => `/cats/${encodeURIComponent(profPathId)}`,
   editCat: (catId: string) => routePatterns.editCat.replace(':id', encodeURIComponent(catId)),
   catPhotos: (catId: string) => routePatterns.catPhotos.replace(':id', encodeURIComponent(catId)),
   registerCat: () => routePatterns.registerCat,

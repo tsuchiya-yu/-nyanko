@@ -51,11 +51,6 @@ export default function UserProfile() {
       const { data, error } = await supabase.from('cats').select('*').eq('owner_id', id!);
 
       if (error) throw error;
-      console.log('👤 UserProfile cats data:', data?.map(cat => ({
-        id: cat.id,
-        name: cat.name,
-        prof_path_id: cat.prof_path_id
-      })));
       return data as Cat[];
     },
     enabled: !!id,

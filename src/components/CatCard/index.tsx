@@ -24,12 +24,6 @@ export default function CatCard({ cat, actions, footer }: CatCardProps) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    console.log('🐱 CatCard clicked:', {
-      catId: cat.id,
-      catName: cat.name,
-      profPathId: cat.prof_path_id,
-      navigatingTo: `/cats/${cat.prof_path_id}`
-    });
     navigate(`/cats/${cat.prof_path_id}`);
   };
 

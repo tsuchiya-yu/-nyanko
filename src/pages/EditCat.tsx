@@ -355,17 +355,6 @@ export default function EditCat() {
     onError: (error: Error) => {
       console.error('Mutation error:', error);
       setMutationError(error.message);
-
-      // is_publicの値に応じて遷移先を変更
-      if (submittedData?.is_public) {
-        navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
-      } else {
-        if (cat?.owner_id) {
-          navigate(paths.userProfile(cat.owner_id));
-        } else {
-          navigate(paths.home());
-        }
-      }
     },
   });
 
@@ -553,7 +542,6 @@ export default function EditCat() {
                         '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
                     },
                   })}
-                  {...register('prof_path_id')}
                   ref={e => {
                     if (profPathIdRef) {
                       (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =

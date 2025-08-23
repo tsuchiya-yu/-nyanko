@@ -208,7 +208,7 @@ export default function CatProfile() {
         .select('id')
         .eq('cat_id', cat.id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       return Boolean(data);
     },
@@ -350,7 +350,7 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo/cats/${path}`} />
+        <meta property="og:url" content={absoluteUrl(paths.catProfile(path!))} />
         <meta
           property="og:image"
           content={`${cat.image_url}?width=1200&height=630&resize=contain`}

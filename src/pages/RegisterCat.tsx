@@ -161,22 +161,16 @@ export default function RegisterCat() {
   // 猫の登録処理
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
-      console.log('Mutation started with data:', data);
-      setMutationError(null); // エラーをクリア
-
+            setMutationError(null); // エラーをクリア
+      
       // パスの重複チェック
-      console.log('Checking prof_path_id duplication:', data.prof_path_id);
-
       const { data: existingCat, error: checkError } = await supabase
         .from('cats')
         .select('id')
         .eq('prof_path_id', data.prof_path_id)
-        .single();
-
-      console.log('Duplication check result:', { existingCat, checkError });
+        .maybeSingle();
 
       if (!checkError && existingCat) {
-        console.log('prof_path_id already exists, throwing error');
         throw new Error(
           'このプロフィールページURLは既に使用されています。別のURLを選択してください。'
         );
@@ -234,7 +228,7 @@ export default function RegisterCat() {
       return { data, insertedCat };
     },
     onSuccess: async result => {
-      console.log('Mutation successful');
+
       setMutationError(null); // エラーをクリア
 
       // ユーザーの猫リストキャッシュを無効化
@@ -296,7 +290,7 @@ export default function RegisterCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-              console.log('提出するデータ:', data);
+
               mutation.mutate(data);
             })}
             className="space-y-6"
@@ -401,12 +395,10 @@ export default function RegisterCat() {
                   placeholder="my_cat"
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  {...register('prof_path_id')}
                   ref={e => {
-                    const { ref } = register('prof_path_id');
-                    ref(e);
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
-                        e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
                     }
                   }}
                 />

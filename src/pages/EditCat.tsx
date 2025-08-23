@@ -234,7 +234,7 @@ export default function EditCat() {
           .from('cats')
           .select('id')
           .eq('prof_path_id', data.prof_path_id)
-          .single();
+          .maybeSingle();
 
         console.log('Duplication check result:', { existingCat, checkError });
 
@@ -314,7 +314,7 @@ export default function EditCat() {
       };
     },
     onSuccess: updatedData => {
-      console.log('Mutation successful:', updatedData);
+
       setMutationError(null); // エラーをクリア
 
       // 個別の猫情報キャッシュを直接更新
@@ -452,7 +452,7 @@ export default function EditCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-              console.log('提出するデータ:', data);
+
               setSubmittedData(data);
               mutation.mutate(data);
             })}
@@ -555,12 +555,10 @@ export default function EditCat() {
                         '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
                     },
                   })}
+                  {...register('prof_path_id')}
                   ref={e => {
-                    const { ref } = register('prof_path_id');
-                    ref(e);
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
-                        e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
                     }
                   }}
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg

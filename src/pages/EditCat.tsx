@@ -314,7 +314,6 @@ export default function EditCat() {
       };
     },
     onSuccess: updatedData => {
-
       setMutationError(null); // エラーをクリア
 
       // 個別の猫情報キャッシュを直接更新
@@ -452,7 +451,6 @@ export default function EditCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-
               setSubmittedData(data);
               mutation.mutate(data);
             })}
@@ -558,7 +556,8 @@ export default function EditCat() {
                   {...register('prof_path_id')}
                   ref={e => {
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
+                        e;
                     }
                   }}
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg

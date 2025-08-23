@@ -161,8 +161,8 @@ export default function RegisterCat() {
   // 猫の登録処理
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
-            setMutationError(null); // エラーをクリア
-      
+      setMutationError(null); // エラーをクリア
+
       // パスの重複チェック
       const { data: existingCat, error: checkError } = await supabase
         .from('cats')
@@ -228,7 +228,6 @@ export default function RegisterCat() {
       return { data, insertedCat };
     },
     onSuccess: async result => {
-
       setMutationError(null); // エラーをクリア
 
       // ユーザーの猫リストキャッシュを無効化
@@ -290,7 +289,6 @@ export default function RegisterCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-
               mutation.mutate(data);
             })}
             className="space-y-6"
@@ -398,7 +396,8 @@ export default function RegisterCat() {
                   {...register('prof_path_id')}
                   ref={e => {
                     if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
+                        e;
                     }
                   }}
                 />

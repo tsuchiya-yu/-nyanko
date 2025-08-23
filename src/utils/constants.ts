@@ -1,4 +1,9 @@
 /**
+ * 環境・URL関連の定数
+ */
+export const FALLBACK_BASE_URL = 'https://cat-link.catnote.tokyo';
+
+/**
  * カラー設定のデフォルト値
  */
 

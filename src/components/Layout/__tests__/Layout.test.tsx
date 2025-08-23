@@ -3,7 +3,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { useAuthStore } from '../../../store/authStore';
 import { renderWithProviders } from '../../../test/utils';
+import { paths } from '../../../utils/paths';
 import Layout from '../../Layout';
+
+import type { MockedFunction } from 'vitest';
 
 // モックの設定
 vi.mock('../../../store/authStore');
@@ -37,10 +40,11 @@ vi.mock('../../../lib/supabase', () => ({
 describe('Layoutコンポーネント', () => {
   const mockSetUser = vi.fn();
   const mockSignOut = vi.fn();
+  const useAuthStoreMock = useAuthStore as unknown as MockedFunction<typeof useAuthStore>;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: null,
       profile: null,
       setUser: mockSetUser,
@@ -62,7 +66,7 @@ describe('Layoutコンポーネント', () => {
   });
 
   it('ログインしている場合、マイページリンクが表示されること', () => {
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: { id: 'user-1', email: 'test@example.com' },
       profile: { name: 'テストユーザー' },
       setUser: mockSetUser,
@@ -102,7 +106,7 @@ describe('Layoutコンポーネント', () => {
   });
 
   it('ログアウトボタンが存在しないことを確認', () => {
-    (useAuthStore as any).mockReturnValue({
+    useAuthStoreMock.mockReturnValue({
       user: { id: 'user-1', email: 'test@example.com' },
       profile: { name: 'テストユーザー' },
       setUser: mockSetUser,
@@ -144,7 +148,7 @@ describe('Layoutコンポーネント', () => {
     const termsLink = screen.getByText('利用規約').closest('a');
     const privacyLink = screen.getByText('プライバシーポリシー').closest('a');
 
-    expect(termsLink).toHaveAttribute('href', '/terms');
-    expect(privacyLink).toHaveAttribute('href', '/privacy');
+    expect(termsLink).toHaveAttribute('href', paths.terms());
+    expect(privacyLink).toHaveAttribute('href', paths.privacy());
   });
 });

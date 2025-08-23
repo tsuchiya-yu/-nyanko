@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ColorPickerModal } from '../components/ColorPickerModal';
@@ -17,6 +17,8 @@ import {
   backgroundColors,
   textColors,
 } from '../utils/constants';
+import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 interface CatFormData {
   name: string;
@@ -82,9 +84,7 @@ export default function EditCat() {
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      if (!id) throw new Error('猫IDが見つかりません');
-
-      const { data, error } = await supabase.from('cats').select('*').eq('id', id).single();
+      const { data, error } = await supabase.from('cats').select('*').eq('id', id!).single();
 
       if (error) throw error;
       if (!data) throw new Error('猫が見つかりません');
@@ -96,6 +96,7 @@ export default function EditCat() {
 
       return data;
     },
+    enabled: !!id,
   });
 
   useEffect(() => {
@@ -326,9 +327,13 @@ export default function EditCat() {
 
       // is_publicの値に応じて遷移先を変更
       if (submittedData?.is_public) {
-        navigate(`/cats/${id}`);
+        navigate(`/cats/${submittedData?.prof_path_id || cat?.prof_path_id}`);
       } else {
-        navigate(`/profile/${cat?.owner_id}`);
+        if (cat?.owner_id) {
+          navigate(paths.userProfile(cat.owner_id));
+        } else {
+          navigate(paths.home());
+        }
       }
     },
   });
@@ -358,7 +363,10 @@ export default function EditCat() {
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6 text-center">
           <p className="text-gray-600 mb-4">猫の情報を取得できませんでした</p>
-          <Link to="/" className="inline-flex items-center text-gray-700 hover:text-gray-900">
+          <Link
+            to={paths.home()}
+            className="inline-flex items-center text-gray-700 hover:text-gray-900"
+          >
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -369,6 +377,7 @@ export default function EditCat() {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {!id && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィールを編集 | CAT LINK`}</title>
         <meta
@@ -380,20 +389,20 @@ export default function EditCat() {
           content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`}
         />
         <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
-        <meta property="og:url" content={`https://cat-link.com/cats/${id}/edit`} />
+        <meta property="og:url" content={absoluteUrl(paths.editCat(cat.id))} />
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
           content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href={`https://cat-link.com/cats/${id}`} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
           <Link
-            to={`/profile/${cat.owner_id}`}
+            to={paths.userProfile(cat.owner_id)}
             className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />

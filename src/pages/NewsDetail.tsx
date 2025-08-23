@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 import { supabase } from '../lib/supabase';
+import { paths } from '../utils/paths';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 import type { News } from '../types/index';
 
@@ -37,17 +39,18 @@ export default function NewsDetail() {
   const { slug } = useParams<{ slug: string }>();
 
   const {
-    data: news,
+    data: article,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<News>({
     queryKey: ['news', slug],
     queryFn: async () => {
-      const { data, error } = await supabase.from('news').select('*').eq('slug', slug);
+      const { data, error } = await supabase.from('news').select('*').eq('slug', slug!).single();
 
       if (error) throw error;
-      return data as News[];
+      return data;
     },
+    enabled: !!slug,
   });
 
   if (isLoading) {
@@ -66,22 +69,21 @@ export default function NewsDetail() {
     return <div className="text-center py-12 text-red-600">エラーが発生しました</div>;
   }
 
-  if (!news || news.length === 0) {
+  if (!article) {
     return <div className="text-center py-12">404 - Not Found</div>;
   }
 
-  const article = news[0];
-
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {!slug && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{article.title} - CAT LINK</title>
         <meta name="description" content={article.content} />
         <meta property="og:title" content={`${article.title} - CAT LINK`} />
         <meta property="og:description" content={article.content} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cat-link.catnote.tokyo/news/${article.slug}`} />
-        <link rel="canonical" href={`https://cat-link.catnote.tokyo/news/${article.slug}`} />
+        <meta property="og:url" content={absoluteUrl(paths.newsDetail(article.slug))} />
+        <link rel="canonical" href={absoluteUrl(paths.newsDetail(article.slug))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -89,11 +91,11 @@ export default function NewsDetail() {
             headline: article.title,
             articleBody: article.content,
             datePublished: article.published_at,
-            url: `https://cat-link.catnote.tokyo/news/${article.slug}`,
+            url: absoluteUrl(paths.newsDetail(article.slug)),
             publisher: {
               '@type': 'Organization',
               name: 'CAT LINK',
-              url: 'https://cat-link.catnote.tokyo',
+              url: getBaseUrl(),
             },
           })}
         </script>
@@ -101,7 +103,7 @@ export default function NewsDetail() {
 
       <div className="mb-8">
         <Link
-          to="/news"
+          to={paths.news()}
           className="text-sm text-gray-600 hover:text-gray-500 transition-colors inline-flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

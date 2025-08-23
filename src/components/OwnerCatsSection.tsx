@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import OptimizedImage from './OptimizedImage';
 import styles from './OwnerCatsSection.module.css';
+import { paths } from '../utils/paths';
 
 interface Cat {
   id: string;

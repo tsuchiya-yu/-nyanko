@@ -48,20 +48,32 @@ afterEach(() => {
 // afterAll(() => server.close());
 
 // Supabaseのモック
-vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => ({
-    auth: {
-      signInWithOAuth: vi.fn(),
-      signOut: vi.fn(),
-      onAuthStateChange: vi.fn(),
-      getSession: vi.fn(),
-    },
-    from: vi.fn(),
-    storage: {
+vi.mock('@supabase/supabase-js', () => {
+  class AuthApiError extends Error {
+    status?: number;
+    constructor(message: string, status?: number) {
+      super(message);
+      this.name = 'AuthApiError';
+      this.status = status;
+    }
+  }
+
+  return {
+    AuthApiError,
+    createClient: vi.fn(() => ({
+      auth: {
+        signInWithOAuth: vi.fn(),
+        signOut: vi.fn(),
+        onAuthStateChange: vi.fn(),
+        getSession: vi.fn(),
+      },
       from: vi.fn(),
-    },
-  })),
-}));
+      storage: {
+        from: vi.fn(),
+      },
+    })),
+  };
+});
 
 // react-helmet-asyncのモック
 vi.mock('react-helmet-async', () => ({

@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Share2, ArrowLeft, Instagram, Heart } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 import AuthModal from '../components/auth/AuthModal';
 import TiktokIcon from '../components/icons/TiktokIcon';
@@ -18,6 +18,8 @@ import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
 import { defaultBackgroundColor, defaultTextColor } from '../utils/constants';
+import { paths } from '../utils/paths';
+import { absoluteUrl } from '../utils/url';
 
 interface CatWithOwner {
   id: string;
@@ -111,6 +113,10 @@ export default function CatProfile() {
   const [selectedPhoto, setSelectedPhoto] = useState<CatPhoto | null>(null);
   const { setHeaderFooterVisible } = useHeaderFooter();
 
+  const handleOpenShareModal = useCallback(() => {
+    setIsShareModalOpen(true);
+  }, []);
+
   const {
     data: cat,
     isLoading,
@@ -150,6 +156,7 @@ export default function CatProfile() {
         throw error;
       }
     },
+    enabled: !!path,
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60 * 0.5, // 30秒はキャッシュを使用
@@ -185,7 +192,7 @@ export default function CatProfile() {
         .eq('user_id', user.id)
         .single();
 
-      return !!data;
+      return Boolean(data);
     },
     enabled: !!user && !!cat?.id,
   });
@@ -237,7 +244,7 @@ export default function CatProfile() {
         .neq('id', cat.id); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
-      if (!user || cat.owner_id !== user.id) {
+      if (!user || cat!.owner_id !== user.id) {
         query = query.eq('is_public', true);
       }
 
@@ -290,7 +297,10 @@ export default function CatProfile() {
           <p className="text-gray-600 mb-4">
             {error instanceof Error ? error.message : '猫の情報を取得できませんでした'}
           </p>
-          <Link to="/" className="inline-flex items-center text-pink-500 hover:text-pink-600">
+          <Link
+            to={paths.home()}
+            className="inline-flex items-center text-pink-500 hover:text-pink-600"
+          >
             <ArrowLeft className="h-5 w-5 mr-2" />
             ホームに戻る
           </Link>
@@ -309,6 +319,7 @@ export default function CatProfile() {
       className="max-w-[480px] mx-auto space-y-6 relative min-h-screen"
       style={{ color: textColor }}
     >
+      {!path && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
@@ -399,7 +410,7 @@ export default function CatProfile() {
       </Helmet>
 
       <div className="text-center mt-6">
-        <Link to="/">
+        <Link to={paths.home()}>
           <picture>
             <source srcSet="/images/webp/logo_title.webp" type="image/webp" />
             <img
@@ -419,7 +430,7 @@ export default function CatProfile() {
         <div className="flex flex-col items-center text-center">
           <div className="fixed top-4 right-4 z-40">
             <button
-              onClick={() => setIsShareModalOpen(true)}
+              onClick={handleOpenShareModal}
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
               style={{ color: textColor }}
               aria-label="シェアする"
@@ -428,16 +439,23 @@ export default function CatProfile() {
             </button>
           </div>
           <div className="relative">
-            <OptimizedImage
-              src={cat.image_url}
-              alt={cat.name}
-              width={88}
-              height={88}
-              className="w-[88px] h-[88px] rounded-full object-cover"
-              loading="eager"
-              decoding="async"
-              options={{ resize: 'fill', quality: 85 }}
-            />
+            <button
+              type="button"
+              onClick={handleOpenShareModal}
+              className="p-0 bg-transparent rounded-full transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              aria-label="プロフィール画像をシェアする"
+            >
+              <OptimizedImage
+                src={cat.image_url}
+                alt={cat.name}
+                width={88}
+                height={88}
+                className="w-[88px] h-[88px] rounded-full object-cover"
+                loading="eager"
+                decoding="async"
+                options={{ resize: 'fill', quality: 85 }}
+              />
+            </button>
             <button
               onClick={handleFavoriteClick}
               className="absolute -bottom-1 -right-1 p-1.5 bg-white/90 rounded-full hover:bg-white transition-colors shadow-sm"
@@ -571,7 +589,7 @@ export default function CatProfile() {
           className="text-center mt-20 h-[80px] min-h-[80px] flex flex-col items-center justify-center"
           style={{ contentVisibility: 'auto', containIntrinsicSize: '0 80px' }}
         >
-          <Link to="/">
+          <Link to={paths.home()}>
             <img
               src="/images/logo_title.png"
               alt="ロゴ"

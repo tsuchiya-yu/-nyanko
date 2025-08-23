@@ -1,8 +1,9 @@
 import { Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import CatCard from './CatCard/index';
 import { usePageViewCount } from '../hooks/usePageViewCount';
+import CatCard from './CatCard/index';
+import { paths } from '../utils/paths';
 
 import type { Cat } from '../types';
 
@@ -23,13 +24,13 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
           isOwnProfile && (
             <>
               <Link
-                to={`/cats/${cat.id}/photos`}
+                to={paths.catPhotos(cat.id)}
                 className="flex-1 px-3 py-2 bg-gray-800 text-white rounded-lg hover:bg-black transition-all text-sm font-medium text-center"
               >
                 写真を追加
               </Link>
               <Link
-                to={`/cats/${cat.id}/edit`}
+                to={paths.editCat(cat.id)}
                 className="flex-1 px-3 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
               >
                 編集する

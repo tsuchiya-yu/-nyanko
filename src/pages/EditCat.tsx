@@ -396,7 +396,7 @@ export default function EditCat() {
           content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.prof_path_id))} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">

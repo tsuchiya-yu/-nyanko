@@ -40,7 +40,7 @@ export default function CatPhotos() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cats')
-        .select('id, name, owner_id')
+        .select('id, name, owner_id, prof_path_id')
         .eq('id', id!)
         .single();
 
@@ -233,13 +233,13 @@ export default function CatPhotos() {
             content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`}
           />
           <meta name="robots" content="noindex, follow" />
-          <link rel="canonical" href={absoluteUrl(paths.catProfile(id!))} />
+          <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.prof_path_id))} />
         </Helmet>
       )}
 
       <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
         <Link
-          to={paths.catProfile(id!)}
+          to={paths.catProfile(cat.prof_path_id)}
           className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />

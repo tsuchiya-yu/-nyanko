@@ -84,7 +84,31 @@ export default function EditCat() {
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('cats').select('*').eq('id', id!).single();
+      const { data, error } = await supabase
+        .from('cats')
+        .select(`
+          id,
+          name,
+          birthdate,
+          is_birthdate_estimated,
+          breed,
+          catchphrase,
+          description,
+          image_url,
+          instagram_url,
+          youtube_url,
+          tiktok_url,
+          x_url,
+          homepage_url,
+          owner_id,
+          gender,
+          background_color,
+          text_color,
+          prof_path_id,
+          is_public
+        `)
+        .eq('id', id!)
+        .maybeSingle();
 
       if (error) throw error;
       if (!data) throw new Error('猫が見つかりません');

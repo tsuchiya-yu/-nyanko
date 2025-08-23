@@ -19,6 +19,7 @@ import {
 } from '../utils/constants';
 import { paths } from '../utils/paths';
 import { absoluteUrl } from '../utils/url';
+import { profPathIdRules } from '../utils/validationRules';
 
 interface CatFormData {
   name: string;
@@ -42,7 +43,7 @@ interface CatFormData {
 
 // ランダムなパスIDを生成する関数
 function generateRandomPathId() {
-  return `cat_${Math.floor(Math.random() * 1000000)}`;
+  return `neko_${Math.floor(Math.random() * 1000000)}`;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -382,26 +383,12 @@ export default function RegisterCat() {
                 <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
                 <input
                   type="text"
-                  {...register('prof_path_id', {
-                    required: 'プロフィールURLは必須です',
-                    pattern: {
-                      value: /^[a-zA-Z0-9_-]+$/,
-                      message:
-                        '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
-                    },
-                  })}
+                  {...register('prof_path_id', profPathIdRules)}
                   placeholder="my_cat"
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   ref={node => {
-                    const { ref } = register('prof_path_id', {
-                      required: 'プロフィールURLは必須です',
-                      pattern: {
-                        value: /^[a-zA-Z0-9_-]+$/,
-                        message:
-                          '半角英数字、ハイフン（-）、アンダースコア（_）のみご利用いただけます',
-                      },
-                    });
+                    const { ref } = register('prof_path_id', profPathIdRules);
                     // react-hook-formのrefを呼び出す
                     ref(node);
                     // カスタムrefを設定

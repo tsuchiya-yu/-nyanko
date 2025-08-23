@@ -43,7 +43,7 @@ interface CatFormData {
 
 // ランダムなパスIDを生成する関数
 function generateRandomPathId() {
-  return `neko_${Math.floor(Math.random() * 1000000)}`;
+  return `cat_${Math.floor(Math.random() * 1000000)}`;
 }
 
 function sanitizeFileName(fileName: string): string {

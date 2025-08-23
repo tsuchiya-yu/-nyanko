@@ -8,9 +8,11 @@ export interface Cat {
   catchphrase?: string | null;
   description: string;
   image_url: string;
-  instagram_url?: string;
-  x_url?: string;
-  homepage_url?: string;
+  instagram_url?: string | null;
+  youtube_url?: string | null;
+  tiktok_url?: string | null;
+  x_url?: string | null;
+  homepage_url?: string | null;
   prof_path_id: string;
   owner_id: string;
   gender?: string | null;
@@ -29,6 +31,13 @@ export interface User {
   id: string;
   email: string;
   name: string;
+}
+
+export interface Favorite {
+  id: string;
+  user_id: string;
+  cat_id: string;
+  created_at: string;
 }
 
 export interface News {

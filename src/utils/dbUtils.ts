@@ -8,10 +8,7 @@ import { supabase } from '../lib/supabase';
  * @throws エラーが発生した場合
  */
 export async function isProfPathIdTaken(profPathId: string, excludeId?: string): Promise<boolean> {
-  let query = supabase
-    .from('cats')
-    .select('id')
-    .eq('prof_path_id', profPathId);
+  let query = supabase.from('cats').select('id').eq('prof_path_id', profPathId);
 
   // 編集時は自身のIDを除外
   if (excludeId) {

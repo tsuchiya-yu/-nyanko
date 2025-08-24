@@ -17,10 +17,10 @@ import {
   backgroundColors,
   textColors,
 } from '../utils/constants';
+import { isProfPathIdTaken } from '../utils/dbUtils';
 import { paths } from '../utils/paths';
 import { absoluteUrl } from '../utils/url';
 import { profPathIdRules } from '../utils/validationRules';
-import { isProfPathIdTaken } from '../utils/dbUtils';
 
 interface CatFormData {
   name: string;

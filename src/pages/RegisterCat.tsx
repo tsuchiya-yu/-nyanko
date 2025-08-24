@@ -44,7 +44,9 @@ interface CatFormData {
 // ランダムなパスIDを生成する関数
 function generateRandomPathId() {
   // 0-999999の範囲で乱数を生成し、6桁になるよう0埋めする
-  const randomNum = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  const randomNum = Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(6, '0');
   return `cat_${randomNum}`;
 }
 

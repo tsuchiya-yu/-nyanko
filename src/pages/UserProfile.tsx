@@ -37,7 +37,11 @@ export default function UserProfile() {
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', id!).single();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, name, avatar_url')
+        .eq('id', id!)
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -48,7 +52,12 @@ export default function UserProfile() {
   const { data: cats, isLoading: catsLoading } = useQuery({
     queryKey: ['user-cats', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('cats').select('*').eq('owner_id', id!);
+      const { data, error } = await supabase
+        .from('cats')
+        .select(
+          'id, name, image_url, description, breed, birthdate, is_birthdate_estimated, prof_path_id, is_public'
+        )
+        .eq('owner_id', id!);
 
       if (error) throw error;
       return data as Cat[];

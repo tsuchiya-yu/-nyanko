@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate, Link, Navigate } from 'react-router-dom';
@@ -17,8 +17,10 @@ import {
   backgroundColors,
   textColors,
 } from '../utils/constants';
+import { isProfPathIdTaken } from '../utils/dbUtils';
 import { paths } from '../utils/paths';
 import { absoluteUrl } from '../utils/url';
+import { profPathIdRules } from '../utils/validationRules';
 
 interface CatFormData {
   name: string;
@@ -36,6 +38,7 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
+  prof_path_id: string;
   is_public: boolean;
 }
 
@@ -65,6 +68,9 @@ export default function EditCat() {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
+  const [submittedData, setSubmittedData] = useState<CatFormData | null>(null);
+  const [mutationError, setMutationError] = useState<string | null>(null);
+  const profPathIdRef = useRef<HTMLInputElement | null>(null);
 
   // 公開/非公開のState
   const [isPublic, setIsPublic] = useState(true);
@@ -77,10 +83,39 @@ export default function EditCat() {
     formState: { errors },
   } = useForm<CatFormData>();
 
+  // prof_path_idの登録を分離
+  const { ref: profPathIdFormRef, ...profPathIdProps } = register('prof_path_id', profPathIdRules);
+
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
-      const { data, error } = await supabase.from('cats').select('*').eq('id', id!).single();
+      const { data, error } = await supabase
+        .from('cats')
+        .select(
+          `
+          id,
+          name,
+          birthdate,
+          is_birthdate_estimated,
+          breed,
+          catchphrase,
+          description,
+          image_url,
+          instagram_url,
+          youtube_url,
+          tiktok_url,
+          x_url,
+          homepage_url,
+          owner_id,
+          gender,
+          background_color,
+          text_color,
+          prof_path_id,
+          is_public
+        `
+        )
+        .eq('id', id!)
+        .maybeSingle();
 
       if (error) throw error;
       if (!data) throw new Error('猫が見つかりません');
@@ -114,6 +149,7 @@ export default function EditCat() {
         gender: cat.gender || '',
         background_color: cat.background_color || defaultBackgroundColor,
         text_color: cat.text_color || defaultTextColor,
+        prof_path_id: cat.prof_path_id || '',
         is_public: cat.is_public !== undefined ? cat.is_public : true,
       });
 
@@ -144,6 +180,17 @@ export default function EditCat() {
       reader.readAsDataURL(imageFile);
     }
   }, [imageFile, showImageEditor]);
+
+  // プロフィールURLエラー時のフォーカス処理
+  useEffect(() => {
+    if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
+      profPathIdRef.current.focus();
+      profPathIdRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [mutationError]);
 
   // 編集した画像を保存する処理
   const handleSaveEditedImage = (editedImageBlob: Blob) => {
@@ -176,39 +223,42 @@ export default function EditCat() {
 
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
+      setMutationError(null); // エラーをクリア
+
+      // URLパスの重複チェック
+      if (data.prof_path_id !== cat?.prof_path_id) {
+        const isPathTaken = await isProfPathIdTaken(data.prof_path_id, cat?.id);
+        if (isPathTaken) {
+          throw new Error(
+            'このプロフィールページURLは既に使用されています。別のURLを選択してください。'
+          );
+        }
+      }
+
       // 編集した画像をSupabase Storageにアップロード
       if (imageFile) {
         const uniqueId = uuidv4();
         const sanitizedFileName = sanitizeFileName(imageFile.name);
         const filePath = `cats/${uniqueId}_${sanitizedFileName}`;
 
-        console.log('Uploading file:', filePath);
-
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('pet-photos')
           .upload(filePath, imageFile);
 
         if (uploadError) {
-          console.error('Upload error:', uploadError);
           throw uploadError;
         }
-
-        console.log('Upload successful:', uploadData);
 
         // アップロードした画像のURLを取得
         const {
           data: { publicUrl },
         } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
 
-        console.log('Public URL:', publicUrl);
-
         data.image_url = publicUrl;
       } else if (previewUrl && previewUrl === cat?.image_url) {
         // 既存の画像URLを使用
         data.image_url = cat.image_url;
       }
-
-      console.log('Form data before submit:', data);
 
       const { error } = await supabase
         .from('cats')
@@ -228,22 +278,24 @@ export default function EditCat() {
           gender: data.gender || null,
           background_color: data.background_color,
           text_color: data.text_color,
+          prof_path_id: data.prof_path_id,
           is_public: data.is_public,
         })
-        .eq('id', id);
+        .eq('id', cat?.id);
 
       if (error) {
-        console.error('Update error:', error); // デバッグログ
         throw error;
       }
 
       // 更新されたデータを返す（キャッシュ更新に使用）
       return {
         ...data,
-        id,
+        id: cat?.id,
       };
     },
     onSuccess: updatedData => {
+      setMutationError(null); // エラーをクリア
+
       // 個別の猫情報キャッシュを直接更新
       queryClient.setQueryData(['cat', id], (oldData: any) => {
         return { ...oldData, ...updatedData };
@@ -274,15 +326,14 @@ export default function EditCat() {
       alert('猫ちゃんの情報を更新しました');
 
       // is_publicの値に応じて遷移先を変更
-      if (updatedData.is_public) {
-        navigate(paths.catProfile(id!));
+      if (submittedData?.is_public) {
+        navigate(paths.catProfile(submittedData?.prof_path_id || cat?.prof_path_id));
       } else {
-        if (cat?.owner_id) {
-          navigate(paths.userProfile(cat.owner_id));
-        } else {
-          navigate(paths.home());
-        }
+        navigate(paths.userProfile(cat.owner_id));
       }
+    },
+    onError: (error: Error) => {
+      setMutationError(error.message);
     },
   });
 
@@ -344,7 +395,7 @@ export default function EditCat() {
           content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.prof_path_id))} />
       </Helmet>
 
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -368,7 +419,7 @@ export default function EditCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-              console.log('提出するデータ:', data);
+              setSubmittedData(data);
               mutation.mutate(data);
             })}
             className="space-y-6"
@@ -443,15 +494,39 @@ export default function EditCat() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">説明</label>
               <textarea
-                {...register('description', { required: '紹介文は必須です' })}
-                rows={4}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-              />
+                {...register('description', { required: '説明は必須です' })}
+                rows={5}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              ></textarea>
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールURL
+              </label>
+              <div className="flex items-center">
+                <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
+                <input
+                  type="text"
+                  {...profPathIdProps}
+                  ref={node => {
+                    profPathIdFormRef(node);
+                    profPathIdRef.current = node;
+                  }}
+                  className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                />
+              </div>
+              {errors.prof_path_id && (
+                <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
+              )}
+              {mutationError && mutationError.includes('プロフィールページURL') && (
+                <p className="mt-1 text-sm text-red-600">{mutationError}</p>
               )}
             </div>
 

@@ -24,7 +24,7 @@ export default function CatCard({ cat, actions, footer }: CatCardProps) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(paths.catProfile(cat.id));
+    navigate(paths.catProfile(cat.prof_path_id));
   };
 
   return (

@@ -31,7 +31,7 @@ const createWrapper = ({ cat = mockCat, photos = [], ownerCats = [] } = {}) => {
     },
   });
 
-  queryClient.setQueryData(['cat', cat.id], cat);
+  queryClient.setQueryData(['cat', cat.prof_path_id], cat);
   queryClient.setQueryData(['cat-photos', cat.id], photos);
   queryClient.setQueryData(['owner-cats', cat.owner_id, cat.id], ownerCats);
 

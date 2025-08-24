@@ -235,7 +235,7 @@ export default function RegisterCat() {
 
       // 登録成功 - is_publicの値に応じて遷移先を変更
       if (result.data.is_public && result.insertedCat) {
-        navigate(`/cats/${result.insertedCat.prof_path_id}`);
+        navigate(paths.catProfile(result.insertedCat.prof_path_id));
       } else {
         if (user?.id) {
           navigate(paths.userProfile(user.id));

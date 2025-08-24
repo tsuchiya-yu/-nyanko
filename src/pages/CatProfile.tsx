@@ -262,7 +262,7 @@ export default function CatProfile() {
         .neq('id', cat.id); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
-      if (!user || cat!.owner_id !== user.id) {
+      if (!user || cat.owner_id !== user.id) {
         query = query.eq('is_public', true);
       }
 
@@ -350,7 +350,7 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta property="og:url" content={absoluteUrl(paths.catProfile(path!))} />
+        <meta property="og:url" content={absoluteUrl(paths.catProfile(path))} />
         <meta
           property="og:image"
           content={`${cat.image_url}?width=1200&height=630&resize=contain`}
@@ -360,7 +360,7 @@ export default function CatProfile() {
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
-        <link rel="canonical" href={absoluteUrl(paths.catProfile(path!))} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(path))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -393,11 +393,11 @@ export default function CatProfile() {
             ].filter(Boolean),
             subjectOf: {
               '@type': 'WebPage',
-              url: absoluteUrl(paths.catProfile(path!)),
+              url: absoluteUrl(paths.catProfile(path)),
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': absoluteUrl(paths.catProfile(path!)),
+              '@id': absoluteUrl(paths.catProfile(path)),
             },
             owner: {
               '@type': 'Person',

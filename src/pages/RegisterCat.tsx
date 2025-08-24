@@ -43,7 +43,9 @@ interface CatFormData {
 
 // ランダムなパスIDを生成する関数
 function generateRandomPathId() {
-  return `cat_${Math.floor(Math.random() * 1000000)}`;
+  // 0-999999の範囲で乱数を生成し、6桁になるよう0埋めする
+  const randomNum = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  return `cat_${randomNum}`;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -89,6 +91,9 @@ export default function RegisterCat() {
       is_public: true,
     },
   });
+
+  // prof_path_idの登録を分離
+  const { ref: profPathIdFormRef, ...profPathIdProps } = register('prof_path_id', profPathIdRules);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -383,19 +388,13 @@ export default function RegisterCat() {
                 <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
                 <input
                   type="text"
-                  {...register('prof_path_id', profPathIdRules)}
+                  {...profPathIdProps}
                   placeholder="my_cat"
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   ref={node => {
-                    const { ref } = register('prof_path_id', profPathIdRules);
-                    // react-hook-formのrefを呼び出す
-                    ref(node);
-                    // カスタムrefを設定
-                    if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
-                        node;
-                    }
+                    profPathIdFormRef(node);
+                    profPathIdRef.current = node;
                   }}
                 />
               </div>

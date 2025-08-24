@@ -82,6 +82,9 @@ export default function EditCat() {
     formState: { errors },
   } = useForm<CatFormData>();
 
+  // prof_path_idの登録を分離
+  const { ref: profPathIdFormRef, ...profPathIdProps } = register('prof_path_id', profPathIdRules);
+
   const { data: cat, isLoading } = useQuery({
     queryKey: ['cat', id],
     queryFn: async () => {
@@ -549,16 +552,10 @@ export default function EditCat() {
                 <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
                 <input
                   type="text"
-                  {...register('prof_path_id', profPathIdRules)}
+                  {...profPathIdProps}
                   ref={node => {
-                    const { ref } = register('prof_path_id', profPathIdRules);
-                    // react-hook-formのrefを呼び出す
-                    ref(node);
-                    // カスタムrefを設定
-                    if (profPathIdRef) {
-                      (profPathIdRef as React.MutableRefObject<HTMLInputElement | null>).current =
-                        node;
-                    }
+                    profPathIdFormRef(node);
+                    profPathIdRef.current = node;
                   }}
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
                     focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"

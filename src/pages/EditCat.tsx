@@ -337,7 +337,6 @@ export default function EditCat() {
       }
     },
     onError: (error: Error) => {
-
       setMutationError(error.message);
     },
   });

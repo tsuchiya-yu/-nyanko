@@ -20,6 +20,7 @@ import {
 import { paths } from '../utils/paths';
 import { absoluteUrl } from '../utils/url';
 import { profPathIdRules } from '../utils/validationRules';
+import { isProfPathIdTaken } from '../utils/dbUtils';
 
 interface CatFormData {
   name: string;
@@ -226,13 +227,8 @@ export default function EditCat() {
 
       // URLパスの重複チェック
       if (data.prof_path_id !== cat?.prof_path_id) {
-        const { data: existingCat, error: checkError } = await supabase
-          .from('cats')
-          .select('id')
-          .eq('prof_path_id', data.prof_path_id)
-          .maybeSingle();
-
-        if (!checkError && existingCat) {
+        const isPathTaken = await isProfPathIdTaken(data.prof_path_id, cat?.id);
+        if (isPathTaken) {
           throw new Error(
             'このプロフィールページURLは既に使用されています。別のURLを選択してください。'
           );

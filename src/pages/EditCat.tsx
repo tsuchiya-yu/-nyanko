@@ -222,25 +222,15 @@ export default function EditCat() {
 
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
-      console.log('Mutation started with data:', data);
       setMutationError(null); // エラーをクリア
 
       // URLパスの重複チェック
       if (data.prof_path_id !== cat?.prof_path_id) {
-        console.log(
-          'Checking prof_path_id duplication:',
-          data.prof_path_id,
-          'vs current:',
-          cat?.prof_path_id
-        );
-
         const { data: existingCat, error: checkError } = await supabase
           .from('cats')
           .select('id')
           .eq('prof_path_id', data.prof_path_id)
           .maybeSingle();
-
-        console.log('Duplication check result:', { existingCat, checkError });
 
         if (!checkError && existingCat) {
           throw new Error(
@@ -255,33 +245,24 @@ export default function EditCat() {
         const sanitizedFileName = sanitizeFileName(imageFile.name);
         const filePath = `cats/${uniqueId}_${sanitizedFileName}`;
 
-        console.log('Uploading file:', filePath);
-
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('pet-photos')
           .upload(filePath, imageFile);
 
         if (uploadError) {
-          console.error('Upload error:', uploadError);
           throw uploadError;
         }
-
-        console.log('Upload successful:', uploadData);
 
         // アップロードした画像のURLを取得
         const {
           data: { publicUrl },
         } = supabase.storage.from('pet-photos').getPublicUrl(filePath);
 
-        console.log('Public URL:', publicUrl);
-
         data.image_url = publicUrl;
       } else if (previewUrl && previewUrl === cat?.image_url) {
         // 既存の画像URLを使用
         data.image_url = cat.image_url;
       }
-
-      console.log('Form data before submit:', data);
 
       const { error } = await supabase
         .from('cats')
@@ -307,7 +288,6 @@ export default function EditCat() {
         .eq('id', cat?.id);
 
       if (error) {
-        console.error('Update error:', error); // デバッグログ
         throw error;
       }
 
@@ -357,7 +337,7 @@ export default function EditCat() {
       }
     },
     onError: (error: Error) => {
-      console.error('Mutation error:', error);
+
       setMutationError(error.message);
     },
   });

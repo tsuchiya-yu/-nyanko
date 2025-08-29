@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
@@ -17,8 +17,10 @@ import {
   backgroundColors,
   textColors,
 } from '../utils/constants';
+import { isProfPathIdTaken } from '../utils/dbUtils';
 import { paths } from '../utils/paths';
 import { absoluteUrl } from '../utils/url';
+import { profPathIdRules } from '../utils/validationRules';
 
 interface CatFormData {
   name: string;
@@ -36,7 +38,13 @@ interface CatFormData {
   gender?: string;
   background_color?: string;
   text_color?: string;
+  prof_path_id: string;
   is_public: boolean;
+}
+
+// ランダムなパスIDを生成する関数
+function generateRandomPathId() {
+  return `cat_${uuidv4().substring(0, 8)}`;
 }
 
 function sanitizeFileName(fileName: string): string {
@@ -54,6 +62,8 @@ export default function RegisterCat() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
+  const [randomPathId] = useState(generateRandomPathId());
+
   const {
     register,
     handleSubmit,
@@ -76,9 +86,13 @@ export default function RegisterCat() {
       gender: '',
       background_color: defaultBackgroundColor,
       text_color: defaultTextColor,
+      prof_path_id: randomPathId,
       is_public: true,
     },
   });
+
+  // prof_path_idの登録を分離
+  const { ref: profPathIdFormRef, ...profPathIdProps } = register('prof_path_id', profPathIdRules);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -91,6 +105,19 @@ export default function RegisterCat() {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
+  const [mutationError, setMutationError] = useState<string | null>(null);
+  const profPathIdRef = useRef<HTMLInputElement | null>(null);
+
+  // プロフィールURLエラー時のフォーカス処理
+  useEffect(() => {
+    if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
+      profPathIdRef.current.focus();
+      profPathIdRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [mutationError]);
 
   // 公開/非公開のState
   const [isPublic, setIsPublic] = useState(true);
@@ -137,10 +164,18 @@ export default function RegisterCat() {
   };
 
   // 猫の登録処理
-  const handleRegisterCat = async (data: CatFormData) => {
-    setIsSubmitting(true);
+  const mutation = useMutation({
+    mutationFn: async (data: CatFormData) => {
+      setMutationError(null); // エラーをクリア
 
-    try {
+      // パスの重複チェック
+      const isPathTaken = await isProfPathIdTaken(data.prof_path_id);
+      if (isPathTaken) {
+        throw new Error(
+          'このプロフィールページURLは既に使用されています。別のURLを選択してください。'
+        );
+      }
+
       let imageUrl = '';
 
       // 画像がある場合はアップロード
@@ -182,6 +217,7 @@ export default function RegisterCat() {
           gender: data.gender || null,
           background_color: data.background_color,
           text_color: data.text_color,
+          prof_path_id: data.prof_path_id,
           is_public: data.is_public,
         })
         .select()
@@ -189,12 +225,17 @@ export default function RegisterCat() {
 
       if (error) throw error;
 
+      return { data, insertedCat };
+    },
+    onSuccess: async result => {
+      setMutationError(null); // エラーをクリア
+
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
       // 登録成功 - is_publicの値に応じて遷移先を変更
-      if (data.is_public && insertedCat) {
-        navigate(paths.catProfile(insertedCat.id));
+      if (result.data.is_public && result.insertedCat) {
+        navigate(paths.catProfile(result.insertedCat.prof_path_id));
       } else {
         if (user?.id) {
           navigate(paths.userProfile(user.id));
@@ -202,16 +243,11 @@ export default function RegisterCat() {
           navigate(paths.home());
         }
       }
-    } catch (error) {
-      console.error('Error registering cat:', error);
-      alert('猫の登録に失敗しました');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const mutation = useMutation({
-    mutationFn: handleRegisterCat,
+    },
+    onError: (error: Error) => {
+      console.error('Mutation error:', error);
+      setMutationError(error.message);
+    },
   });
 
   return (
@@ -253,7 +289,6 @@ export default function RegisterCat() {
         ) : (
           <form
             onSubmit={handleSubmit(data => {
-              console.log('提出するデータ:', data);
               mutation.mutate(data);
             })}
             className="space-y-6"
@@ -328,20 +363,40 @@ export default function RegisterCat() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">紹介文</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">説明</label>
               <textarea
-                {...register('description', { required: '紹介文は必須です' })}
-                rows={4}
-                placeholder={`丸顔で大きな耳が特徴的な愛らしい女の子です。
-普段はとても甘えん坊で、人が近くにいると安心する性格ですが、意外と独立心も強く、一人で窓の外を眺めたりするのが好きです。
-家ではお気に入りのクッションでのんびり過ごす時間が多く、家族にはとても優しい性格で癒しを与えてくれる存在です。
-
-子供たちとも仲良く遊ぶ穏やかな一面もあり、まさに我が家の人気者！！`}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-              />
+                {...register('description', { required: '説明は必須です' })}
+                rows={5}
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              ></textarea>
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                プロフィールURL
+              </label>
+              <div className="flex items-center">
+                <span className="text-gray-500 mr-1">cat-link.com/cats/</span>
+                <input
+                  type="text"
+                  {...profPathIdProps}
+                  placeholder="my_cat"
+                  className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
+                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  ref={node => {
+                    profPathIdFormRef(node);
+                    profPathIdRef.current = node;
+                  }}
+                />
+              </div>
+              {errors.prof_path_id && (
+                <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
+              )}
+              {mutationError && mutationError.includes('プロフィールページURL') && (
+                <p className="mt-1 text-sm text-red-600">{mutationError}</p>
               )}
             </div>
 

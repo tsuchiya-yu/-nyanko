@@ -104,7 +104,7 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
 };
 
 export default function CatProfile() {
-  const { id } = useParams<{ id: string }>();
+  const { path } = useParams<{ path: string }>();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -123,21 +123,41 @@ export default function CatProfile() {
     error,
     isError,
   } = useQuery({
-    queryKey: ['cat', id],
+    queryKey: ['cat', path],
     queryFn: async () => {
       try {
+        if (!path) throw new Error('猫URLパスが見つかりません');
+
         const { data, error: fetchError } = await supabase
           .from('cats')
           .select(
             `
-            *,
+            id,
+            name,
+            birthdate,
+            is_birthdate_estimated,
+            breed,
+            catchphrase,
+            description,
+            image_url,
+            instagram_url,
+            youtube_url,
+            tiktok_url,
+            x_url,
+            homepage_url,
+            owner_id,
+            gender,
+            background_color,
+            text_color,
+            prof_path_id,
+            is_public,
             profiles:owner_id (
               name
             )
           `
           )
-          .eq('id', id!)
-          .single();
+          .eq('prof_path_id', path)
+          .maybeSingle();
 
         if (fetchError) throw fetchError;
         if (!data) throw new Error('猫が見つかりません');
@@ -154,60 +174,59 @@ export default function CatProfile() {
         throw error;
       }
     },
-    enabled: !!id,
+    enabled: !!path,
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60 * 0.5, // 30秒はキャッシュを使用
   });
 
   const { data: photos } = useQuery({
-    queryKey: ['cat-photos', id],
+    queryKey: ['cat-photos', cat?.id],
     queryFn: async () => {
+      if (!cat?.id) return [];
+
       const { data, error } = await supabase
         .from('cat_photos')
         .select('*')
-        .eq('cat_id', id!)
+        .eq('cat_id', cat.id)
         .order('created_at', { ascending: false })
         .limit(6);
 
       if (error) throw error;
       return data as CatPhoto[];
     },
-    enabled: !!id,
+    enabled: !!cat?.id,
   });
 
   const { data: isFavorited } = useQuery({
-    queryKey: ['favorite', id, user?.id],
+    queryKey: ['favorite', cat?.id, user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
+      if (!user || !cat?.id) return false;
+
+      const { data } = await supabase
         .from('favorites')
         .select('id')
-        .eq('cat_id', id!)
-        .eq('user_id', user!.id)
+        .eq('cat_id', cat.id)
+        .eq('user_id', user.id)
         .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching favorite status:', error);
-        throw error;
-      }
 
       return Boolean(data);
     },
-    enabled: !!user && !!id,
+    enabled: !!user && !!cat?.id,
   });
 
   const toggleFavorite = useMutation({
     mutationFn: async () => {
-      if (!user || !id) throw new Error('ユーザーが見つかりません');
+      if (!user || !cat?.id) throw new Error('ユーザーが見つかりません');
 
       if (isFavorited) {
-        await supabase.from('favorites').delete().eq('cat_id', id).eq('user_id', user.id);
+        await supabase.from('favorites').delete().eq('cat_id', cat.id).eq('user_id', user.id);
       } else {
-        await supabase.from('favorites').insert({ cat_id: id, user_id: user.id });
+        await supabase.from('favorites').insert({ cat_id: cat.id, user_id: user.id });
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['favorite', id, user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['favorite', cat?.id, user?.id] });
       queryClient.invalidateQueries({ queryKey: ['favorites', user?.id] });
     },
   });
@@ -232,12 +251,18 @@ export default function CatProfile() {
 
   // 同じ飼い主の他の猫を取得
   const { data: ownerCats } = useQuery({
-    queryKey: ['owner-cats', cat?.owner_id, id],
+    queryKey: ['owner-cats', cat?.owner_id, cat?.id],
     queryFn: async () => {
-      let query = supabase.from('cats').select('*').eq('owner_id', cat!.owner_id).neq('id', id!); // 現在表示中の猫を除外
+      if (!cat?.owner_id || !cat?.id) return [];
+
+      let query = supabase
+        .from('cats')
+        .select('id, name, description, image_url, prof_path_id')
+        .eq('owner_id', cat.owner_id)
+        .neq('id', cat.id); // 現在表示中の猫を除外
 
       // 飼い主本人でない場合は公開猫のみ表示
-      if (!user || cat!.owner_id !== user.id) {
+      if (!user || cat.owner_id !== user.id) {
         query = query.eq('is_public', true);
       }
 
@@ -246,7 +271,7 @@ export default function CatProfile() {
       if (error) throw error;
       return data;
     },
-    enabled: !!cat?.owner_id && !!id,
+    enabled: !!cat?.owner_id && !!cat?.id,
   });
 
   useEffect(() => {
@@ -312,7 +337,7 @@ export default function CatProfile() {
       className="max-w-[480px] mx-auto space-y-6 relative min-h-screen"
       style={{ color: textColor }}
     >
-      {!id && <Navigate to={paths.home()} replace />}
+      {!path && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
         <meta
@@ -325,7 +350,7 @@ export default function CatProfile() {
         />
         <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
         <meta property="og:type" content="profile" />
-        <meta property="og:url" content={absoluteUrl(paths.catProfile(cat.id))} />
+        <meta property="og:url" content={absoluteUrl(paths.catProfile(path))} />
         <meta
           property="og:image"
           content={`${cat.image_url}?width=1200&height=630&resize=contain`}
@@ -335,7 +360,7 @@ export default function CatProfile() {
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
         <meta property="profile:first_name" content={cat.name} />
-        <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.id))} />
+        <link rel="canonical" href={absoluteUrl(paths.catProfile(path))} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -368,11 +393,11 @@ export default function CatProfile() {
             ].filter(Boolean),
             subjectOf: {
               '@type': 'WebPage',
-              url: absoluteUrl(paths.catProfile(cat.id)),
+              url: absoluteUrl(paths.catProfile(path)),
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': absoluteUrl(paths.catProfile(cat.id)),
+              '@id': absoluteUrl(paths.catProfile(path)),
             },
             owner: {
               '@type': 'Person',

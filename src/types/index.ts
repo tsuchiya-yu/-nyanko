@@ -13,6 +13,7 @@ export interface Cat {
   tiktok_url?: string | null;
   x_url?: string | null;
   homepage_url?: string | null;
+  prof_path_id: string;
   owner_id: string;
   gender?: string | null;
   background_color?: string;
@@ -30,6 +31,13 @@ export interface User {
   id: string;
   email: string;
   name: string;
+}
+
+export interface Favorite {
+  id: string;
+  user_id: string;
+  cat_id: string;
+  created_at: string;
 }
 
 export interface News {

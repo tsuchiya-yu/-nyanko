@@ -395,13 +395,8 @@ export default function RegisterCat() {
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
               {mutation.isError &&
-<<<<<<< HEAD
-                (mutation.error as Error)?.message?.includes('プロフィールページURL') && (
-                  <p className="mt-1 text-sm text-red-600">{(mutation.error as Error)?.message}</p>
-=======
                 mutationErrorMessage?.includes('プロフィールページURL') && (
                   <p className="mt-1 text-sm text-red-600">{mutationErrorMessage}</p>
->>>>>>> refactor: use optional chaining for mutation.error and DRY with mutationErrorMessage; move focus effect after mutation init
                 )}
             </div>
 

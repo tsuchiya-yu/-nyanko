@@ -108,22 +108,7 @@ export default function RegisterCat() {
   // mutationErrorのローカルstateは持たず、useMutationのerrorを利用する
   const profPathIdRef = useRef<HTMLInputElement | null>(null);
 
-  // プロフィールURLエラー時のフォーカス処理
-  useEffect(() => {
-    const message = (mutation.error as Error | null)?.message;
-    if (
-      mutation.isError &&
-      message &&
-      message.includes('プロフィールページURL') &&
-      profPathIdRef.current
-    ) {
-      profPathIdRef.current.focus();
-      profPathIdRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, [mutation.isError, mutation.error]);
+  // プロフィールURLエラー時のフォーカス処理は、mutation定義後に実行する
 
   // 公開/非公開のState
   const [isPublic, setIsPublic] = useState(true);
@@ -248,6 +233,21 @@ export default function RegisterCat() {
     },
     // onErrorは未使用。エラーはmutation.errorで参照する
   });
+
+  // エラーメッセージを一時変数に保持（DRY / KISS）
+  const mutationErrorMessage = mutation.error?.message;
+
+  // プロフィールURLエラー時のフォーカス処理
+  useEffect(() => {
+    if (
+      mutation.isError &&
+      mutationErrorMessage?.includes('プロフィールページURL') &&
+      profPathIdRef.current
+    ) {
+      profPathIdRef.current.focus();
+      profPathIdRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [mutation.isError, mutationErrorMessage]);
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -395,8 +395,13 @@ export default function RegisterCat() {
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
               {mutation.isError &&
+<<<<<<< HEAD
                 (mutation.error as Error)?.message?.includes('プロフィールページURL') && (
                   <p className="mt-1 text-sm text-red-600">{(mutation.error as Error)?.message}</p>
+=======
+                mutationErrorMessage?.includes('プロフィールページURL') && (
+                  <p className="mt-1 text-sm text-red-600">{mutationErrorMessage}</p>
+>>>>>>> refactor: use optional chaining for mutation.error and DRY with mutationErrorMessage; move focus effect after mutation init
                 )}
             </div>
 

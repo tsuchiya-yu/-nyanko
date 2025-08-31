@@ -394,14 +394,12 @@ export default function RegisterCat() {
               {errors.prof_path_id && (
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
-              {(() => {
-                if (!mutation.isError) return null;
-                const message = (mutation.error as Error | null)?.message;
-                if (message?.includes('プロフィールページURL')) {
-                  return <p className="mt-1 text-sm text-red-600">{message}</p>;
-                }
-                return null;
-              })()}
+              {mutation.isError &&
+                (mutation.error as Error)?.message?.includes('プロフィールページURL') && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {(mutation.error as Error)?.message}
+                  </p>
+                )}
             </div>
 
             <div>

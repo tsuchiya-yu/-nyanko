@@ -98,7 +98,7 @@ export default function RegisterCat() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
   const [editingImage, setEditingImage] = useState<File | null>(null);
-  const [isSubmitting, _setIsSubmitting] = useState(false);
+  // isSubmittingは未使用のため削除。ボタン制御はmutation.isPendingで行う。
 
   // 色選択のState
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
@@ -608,13 +608,13 @@ export default function RegisterCat() {
 
             <button
               type="submit"
-              disabled={mutation.isPending || isSubmitting}
+              disabled={mutation.isPending}
               className="w-full py-2 px-4 border border-transparent rounded-full
                 bg-gray-500 hover:bg-gray-600 text-white font-medium
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {mutation.isPending || isSubmitting ? '登録中...' : '登録する'}
+              {mutation.isPending ? '登録中...' : '登録する'}
             </button>
           </form>
         )}

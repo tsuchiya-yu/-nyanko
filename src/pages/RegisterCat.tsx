@@ -111,7 +111,12 @@ export default function RegisterCat() {
   // プロフィールURLエラー時のフォーカス処理
   useEffect(() => {
     const message = (mutation.error as Error | null)?.message;
-    if (mutation.isError && message && message.includes('プロフィールページURL') && profPathIdRef.current) {
+    if (
+      mutation.isError &&
+      message &&
+      message.includes('プロフィールページURL') &&
+      profPathIdRef.current
+    ) {
       profPathIdRef.current.focus();
       profPathIdRef.current.scrollIntoView({
         behavior: 'smooth',
@@ -227,7 +232,6 @@ export default function RegisterCat() {
       return { data, insertedCat };
     },
     onSuccess: async result => {
-
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
@@ -390,9 +394,10 @@ export default function RegisterCat() {
               {errors.prof_path_id && (
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
-              {mutation.isError && (mutation.error as Error | null)?.message?.includes('プロフィールページURL') && (
-                <p className="mt-1 text-sm text-red-600">{(mutation.error as Error).message}</p>
-              )}
+              {mutation.isError &&
+                (mutation.error as Error | null)?.message?.includes('プロフィールページURL') && (
+                  <p className="mt-1 text-sm text-red-600">{(mutation.error as Error).message}</p>
+                )}
             </div>
 
             <div>

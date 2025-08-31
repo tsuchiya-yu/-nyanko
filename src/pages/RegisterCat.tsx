@@ -396,9 +396,7 @@ export default function RegisterCat() {
               )}
               {mutation.isError &&
                 (mutation.error as Error)?.message?.includes('プロフィールページURL') && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {(mutation.error as Error)?.message}
-                  </p>
+                  <p className="mt-1 text-sm text-red-600">{(mutation.error as Error)?.message}</p>
                 )}
             </div>
 

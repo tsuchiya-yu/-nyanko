@@ -105,19 +105,20 @@ export default function RegisterCat() {
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
-  const [mutationError, setMutationError] = useState<string | null>(null);
+  // mutationErrorのローカルstateは持たず、useMutationのerrorを利用する
   const profPathIdRef = useRef<HTMLInputElement | null>(null);
 
   // プロフィールURLエラー時のフォーカス処理
   useEffect(() => {
-    if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
+    const message = (mutation.error as Error | null)?.message;
+    if (mutation.isError && message && message.includes('プロフィールページURL') && profPathIdRef.current) {
       profPathIdRef.current.focus();
       profPathIdRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       });
     }
-  }, [mutationError]);
+  }, [mutation.isError, mutation.error]);
 
   // 公開/非公開のState
   const [isPublic, setIsPublic] = useState(true);
@@ -166,8 +167,6 @@ export default function RegisterCat() {
   // 猫の登録処理
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
-      setMutationError(null); // エラーをクリア
-
       // パスの重複チェック
       const isPathTaken = await isProfPathIdTaken(data.prof_path_id);
       if (isPathTaken) {
@@ -228,7 +227,6 @@ export default function RegisterCat() {
       return { data, insertedCat };
     },
     onSuccess: async result => {
-      setMutationError(null); // エラーをクリア
 
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
@@ -244,10 +242,7 @@ export default function RegisterCat() {
         }
       }
     },
-    onError: (error: Error) => {
-      console.error('Mutation error:', error);
-      setMutationError(error.message);
-    },
+    // onErrorは未使用。エラーはmutation.errorで参照する
   });
 
   return (
@@ -395,8 +390,8 @@ export default function RegisterCat() {
               {errors.prof_path_id && (
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
-              {mutationError && mutationError.includes('プロフィールページURL') && (
-                <p className="mt-1 text-sm text-red-600">{mutationError}</p>
+              {mutation.isError && (mutation.error as Error | null)?.message?.includes('プロフィールページURL') && (
+                <p className="mt-1 text-sm text-red-600">{(mutation.error as Error).message}</p>
               )}
             </div>
 

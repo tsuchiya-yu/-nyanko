@@ -98,7 +98,7 @@ export default function RegisterCat() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
   const [editingImage, setEditingImage] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, _setIsSubmitting] = useState(false);
 
   // 色選択のState
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);

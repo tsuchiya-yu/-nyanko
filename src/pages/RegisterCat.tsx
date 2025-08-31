@@ -394,10 +394,9 @@ export default function RegisterCat() {
               {errors.prof_path_id && (
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
-              {mutation.isError &&
-                mutationErrorMessage?.includes('プロフィールページURL') && (
-                  <p className="mt-1 text-sm text-red-600">{mutationErrorMessage}</p>
-                )}
+              {mutation.isError && mutationErrorMessage?.includes('プロフィールページURL') && (
+                <p className="mt-1 text-sm text-red-600">{mutationErrorMessage}</p>
+              )}
             </div>
 
             <div>

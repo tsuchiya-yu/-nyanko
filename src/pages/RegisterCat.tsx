@@ -98,26 +98,17 @@ export default function RegisterCat() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
   const [editingImage, setEditingImage] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // isSubmittingは未使用のため削除。ボタン制御はmutation.isPendingで行う。
 
   // 色選択のState
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [bgColor, setBgColor] = useState(defaultBackgroundColor);
   const [textColor, setTextColor] = useState(defaultTextColor);
-  const [mutationError, setMutationError] = useState<string | null>(null);
+  // mutationErrorのローカルstateは持たず、useMutationのerrorを利用する
   const profPathIdRef = useRef<HTMLInputElement | null>(null);
 
-  // プロフィールURLエラー時のフォーカス処理
-  useEffect(() => {
-    if (mutationError && mutationError.includes('プロフィールページURL') && profPathIdRef.current) {
-      profPathIdRef.current.focus();
-      profPathIdRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, [mutationError]);
+  // プロフィールURLエラー時のフォーカス処理は、mutation定義後に実行する
 
   // 公開/非公開のState
   const [isPublic, setIsPublic] = useState(true);
@@ -166,8 +157,6 @@ export default function RegisterCat() {
   // 猫の登録処理
   const mutation = useMutation({
     mutationFn: async (data: CatFormData) => {
-      setMutationError(null); // エラーをクリア
-
       // パスの重複チェック
       const isPathTaken = await isProfPathIdTaken(data.prof_path_id);
       if (isPathTaken) {
@@ -228,8 +217,6 @@ export default function RegisterCat() {
       return { data, insertedCat };
     },
     onSuccess: async result => {
-      setMutationError(null); // エラーをクリア
-
       // ユーザーの猫リストキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ['user-cats', user?.id] });
 
@@ -244,11 +231,23 @@ export default function RegisterCat() {
         }
       }
     },
-    onError: (error: Error) => {
-      console.error('Mutation error:', error);
-      setMutationError(error.message);
-    },
+    // onErrorは未使用。エラーはmutation.errorで参照する
   });
+
+  // エラーメッセージを一時変数に保持（DRY / KISS）
+  const mutationErrorMessage = mutation.error?.message;
+
+  // プロフィールURLエラー時のフォーカス処理
+  useEffect(() => {
+    if (
+      mutation.isError &&
+      mutationErrorMessage?.includes('プロフィールページURL') &&
+      profPathIdRef.current
+    ) {
+      profPathIdRef.current.focus();
+      profPathIdRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [mutation.isError, mutationErrorMessage]);
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -395,8 +394,8 @@ export default function RegisterCat() {
               {errors.prof_path_id && (
                 <p className="mt-1 text-sm text-red-600">{errors.prof_path_id.message}</p>
               )}
-              {mutationError && mutationError.includes('プロフィールページURL') && (
-                <p className="mt-1 text-sm text-red-600">{mutationError}</p>
+              {mutation.isError && mutationErrorMessage?.includes('プロフィールページURL') && (
+                <p className="mt-1 text-sm text-red-600">{mutationErrorMessage}</p>
               )}
             </div>
 
@@ -608,13 +607,13 @@ export default function RegisterCat() {
 
             <button
               type="submit"
-              disabled={mutation.isPending || isSubmitting}
+              disabled={mutation.isPending}
               className="w-full py-2 px-4 border border-transparent rounded-full
                 bg-gray-500 hover:bg-gray-600 text-white font-medium
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {mutation.isPending || isSubmitting ? '登録中...' : '登録する'}
+              {mutation.isPending ? '登録中...' : '登録する'}
             </button>
           </form>
         )}

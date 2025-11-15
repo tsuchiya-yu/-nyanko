@@ -3,6 +3,7 @@ export const routePatterns = {
   home: '/',
   userProfile: '/profile/:id',
   catProfile: '/cats/:path',
+  catDiaries: '/cats/:path/diaries',
   editCat: '/cats/:id/edit',
   catPhotos: '/cats/:id/photos',
   registerCat: '/register-cat',
@@ -19,6 +20,8 @@ export const paths = {
   home: () => routePatterns.home,
   catProfile: (profPathId: string) =>
     routePatterns.catProfile.replace(':path', encodeURIComponent(profPathId)),
+  catDiaries: (profPathId: string) =>
+    routePatterns.catDiaries.replace(':path', encodeURIComponent(profPathId)),
   editCat: (catId: string) => routePatterns.editCat.replace(':id', encodeURIComponent(catId)),
   catPhotos: (catId: string) => routePatterns.catPhotos.replace(':id', encodeURIComponent(catId)),
   registerCat: () => routePatterns.registerCat,

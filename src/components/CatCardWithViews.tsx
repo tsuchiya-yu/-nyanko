@@ -30,6 +30,12 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
                 写真を追加
               </Link>
               <Link
+                to={paths.catDiaries(cat.prof_path_id)}
+                className="flex-1 px-3 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
+              >
+                ひとことを投稿する
+              </Link>
+              <Link
                 to={paths.editCat(cat.id)}
                 className="flex-1 px-3 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
               >

@@ -8,6 +8,7 @@ import { useSessionRefresh } from './hooks/useSessionRefresh';
 import { initGA, trackPageView } from './lib/analytics';
 import CatPhotos from './pages/CatPhotos';
 import CatProfile from './pages/CatProfile';
+import CatDiary from './pages/CatDiary';
 // 遅延ロード用に変更
 const ColumnDetail = lazy(() => import('./pages/ColumnDetail'));
 const Columns = lazy(() => import('./pages/Columns'));
@@ -61,6 +62,7 @@ export default function App() {
             }
           />
           <Route path={routePatterns.catProfile} element={<CatProfile />} />
+          <Route path={routePatterns.catDiaries} element={<CatDiary />} />
           <Route
             path={routePatterns.editCat}
             element={

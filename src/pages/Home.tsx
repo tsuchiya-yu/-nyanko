@@ -10,6 +10,8 @@ import { useAuthStore } from '../store/authStore';
 import { stripHtml } from '../utils/html';
 import { paths } from '../utils/paths';
 import { absoluteUrl, getBaseUrl } from '../utils/url';
+import { useLatestDiaries } from '../hooks/useCatDiaries';
+import { formatDiaryTime } from '../utils/date';
 
 import type { Cat, News, Column } from '../types/index';
 
@@ -70,6 +72,7 @@ export default function Home() {
   const handleTryAIAction = () => {
     handleAuthAction(user, navigate, 'register');
   };
+  const { data: latestDiaries } = useLatestDiaries(3);
 
   return (
     <div className="space-y-16 pb-12">
@@ -285,6 +288,30 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 最新の日記 */}
+      {latestDiaries && latestDiaries.length > 0 && (
+        <section className="px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-sm p-4">
+            <h2 className="text-lg font-medium text-gray-800 mb-4">最新のひとこと日記</h2>
+            <div className="space-y-3">
+              {latestDiaries.map(d => (
+                <Link
+                  key={d.id}
+                  to={paths.catProfile(d.cats?.prof_path_id || '')}
+                  className="block border border-gray-100 rounded-lg p-3 hover:bg-gray-50"
+                >
+                  <div className="text-xs text-gray-500 mb-1 flex justify-between">
+                    <span>{d.cats?.name}</span>
+                    <span>{formatDiaryTime(d.created_at)}</span>
+                  </div>
+                  <p className="text-gray-800 line-clamp-2">{d.content}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* みんなの愛猫 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

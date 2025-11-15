@@ -11,6 +11,7 @@ import XIcon from '../components/icons/XIcon';
 import YoutubeIcon from '../components/icons/YoutubeIcon';
 import OptimizedImage from '../components/OptimizedImage';
 import OwnerCatsSection from '../components/OwnerCatsSection';
+import DiaryList from '../components/diary/DiaryList';
 import ShareModal from '../components/ShareModal';
 import { useHeaderFooter } from '../context/HeaderContext';
 import { handleApiError } from '../lib/api';
@@ -600,6 +601,17 @@ export default function CatProfile() {
           )}
         </div>
 
+        {/* ひとことセクション（元の配置・外枠線なし） */}
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold text-gray-800">最新のひとこと</h2>
+            <Link to={paths.catDiaries(cat.prof_path_id)} className="text-sm text-gray-600 hover:text-gray-900">
+              もっと見る
+            </Link>
+          </div>
+          <DiaryList catId={cat.id} isOwner={cat.owner_id === user?.id} showLoadMore={false} />
+        </div>
+
         {/* 同じ飼い主の猫 */}
         <OwnerCatsSection cats={ownerCats || []} textColor={textColor} />
 
@@ -622,6 +634,8 @@ export default function CatProfile() {
           <p className="text-xs mt-2 h-[16px]">©︎CAT LINK All Rights Reserved</p>
         </div>
       </div>
+
+      
 
       <AuthModal
         isOpen={isAuthModalOpen}

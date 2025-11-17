@@ -192,6 +192,25 @@ export default function Layout({ children }: LayoutProps) {
                       お知らせ
                     </Link>
                   </li>
+                  <li>
+                    <a
+                      href="https://cat-tools.catnote.tokyo/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base text-gray-600 hover:text-primary-600 flex items-center"
+                    >
+                      <svg
+                        className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M12.293 2.293a1 1 0 011.414 0l4 4a1 1 0 01-.032 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 8H9a3 3 0 00-3 3v5a1 1 0 11-2 0v-5a5 5 0 015-5h5.586l-2.293-2.293a1 1 0 010-1.414z" />
+                        <path d="M6 11a1 1 0 011-1h3a1 1 0 010 2H8v3a1 1 0 01-2 0v-4z" />
+                      </svg>
+                      ねこツールズ
+                    </a>
+                  </li>
                 </ul>
               </div>
 

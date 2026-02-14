@@ -47,9 +47,9 @@ This file provides a minimal, stable project context for LLM/AI agents.
 ## 6) Contribution Notes / 開発ルール要点
 - Use TypeScript strict mode and keep type safety.
 - Follow naming/import/testing conventions defined in `AGENTS.md`.
-- Branch naming convention: `<type>/<issue-number>-<branch-overview>`
+- Branch naming convention: `<type>/<issue-number>-<branch-overview>` (e.g., `feat/123-add-new-feature`)
   - type: `feat`, `fix`, `refactor`, `doc`, `chore`
-- Commit messages follow Conventional Commits: `<type>: <summary>`.
+- Commit messages follow Conventional Commits: `<type>: <summary>` (e.g., `feat: add new button`).
 
 ## 7) Source of Truth / 正本ドキュメント
 - Primary references:

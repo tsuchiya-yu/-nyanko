@@ -38,6 +38,17 @@ revoke insert, update, delete on table public.cache from anon, authenticated;
 -- -----------------------------------------------------------------------------
 -- news/columns: update permissions must be admin only via JWT claim.
 -- -----------------------------------------------------------------------------
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+    select lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true';
+$$;
+
+grant execute on function public.is_admin() to authenticated;
+
 alter table if exists public.news enable row level security;
 alter table if exists public.columns enable row level security;
 
@@ -47,34 +58,34 @@ drop policy if exists "Authenticated users can manage columns" on public.columns
 create policy "Admin can insert news"
     on public.news
     for insert
-    with check (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true');
+    with check (public.is_admin());
 
 create policy "Admin can update news"
     on public.news
     for update
-    using (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true')
-    with check (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true');
+    using (public.is_admin())
+    with check (public.is_admin());
 
 create policy "Admin can delete news"
     on public.news
     for delete
-    using (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true');
+    using (public.is_admin());
 
 create policy "Admin can insert columns"
     on public.columns
     for insert
-    with check (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true');
+    with check (public.is_admin());
 
 create policy "Admin can update columns"
     on public.columns
     for update
-    using (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true')
-    with check (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true');
+    using (public.is_admin())
+    with check (public.is_admin());
 
 create policy "Admin can delete columns"
     on public.columns
     for delete
-    using (lower(coalesce(auth.jwt() ->> 'is_admin', 'false')) = 'true');
+    using (public.is_admin());
 
 revoke insert, update, delete on table public.news from anon, authenticated;
 revoke insert, update, delete on table public.columns from anon, authenticated;

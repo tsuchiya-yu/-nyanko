@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react';
+import { useEffect, lazy, Suspense, type ReactNode } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -6,20 +6,20 @@ import Layout from './components/Layout';
 import { HeaderProvider } from './context/HeaderContext';
 import { useSessionRefresh } from './hooks/useSessionRefresh';
 import { initGA, trackPageView } from './lib/analytics';
-import CatPhotos from './pages/CatPhotos';
-import CatProfile from './pages/CatProfile';
-// 遅延ロード用に変更
+import Home from './pages/Home';
+import { routePatterns } from './utils/paths';
+
+const CatPhotos = lazy(() => import('./pages/CatPhotos'));
+const CatProfile = lazy(() => import('./pages/CatProfile'));
 const ColumnDetail = lazy(() => import('./pages/ColumnDetail'));
 const Columns = lazy(() => import('./pages/Columns'));
-import EditCat from './pages/EditCat';
-import Home from './pages/Home';
-import News from './pages/News';
-import NewsDetail from './pages/NewsDetail';
-import Privacy from './pages/Privacy';
-import RegisterCat from './pages/RegisterCat';
-import Terms from './pages/Terms';
-import UserProfile from './pages/UserProfile';
-import { routePatterns } from './utils/paths';
+const EditCat = lazy(() => import('./pages/EditCat'));
+const News = lazy(() => import('./pages/News'));
+const NewsDetail = lazy(() => import('./pages/NewsDetail'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const RegisterCat = lazy(() => import('./pages/RegisterCat'));
+const Terms = lazy(() => import('./pages/Terms'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
 
 // ローディングコンポーネント
 const LoadingFallback = () => (
@@ -31,6 +31,10 @@ const LoadingFallback = () => (
     />
   </div>
 );
+
+function LazyRoute({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<LoadingFallback />}>{children}</Suspense>;
+}
 
 export default function App() {
   useSessionRefresh();
@@ -55,54 +59,97 @@ export default function App() {
           <Route
             path={routePatterns.userProfile}
             element={
-              <ProtectedRoute>
-                <UserProfile />
-              </ProtectedRoute>
+              <LazyRoute>
+                <ProtectedRoute>
+                  <UserProfile />
+                </ProtectedRoute>
+              </LazyRoute>
             }
           />
-          <Route path={routePatterns.catProfile} element={<CatProfile />} />
+          <Route
+            path={routePatterns.catProfile}
+            element={
+              <LazyRoute>
+                <CatProfile />
+              </LazyRoute>
+            }
+          />
           <Route
             path={routePatterns.editCat}
             element={
-              <ProtectedRoute>
-                <EditCat />
-              </ProtectedRoute>
+              <LazyRoute>
+                <ProtectedRoute>
+                  <EditCat />
+                </ProtectedRoute>
+              </LazyRoute>
             }
           />
           <Route
             path={routePatterns.registerCat}
             element={
-              <ProtectedRoute>
-                <RegisterCat />
-              </ProtectedRoute>
+              <LazyRoute>
+                <ProtectedRoute>
+                  <RegisterCat />
+                </ProtectedRoute>
+              </LazyRoute>
             }
           />
           <Route
             path={routePatterns.catPhotos}
             element={
-              <ProtectedRoute>
-                <CatPhotos />
-              </ProtectedRoute>
+              <LazyRoute>
+                <ProtectedRoute>
+                  <CatPhotos />
+                </ProtectedRoute>
+              </LazyRoute>
             }
           />
-          <Route path={routePatterns.terms} element={<Terms />} />
-          <Route path={routePatterns.privacy} element={<Privacy />} />
-          <Route path={routePatterns.news} element={<News />} />
-          <Route path={routePatterns.newsDetail} element={<NewsDetail />} />
+          <Route
+            path={routePatterns.terms}
+            element={
+              <LazyRoute>
+                <Terms />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path={routePatterns.privacy}
+            element={
+              <LazyRoute>
+                <Privacy />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path={routePatterns.news}
+            element={
+              <LazyRoute>
+                <News />
+              </LazyRoute>
+            }
+          />
+          <Route
+            path={routePatterns.newsDetail}
+            element={
+              <LazyRoute>
+                <NewsDetail />
+              </LazyRoute>
+            }
+          />
           <Route
             path={routePatterns.columns}
             element={
-              <Suspense fallback={<LoadingFallback />}>
+              <LazyRoute>
                 <Columns />
-              </Suspense>
+              </LazyRoute>
             }
           />
           <Route
             path={routePatterns.columnDetail}
             element={
-              <Suspense fallback={<LoadingFallback />}>
+              <LazyRoute>
                 <ColumnDetail />
-              </Suspense>
+              </LazyRoute>
             }
           />
         </Routes>

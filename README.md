@@ -121,6 +121,8 @@ SERVICE_ROLE_KEY=<SUPABASE_SERVICE_ROLE_KEY>
 GEMINI_API_KEY=<GOOGLE_GEMINI_API_KEY>
 ```
 
+`image-to-gemini` は Google Gemini REST API を使って `gemini-2.5-flash` に画像を送信します。反映確認は、Edge Function デプロイ後に `imageUrl` を POST し、レスポンスに `success: true` と `catMood` が返ることを確認してください。
+
 ## 技術スタック
 
 ### フロントエンド

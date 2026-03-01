@@ -185,10 +185,7 @@ serve(async req => {
       return new Response(
         JSON.stringify({
           error: 'Gemini APIの呼び出しに失敗しました',
-          details:
-            geminiResult?.error?.message ||
-            geminiResponseText ||
-            geminiResponse.statusText,
+          details: geminiResult?.error?.message || geminiResponseText || geminiResponse.statusText,
           success: false,
         }),
         {

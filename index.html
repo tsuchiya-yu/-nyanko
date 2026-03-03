@@ -7,10 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- リソースの事前接続 -->
-    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
-    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <!-- Supabaseへの事前接続 -->
     <link rel="preconnect" href="https://mypvypmyjcrxiovdejqj.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://mypvypmyjcrxiovdejqj.supabase.co" />
@@ -39,42 +35,6 @@
       name="keywords"
       content="猫, プロフィール, ペット, 写真, ギャラリー, 猫写真, 愛猫, 猫好き, 猫コミュニティ"
     />
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_TRACKING_ID%"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      // Cookieを完全に無効化する設定
-      gtag('config', '%VITE_GA_TRACKING_ID%', {
-        client_storage: 'none',
-        debug_mode: false,
-        anonymize_ip: true,
-        cookie_domain: 'none',
-        cookie_expires: 0,
-        cookie_flags: 'SameSite=None;Secure',
-        send_page_view: false, // 初期ページビューを送信しない（重複を避けるため）
-      });
-
-      // Consent Mode - Cookieを使用しない設定
-      gtag('consent', 'default', {
-        analytics_storage: 'denied',
-        ad_storage: 'denied',
-        functionality_storage: 'denied', // 機能的なストレージも拒否
-        personalization_storage: 'denied', // パーソナライズストレージも拒否
-        security_storage: 'granted', // セキュリティのみ許可
-        wait_for_update: 500,
-      });
-      setTimeout(function () {
-        gtag('consent', 'update', {
-          analytics_storage: 'granted',
-        });
-      }, 5000);
-    </script>
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="%VITE_SEARCH_CONSOLE_VERIFICATION%" />

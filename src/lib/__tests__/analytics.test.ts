@@ -32,6 +32,18 @@ describe('analytics', () => {
     initGA();
 
     expect(window.dataLayer).toHaveLength(3);
+    expect(window.dataLayer[2]).toEqual([
+      'consent',
+      'default',
+      {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        functionality_storage: 'denied',
+        personalization_storage: 'denied',
+        security_storage: 'granted',
+        wait_for_update: 5000,
+      },
+    ]);
     expect(document.querySelector('script[src*="googletagmanager.com/gtag/js"]')).toBeNull();
     expect(addEventListenerSpy).toHaveBeenCalledWith('load', expect.any(Function), { once: true });
 

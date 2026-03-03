@@ -86,7 +86,7 @@ export const initGA = (): void => {
     functionality_storage: 'denied',
     personalization_storage: 'denied',
     security_storage: 'granted',
-    wait_for_update: 500,
+    wait_for_update: CONSENT_UPDATE_DELAY_MS,
   });
   scheduleConsentUpdate(gtag);
   isInitialized = true;

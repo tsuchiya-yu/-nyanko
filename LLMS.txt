@@ -1,0 +1,65 @@
+# CAT LINK - LLM Quick Context
+
+This file provides a minimal, stable project context for LLM/AI agents.
+このファイルは、LLM/AIエージェント向けの最小かつ安定したプロジェクト文脈を提供します。
+
+## 1) Project Summary / プロジェクト概要
+- CAT LINK is a web application to create and share cat profiles.
+- CAT LINKは、猫のプロフィールを作成・共有するWebアプリケーションです。
+- Stack focus: React 18 + TypeScript + Supabase.
+- 技術の中核は React 18 + TypeScript + Supabase です。
+
+## 2) Tech Stack / 技術スタック
+- Frontend: React 18, TypeScript, Vite, TailwindCSS
+- State/Data: Zustand, React Query (@tanstack/react-query), React Router DOM, React Hook Form
+- Backend/BaaS: Supabase (Auth, DB, Storage), Edge Functions
+- External APIs: Google Analytics API, Google Gemini API
+- Quality: Vitest, Testing Library, ESLint, Prettier
+
+## 3) Run/Test/Lint Commands / 実行・テスト・Lint
+- Setup: `cp .env.example .env`
+- Start dev: `make up`
+- Stop: `make stop` / teardown: `make down`
+- Lint: `make lint`
+- Format: `make format`
+- Test: `make test`
+- Coverage: `make test-coverage`
+
+## 4) Key Directories/Files / 重要ディレクトリ・ファイル
+- `src/` application code
+- `src/components/` reusable UI components
+- `src/pages/` route/page components
+- `src/hooks/` custom hooks
+- `src/lib/` API and utility integrations
+- `src/store/` Zustand stores
+- `src/types/` TypeScript types
+- `supabase/functions/` Edge Functions
+- `supabase/migrations/schema.sql` database schema
+- `README.md` developer setup and commands
+- `AGENTS.md` detailed engineering conventions for agents
+
+## 5) Architecture Brief / アーキテクチャ要点
+- Auth flow: Supabase Auth -> Zustand store
+- Data fetching: React Query -> Supabase
+- Image flow: client-side optimization -> Supabase Storage
+- AI flow: Supabase Edge Functions -> Google Gemini API
+
+## 6) Contribution Notes / 開発ルール要点
+- Use TypeScript strict mode and keep type safety.
+- Follow naming/import/testing conventions defined in `AGENTS.md`.
+- Branch naming convention: `<type>/<issue-number>-<branch-overview>` (e.g., `feat/123-add-new-feature`)
+  - type: `feat`, `fix`, `refactor`, `doc`, `chore`
+- Commit messages follow Conventional Commits: `<type>: <summary>` (e.g., `feat: add new button`).
+
+## 7) Source of Truth / 正本ドキュメント
+- Primary references:
+  - `AGENTS.md` (agent/development conventions)
+  - `README.md` (environment setup and commands)
+- When this file conflicts with those docs, follow `AGENTS.md` and `README.md`.
+
+## Maintenance Policy / メンテナンス方針
+Update this file when any of the following changes:
+- core tech stack
+- major commands (setup/run/test/lint/deploy)
+- key directories or architecture flow
+- contribution conventions affecting daily development

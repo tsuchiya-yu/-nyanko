@@ -23,7 +23,7 @@
     <!-- Content Security Policy -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://*.supabase.co http://127.0.0.1:54321; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co http://127.0.0.1:54321; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self';"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.supabase.co http://127.0.0.1:54321; img-src 'self' data: blob: https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://*.supabase.co http://127.0.0.1:54321; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self';"
     />
 
     <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
@@ -35,6 +35,19 @@
       name="keywords"
       content="猫, プロフィール, ペット, 写真, ギャラリー, 猫写真, 愛猫, 猫好き, 猫コミュニティ"
     />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_TRACKING_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', '%VITE_GA_TRACKING_ID%', {
+        send_page_view: false,
+      });
+    </script>
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="%VITE_SEARCH_CONSOLE_VERIFICATION%" />

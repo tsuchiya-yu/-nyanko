@@ -24,13 +24,12 @@ export const initGA = (): void => {
 
 // ページビューをトラッキング
 export const trackPageView = (path: string): void => {
-  if (window.gtag) {
-    window.gtag('event', 'page_view', {
-      page_path: path,
-      page_location: window.location.href,
-      page_title: document.title,
-    });
-  }
+  const gtag = ensureGtag();
+  gtag('event', 'page_view', {
+    page_path: path,
+    page_location: window.location.href,
+    page_title: document.title,
+  });
 };
 
 // イベントをトラッキング
@@ -40,13 +39,12 @@ export const trackEvent = (
   label?: string,
   value?: number
 ): void => {
-  if (window.gtag) {
-    window.gtag('event', action, {
-      event_category: category,
-      event_label: label,
-      value: value,
-    });
-  }
+  const gtag = ensureGtag();
+  gtag('event', action, {
+    event_category: category,
+    event_label: label,
+    value: value,
+  });
 };
 
 // TypeScriptのためのgtagの型定義

@@ -48,7 +48,13 @@ export default function App() {
   // ルート変更時に画面トップにスクロールとページビュートラッキング
   useEffect(() => {
     window.scrollTo(0, 0);
-    trackPageView(location.pathname + location.search);
+    const pageViewTimerId = window.setTimeout(() => {
+      trackPageView(location.pathname + location.search);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(pageViewTimerId);
+    };
   }, [location.pathname, location.search]);
 
   return (

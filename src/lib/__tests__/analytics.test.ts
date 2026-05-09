@@ -28,15 +28,16 @@ describe('analytics', () => {
     const { initGA, trackPageView } = await import('../analytics');
 
     initGA();
-    trackPageView('/cats/taro');
+    window.history.pushState(null, '', '/cats/taro?utm_source=test#profile');
+    trackPageView('/cats/taro?utm_source=test');
 
     expect(window.dataLayer).toHaveLength(1);
     expect(window.dataLayer.at(-1)).toEqual([
       'event',
       'page_view',
       expect.objectContaining({
-        page_path: '/cats/taro',
-        page_location: 'http://localhost:3000/cats/taro',
+        page_path: '/cats/taro?utm_source=test',
+        page_location: 'http://localhost:3000/cats/taro?utm_source=test#profile',
       }),
     ]);
   });

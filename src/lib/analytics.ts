@@ -27,7 +27,7 @@ export const trackPageView = (path: string): void => {
   if (window.gtag) {
     window.gtag('event', 'page_view', {
       page_path: path,
-      page_location: `${window.location.origin}${path}`,
+      page_location: window.location.href,
       page_title: document.title,
     });
   }

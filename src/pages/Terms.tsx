@@ -17,7 +17,10 @@ export default function Terms() {
           name="description"
           content="ねこプロフィールの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
         />
-        <meta name="keywords" content="ねこプロフィール, 利用規約, 猫, ペット, プロフィール, 写真" />
+        <meta
+          name="keywords"
+          content="ねこプロフィール, 利用規約, 猫, ペット, プロフィール, 写真"
+        />
         <meta property="og:title" content="利用規約 | ねこプロフィール" />
         <meta property="og:url" content={absoluteUrl(paths.terms())} />
         <meta

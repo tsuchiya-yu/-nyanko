@@ -194,9 +194,14 @@ export default function Home() {
       <section className="relative">
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-2 sm:py-8 sm:mt-2 mt-8">
           <div className="max-w-7xl mx-auto text-center space-y-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-12">
-              愛猫のプロフィールページをかんたんに作ろう
-            </h1>
+            <div className="mb-10 space-y-3">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-800">
+                ねこプロフィール
+              </h1>
+              <p className="text-base sm:text-lg text-gray-600">
+                愛猫のプロフィールページをかんたんに作ろう
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row w-full mx-auto mb-6">
               {/* 画像部分 */}
               <div className="w-full sm:w-1/2">

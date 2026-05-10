@@ -31,15 +31,15 @@ export default function News() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <Helmet>
-        <title>お知らせ一覧 - CAT LINK</title>
+        <title>お知らせ一覧 - ねこプロフィール</title>
         <meta
           name="description"
-          content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
+          content="ねこプロフィールからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
         />
-        <meta property="og:title" content="お知らせ一覧 - CAT LINK" />
+        <meta property="og:title" content="お知らせ一覧 - ねこプロフィール" />
         <meta
           property="og:description"
-          content="CAT LINKからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
+          content="ねこプロフィールからのお知らせ一覧です。新機能の追加や重要なアップデート情報をお届けします。"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={absoluteUrl(paths.news())} />
@@ -62,7 +62,7 @@ export default function News() {
                     url: absoluteUrl(paths.newsDetail(item.slug)),
                     publisher: {
                       '@type': 'Organization',
-                      name: 'CAT LINK',
+                      name: 'ねこプロフィール',
                       url: absoluteUrl(paths.home()),
                     },
                   },

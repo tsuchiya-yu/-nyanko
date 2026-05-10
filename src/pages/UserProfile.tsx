@@ -83,17 +83,17 @@ export default function UserProfile() {
       {!id && <Navigate to={paths.home()} replace />}
       {profile && (
         <Helmet>
-          <title>{`${profile.name}のプロフィール | CAT LINK`}</title>
+          <title>{`${profile.name}のプロフィール | ねこプロフィール`}</title>
           <meta
             name="description"
-            content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
+            content={`${profile.name}さんのねこプロフィールのプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
           />
           <meta
             name="keywords"
             content={`${profile.name}, 猫, ペット, プロフィール, 写真, 愛猫家`}
           />
           <meta name="robots" content="noindex" />
-          <meta property="og:title" content={`${profile.name}のプロフィール | CAT LINK`} />
+          <meta property="og:title" content={`${profile.name}のプロフィール | ねこプロフィール`} />
           <meta property="og:type" content="profile" />
           <meta property="og:url" content={absoluteUrl(paths.userProfile(id!))} />
           <meta
@@ -102,7 +102,7 @@ export default function UserProfile() {
           />
           <meta
             property="og:description"
-            content={`${profile.name}さんのCAT LINKプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
+            content={`${profile.name}さんのねこプロフィールのプロフィールページです。${profile.name}さんの愛猫たちをご覧ください。`}
           />
           <meta property="profile:username" content={profile.name} />
           <link rel="canonical" href={absoluteUrl(paths.userProfile(id!))} />

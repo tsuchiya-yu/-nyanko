@@ -132,7 +132,7 @@ describe('Layoutコンポーネント', () => {
       </Layout>
     );
 
-    expect(screen.getByText(/CAT LINK All rights reserved./)).toBeInTheDocument();
+    expect(screen.getByText(/ねこプロフィール All rights reserved./)).toBeInTheDocument();
   });
 
   it('利用規約・プライバシーポリシーのリンクが表示されること', () => {

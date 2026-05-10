@@ -77,9 +77,9 @@ export default function NewsDetail() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       {!slug && <Navigate to={paths.home()} replace />}
       <Helmet>
-        <title>{article.title} - CAT LINK</title>
+        <title>{article.title} - ねこプロフィール</title>
         <meta name="description" content={article.content} />
-        <meta property="og:title" content={`${article.title} - CAT LINK`} />
+        <meta property="og:title" content={`${article.title} - ねこプロフィール`} />
         <meta property="og:description" content={article.content} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={absoluteUrl(paths.newsDetail(article.slug))} />
@@ -94,7 +94,7 @@ export default function NewsDetail() {
             url: absoluteUrl(paths.newsDetail(article.slug)),
             publisher: {
               '@type': 'Organization',
-              name: 'CAT LINK',
+              name: 'ねこプロフィール',
               url: getBaseUrl(),
             },
           })}

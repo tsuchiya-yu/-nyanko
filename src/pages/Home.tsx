@@ -74,11 +74,11 @@ export default function Home() {
   return (
     <div className="space-y-16 pb-12">
       <Helmet>
-        <title>CAT LINK - 愛猫のプロフィールページを簡単に作成・共有</title>
+        <title>ねこプロフィール - 愛猫のプロフィールページを簡単に作成・共有</title>
         <link rel="canonical" href={absoluteUrl(paths.home())} />
         <meta
           name="description"
-          content="CAT LINKで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。AIが猫の気持ちを分析する「ねこのひとこと」機能も搭載！"
+          content="ねこプロフィールで愛猫のプロフィールページを簡単に作成・共有。スマホで簡単に写真やプロフィールを登録して、SNSで共有できます。AIが猫の気持ちを分析する「ねこのひとこと」機能も搭載！"
         />
         <meta
           name="keywords"
@@ -92,7 +92,7 @@ export default function Home() {
                 '@type': 'WebSite',
                 '@id': `${getBaseUrl()}/#website`,
                 url: `${getBaseUrl()}/`,
-                name: 'CAT LINK',
+                name: 'ねこプロフィール',
                 description: '愛猫のプロフィールページを簡単に作成・共有',
                 potentialAction: {
                   '@type': 'SearchAction',
@@ -103,7 +103,7 @@ export default function Home() {
               {
                 '@type': 'Organization',
                 '@id': `${getBaseUrl()}/#organization`,
-                name: 'CAT LINK',
+                name: 'ねこプロフィール',
                 url: `${getBaseUrl()}/`,
                 logo: {
                   '@type': 'ImageObject',
@@ -115,7 +115,7 @@ export default function Home() {
               },
               {
                 '@type': 'SoftwareApplication',
-                name: 'CAT LINK',
+                name: 'ねこプロフィール',
                 operatingSystem: 'All',
                 applicationCategory: 'LifestyleApplication',
                 offers: {
@@ -139,7 +139,7 @@ export default function Home() {
                 mainEntity: [
                   {
                     '@type': 'Question',
-                    name: 'CAT LINKの利用にお金はかかりますか？',
+                    name: 'ねこプロフィールの利用にお金はかかりますか？',
                     acceptedAnswer: {
                       '@type': 'Answer',
                       text: 'いいえ、完全無料でご利用いただけます。',
@@ -147,10 +147,10 @@ export default function Home() {
                   },
                   {
                     '@type': 'Question',
-                    name: 'CAT LINKを利用することでどんなことができますか？',
+                    name: 'ねこプロフィールを利用することでどんなことができますか？',
                     acceptedAnswer: {
                       '@type': 'Answer',
-                      text: 'CAT LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。また、AIが猫の気持ちを分析する「ねこのひとこと」機能も利用できます。',
+                      text: 'ねこプロフィールでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。また、AIが猫の気持ちを分析する「ねこのひとこと」機能も利用できます。',
                     },
                   },
                   {
@@ -195,7 +195,7 @@ export default function Home() {
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-2 sm:py-8 sm:mt-2 mt-8">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-12">
-              あなたの猫を１ページに
+              愛猫のプロフィールページをかんたんに作ろう
             </h1>
             <div className="flex flex-col sm:flex-row w-full mx-auto mb-6">
               {/* 画像部分 */}
@@ -711,19 +711,18 @@ export default function Home() {
         <div className="space-y-4">
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">CAT LINKの利用にお金はかかりますか？</span>
+              <span className="font-medium">ねこプロフィールの利用にお金はかかりますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">完全無料でご利用いただけます。</p>
           </details>
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">
-              <span className="font-medium">CAT LINKはどんなことができますか？</span>
+              <span className="font-medium">ねこプロフィールはどんなことができますか？</span>
               <ChevronDown className="h-5 w-5 text-gray-500" />
             </summary>
             <p className="mt-4 text-gray-600">
-              CAT
-              LINKでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
+              ねこプロフィールでは、あなたの愛猫の写真やプロフィールを簡単に登録し、他の猫好きさんに共有することができます。
               また、写真をアップロードすると、AIが猫の気持ちを分析して教えてくれる「ねこのひとこと」機能が利用できます。
             </p>
           </details>

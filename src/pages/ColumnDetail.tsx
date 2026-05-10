@@ -50,7 +50,7 @@ export default function ColumnDetail() {
       datePublished: column.published_at,
       author: {
         '@type': 'Organization',
-        name: 'CAT LINK',
+        name: 'ねこプロフィール',
         url: getBaseUrl(),
       },
     });
@@ -97,9 +97,9 @@ export default function ColumnDetail() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       {!slug && <Navigate to={paths.home()} replace />}
       <Helmet>
-        <title>{column.title} | CAT LINK</title>
+        <title>{column.title} | ねこプロフィール</title>
         <meta name="description" content={metaDescription} />
-        <meta property="og:title" content={`${column.title} | CAT LINK`} />
+        <meta property="og:title" content={`${column.title} | ねこプロフィール`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={absoluteUrl(paths.columnDetail(column.slug))} />

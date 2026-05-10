@@ -12,17 +12,17 @@ export default function Terms() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>利用規約 | CAT LINK</title>
+        <title>利用規約 | ねこプロフィール</title>
         <meta
           name="description"
-          content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
+          content="ねこプロフィールの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
         />
-        <meta name="keywords" content="CAT LINK, 利用規約, 猫, ペット, プロフィール, 写真" />
-        <meta property="og:title" content="利用規約 | CAT LINK" />
+        <meta name="keywords" content="ねこプロフィール, 利用規約, 猫, ペット, プロフィール, 写真" />
+        <meta property="og:title" content="利用規約 | ねこプロフィール" />
         <meta property="og:url" content={absoluteUrl(paths.terms())} />
         <meta
           property="og:description"
-          content="CAT LINKの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
+          content="ねこプロフィールの利用規約です。サービスをご利用いただく前に、こちらの規約をご確認ください。"
         />
         <link rel="canonical" href={absoluteUrl(paths.terms())} />
       </Helmet>

@@ -339,7 +339,7 @@ export default function CatProfile() {
     >
       {!path && <Navigate to={paths.home()} replace />}
       <Helmet>
-        <title>{`${cat.name}のプロフィール | CAT LINK`}</title>
+        <title>{`${cat.name}のプロフィール | ねこプロフィール`}</title>
         <meta
           name="description"
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
@@ -348,7 +348,7 @@ export default function CatProfile() {
           name="keywords"
           content={`${cat.name}, ${cat.breed}, 猫, ペット, プロフィール, 写真`}
         />
-        <meta property="og:title" content={`${cat.name}のプロフィール | CAT LINK`} />
+        <meta property="og:title" content={`${cat.name}のプロフィール | ねこプロフィール`} />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content={absoluteUrl(paths.catProfile(path))} />
         <meta
@@ -619,7 +619,7 @@ export default function CatProfile() {
               style={{ aspectRatio: '160/20', height: '20px' }}
             />
           </Link>
-          <p className="text-xs mt-2 h-[16px]">©︎CAT LINK All Rights Reserved</p>
+          <p className="text-xs mt-2 h-[16px]">©︎ねこプロフィール All Rights Reserved</p>
         </div>
       </div>
 

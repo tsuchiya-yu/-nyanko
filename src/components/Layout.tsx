@@ -312,7 +312,7 @@ export default function Layout({ children }: LayoutProps) {
 
             <div className="border-t border-gray-200 pt-4">
               <div className="text-center text-gray-500 text-base">
-                <p>© {new Date().getFullYear()} CAT LINK All rights reserved.</p>
+                <p>© {new Date().getFullYear()} ねこプロフィール All rights reserved.</p>
               </div>
             </div>
           </div>

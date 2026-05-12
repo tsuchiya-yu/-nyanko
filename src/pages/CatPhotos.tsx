@@ -211,16 +211,16 @@ export default function CatPhotos() {
       {!id && <Navigate to={paths.home()} replace />}
       {cat && (
         <Helmet>
-          <title>{`${cat.name}の写真ギャラリー | CAT LINK`}</title>
+          <title>{`${cat.name}の写真ギャラリー | ねこプロフィール`}</title>
           <meta
             name="description"
             content={`${cat.name}の写真ギャラリーです。可愛い瞬間や思い出の写真をご覧ください。`}
           />
           <meta
             name="keywords"
-            content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, CAT LINK`}
+            content={`${cat.name}, 猫写真, ペット写真, 猫ギャラリー, ねこプロフィール`}
           />
-          <meta property="og:title" content={`${cat.name}の写真ギャラリー | CAT LINK`} />
+          <meta property="og:title" content={`${cat.name}の写真ギャラリー | ねこプロフィール`} />
           <meta property="og:url" content={absoluteUrl(paths.catPhotos(id!))} />
           <meta
             property="og:image"

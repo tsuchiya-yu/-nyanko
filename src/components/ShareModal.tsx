@@ -34,7 +34,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
 
   const handleShare = (platform: string) => {
     const encodedUrl = encodeURIComponent(currentUrl);
-    const encodedTitle = encodeURIComponent(`${catName}の猫プロフィール | CAT LINK`);
+    const encodedTitle = encodeURIComponent(`${catName}の猫プロフィール | ねこプロフィール`);
     let shareUrl = '';
 
     switch (platform) {
@@ -57,7 +57,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
         if (typeof navigator !== 'undefined' && navigator.share) {
           navigator
             .share({
-              title: `${catName}の猫プロフィール | CAT LINK`,
+              title: `${catName}の猫プロフィール | ねこプロフィール`,
               url: currentUrl,
             })
             .catch(err => console.error('Error sharing:', err));
@@ -99,7 +99,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
         </button>
 
         <div className="p-6 text-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">{catName} | CAT LINK</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{catName} | ねこプロフィール</h3>
           <div className="mb-4">
             <div className="flex justify-center mb-4">
               <div className="border border-gray-300 rounded-md inline-block">

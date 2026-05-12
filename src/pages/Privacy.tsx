@@ -12,20 +12,20 @@ export default function Privacy() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>プライバシーポリシー | CAT LINK</title>
+        <title>プライバシーポリシー | ねこプロフィール</title>
         <meta
           name="description"
-          content="CAT LINKのプライバシーポリシーです。個人情報の取り扱いについて説明しています。"
+          content="ねこプロフィールのプライバシーポリシーです。個人情報の取り扱いについて説明しています。"
         />
         <meta
           name="keywords"
-          content="CAT LINK, プライバシーポリシー, 個人情報保護, 猫, ペット, プロフィール"
+          content="ねこプロフィール, プライバシーポリシー, 個人情報保護, 猫, ペット, プロフィール"
         />
-        <meta property="og:title" content="プライバシーポリシー | CAT LINK" />
+        <meta property="og:title" content="プライバシーポリシー | ねこプロフィール" />
         <meta property="og:url" content={absoluteUrl(paths.privacy())} />
         <meta
           property="og:description"
-          content="CAT LINKのプライバシーポリシーです。個人情報の取り扱いについて説明しています。"
+          content="ねこプロフィールのプライバシーポリシーです。個人情報の取り扱いについて説明しています。"
         />
         <link rel="canonical" href={absoluteUrl(paths.privacy())} />
       </Helmet>

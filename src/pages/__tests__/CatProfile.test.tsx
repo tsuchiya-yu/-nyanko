@@ -69,14 +69,14 @@ describe('CatProfile', () => {
 
     // モーダルが初期状態では表示されていないことを確認
     expect(
-      screen.queryByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+      screen.queryByRole('heading', { name: `${mockCat.name} | ねこプロフィール` })
     ).not.toBeInTheDocument();
 
     const avatarButton = screen.getByRole('button', { name: 'プロフィール画像をシェアする' });
     fireEvent.click(avatarButton);
 
     expect(
-      await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+      await screen.findByRole('heading', { name: `${mockCat.name} | ねこプロフィール` })
     ).toBeInTheDocument();
   });
 
@@ -85,14 +85,14 @@ describe('CatProfile', () => {
     render(<CatProfile />, { wrapper: Wrapper });
 
     expect(
-      screen.queryByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+      screen.queryByRole('heading', { name: `${mockCat.name} | ねこプロフィール` })
     ).not.toBeInTheDocument();
 
     const shareButton = screen.getByRole('button', { name: 'シェアする' });
     fireEvent.click(shareButton);
 
     expect(
-      await screen.findByRole('heading', { name: `${mockCat.name} | CAT LINK` })
+      await screen.findByRole('heading', { name: `${mockCat.name} | ねこプロフィール` })
     ).toBeInTheDocument();
   });
 });

@@ -33,12 +33,12 @@ export default function Columns() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <Helmet>
-        <title>猫の読みもの・コラム | CAT LINK</title>
+        <title>猫の読みもの・コラム | ねこプロフィール</title>
         <meta
           name="description"
           content="猫との暮らしに役立つ情報、猫の行動や健康に関するコラムなど、猫好きのための読みものコンテンツをお届けします。"
         />
-        <meta property="og:title" content="猫の読みもの・コラム | CAT LINK" />
+        <meta property="og:title" content="猫の読みもの・コラム | ねこプロフィール" />
         <meta
           property="og:description"
           content="猫との暮らしに役立つ情報、猫の行動や健康に関するコラムなど、猫好きのための読みものコンテンツをお届けします。"

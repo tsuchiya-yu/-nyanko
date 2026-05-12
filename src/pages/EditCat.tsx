@@ -378,21 +378,21 @@ export default function EditCat() {
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       {!id && <Navigate to={paths.home()} replace />}
       <Helmet>
-        <title>{`${cat.name}のプロフィールを編集 | CAT LINK`}</title>
+        <title>{`${cat.name}のプロフィールを編集 | ねこプロフィール`}</title>
         <meta
           name="description"
           content={`${cat.name}のプロフィール情報を編集します。名前、年齢、品種、写真などの情報を更新できます。`}
         />
         <meta
           name="keywords"
-          content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, CAT LINK`}
+          content={`${cat.name}, 猫編集, プロフィール更新, ペット情報, ねこプロフィール`}
         />
-        <meta property="og:title" content={`${cat.name}のプロフィールを編集 | CAT LINK`} />
+        <meta property="og:title" content={`${cat.name}のプロフィールを編集 | ねこプロフィール`} />
         <meta property="og:url" content={absoluteUrl(paths.editCat(cat.id))} />
         <meta property="og:image" content={cat.image_url} />
         <meta
           property="og:description"
-          content={`${cat.name}のプロフィール情報を編集します。CAT LINKで愛猫の情報を最新の状態に保ちましょう。`}
+          content={`${cat.name}のプロフィール情報を編集します。ねこプロフィールで愛猫の情報を最新の状態に保ちましょう。`}
         />
         <meta name="robots" content="noindex, nofollow" />
         <link rel="canonical" href={absoluteUrl(paths.catProfile(cat.prof_path_id))} />

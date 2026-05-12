@@ -252,17 +252,20 @@ export default function RegisterCat() {
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>愛猫を登録する | CAT LINK</title>
+        <title>愛猫を登録する | ねこプロフィール</title>
         <meta
           name="description"
-          content="CAT LINKで愛猫のプロフィールを作成しましょう。名前、年齢、品種、写真などの情報を登録して、素敵なプロフィールページを作成できます。"
+          content="ねこプロフィールで愛猫のプロフィールを作成しましょう。名前、年齢、品種、写真などの情報を登録して、素敵なプロフィールページを作成できます。"
         />
-        <meta name="keywords" content="猫登録, 猫プロフィール作成, ペット登録, 猫情報, CAT LINK" />
-        <meta property="og:title" content="愛猫を登録する | CAT LINK" />
+        <meta
+          name="keywords"
+          content="猫登録, 猫プロフィール作成, ペット登録, 猫情報, ねこプロフィール"
+        />
+        <meta property="og:title" content="愛猫を登録する | ねこプロフィール" />
         <meta property="og:url" content={absoluteUrl(paths.registerCat())} />
         <meta
           property="og:description"
-          content="CAT LINKで愛猫のプロフィールを作成しましょう。名前、年齢、品種、写真などの情報を登録して、素敵なプロフィールページを作成できます。"
+          content="ねこプロフィールで愛猫のプロフィールを作成しましょう。名前、年齢、品種、写真などの情報を登録して、素敵なプロフィールページを作成できます。"
         />
         <link rel="canonical" href={absoluteUrl(paths.registerCat())} />
       </Helmet>

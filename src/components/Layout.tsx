@@ -67,8 +67,8 @@ export default function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col bg-white">
       {isHeaderFooterVisible && (
         <header className="fixed top-0 left-0 right-0 bg-white shadow z-40 w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-12">
+          <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-3">
+            <div className="flex justify-between h-14">
               <Link to={paths.home()} className="flex items-center">
                 <picture>
                   <source srcSet="/images/webp/logo.webp" type="image/webp" />
@@ -78,7 +78,7 @@ export default function Layout({ children }: LayoutProps) {
                     loading="lazy"
                     width="120"
                     height="37"
-                    className="inline-block w-[120px]"
+                    className="inline-block w-[120px] sm:w-[150px] md:w-[160px]"
                   />
                 </picture>
               </Link>

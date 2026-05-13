@@ -78,7 +78,7 @@ export default function Layout({ children }: LayoutProps) {
                     loading="lazy"
                     width="120"
                     height="37"
-                    className="inline-block w-[120px] sm:w-[150px] md:w-[160px]"
+                    className="inline-block w-[120px] sm:w-[150px] md:w-[160px] h-auto"
                   />
                 </picture>
               </Link>
@@ -129,7 +129,7 @@ export default function Layout({ children }: LayoutProps) {
 
       {isHeaderFooterVisible && (
         <footer className="bg-white mt-auto border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-3 py-6 sm:py-8">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 mb-6">
               {/* サイトナビゲーション */}
               <div>

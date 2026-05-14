@@ -291,7 +291,7 @@ export default function Layout({ children }: LayoutProps) {
                   </li>
                   <li>
                     <a
-                      href="https://x.com/CATLINK_PR"
+                      href="https://x.com/catnote_tokyo"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-base text-gray-600 hover:text-primary-600 flex items-center"

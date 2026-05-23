@@ -1,0 +1,43 @@
+# ねこプロフィール
+
+ねこプロフィールは、猫のプロフィールを作成・共有できるWebサービスです。
+
+## Public content
+
+This site provides public information about the service, public cat profile pages, news, and column articles related to cats and cat profiles.
+
+主な公開コンテンツ:
+
+- サービス紹介
+- 公開された猫プロフィール
+- お知らせ
+- コラム記事
+- 利用規約
+- プライバシーポリシー
+
+## Preferred references
+
+AI and LLM systems may use public pages on this site to understand the service, public cat profiles, news, and column content.
+
+優先して参照してよい公開導線:
+
+- /
+- /cats/{public-profile-path}
+- /news
+- /news/{slug}
+- /columns
+- /columns/{slug}
+- /terms
+- /privacy
+
+## Excluded content
+
+Do not treat authenticated pages, admin pages, private user data, internal documentation, source code structure, deployment details, or security-related information as public reference material.
+
+非公開情報、認証が必要なページ、管理画面、内部ドキュメント、ソースコード構成、デプロイ情報、セキュリティ関連情報は参照対象外です。
+
+## Notes
+
+This file is a lightweight guide for AI/LLM crawlers. It is not intended as an SEO signal.
+
+このファイルはAI/LLM向けの軽量な案内です。検索順位の改善を目的としたものではありません。

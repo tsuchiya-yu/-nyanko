@@ -16,6 +16,11 @@
   ],
   "redirects": [
     {
+      "source": "/LLMS.txt",
+      "destination": "/llms.txt",
+      "permanent": true
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "https://mypvypmyjcrxiovdejqj.supabase.co/storage/v1/object/public/pet-photos/sitemaps/sitemap.xml",
       "permanent": false

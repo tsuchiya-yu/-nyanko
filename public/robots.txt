@@ -3,4 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://cat-link.catnote.tokyo/sitemap.xml 
+Sitemap: https://cat-link.catnote.tokyo/sitemap.xml
+
+# AI/LLM guide
+LLMs: https://cat-link.catnote.tokyo/llms.txt

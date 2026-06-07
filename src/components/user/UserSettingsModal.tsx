@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { supabase } from '../../lib/supabase';
@@ -37,43 +37,6 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
       email: user?.email || '',
     },
   });
-
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      console.log('Modal opened');
-      console.log('Viewport dimensions:', {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        scrollY: window.scrollY,
-      });
-
-      // 初期表示時のログ
-      const logModalPosition = () => {
-        if (modalRef.current) {
-          const rect = modalRef.current.getBoundingClientRect();
-          console.log('Modal dimensions:', {
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-            offsetTop: modalRef.current.offsetTop,
-          });
-        }
-      };
-
-      // 初回ログ
-      logModalPosition();
-
-      // 200msごとに位置をログ
-      const intervalId = setInterval(logModalPosition, 200);
-
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, [isOpen]);
 
   const updateProfile = useMutation({
     mutationFn: async (data: { name: string }) => {
@@ -152,7 +115,7 @@ export default function UserSettingsModal({ isOpen, onClose, profile }: UserSett
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="アカウント設定">
-      <div ref={modalRef}>
+      <div>
         <div className="flex space-x-4 mb-6">
           <button
             className={`flex-1 py-2 text-center rounded-full font-medium transition-colors

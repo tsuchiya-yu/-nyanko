@@ -33,15 +33,25 @@ function escapeHtml(value: string): string {
 
 function normalizeDescription(value: string): string {
   const normalized = value.replace(/\s+/g, ' ').trim();
+  const characters = Array.from(normalized);
 
-  if (normalized.length <= MAX_DESCRIPTION_LENGTH) {
+  if (characters.length <= MAX_DESCRIPTION_LENGTH) {
     return normalized;
   }
 
-  return `${normalized.slice(0, MAX_DESCRIPTION_LENGTH - 1)}…`;
+  return `${characters.slice(0, MAX_DESCRIPTION_LENGTH - 1).join('')}…`;
 }
 
-function toHttpUrl(value: string | null, siteOrigin: string): string {
+export function createCatProfileDescription(
+  cat: Pick<PublicCatMetadataSource, 'name' | 'catchphrase' | 'description'>
+): string {
+  return normalizeDescription(
+    [cat.catchphrase, cat.description].filter(Boolean).join(' ') ||
+      `${cat.name}のプロフィールをご紹介します。`
+  );
+}
+
+export function createCatProfileImageUrl(value: string | null, siteOrigin: string): string {
   const fallbackUrl = new URL(DEFAULT_OGP_PATH, siteOrigin).href;
 
   if (!value) {
@@ -86,16 +96,13 @@ function renderRouteMetadata(metadata: RouteMetadata): string {
 
 export function createCatProfileMetadata(cat: PublicCatMetadataSource, siteOrigin: string): string {
   const canonicalUrl = new URL(`/cats/${encodeURIComponent(cat.prof_path_id)}`, siteOrigin).href;
-  const description = normalizeDescription(
-    [cat.catchphrase, cat.description].filter(Boolean).join(' ') ||
-      `${cat.name}のプロフィールをご紹介します。`
-  );
+  const description = createCatProfileDescription(cat);
 
   return renderRouteMetadata({
     title: `${cat.name}のプロフィール | ねこプロフィール`,
     description,
     canonicalUrl,
-    imageUrl: toHttpUrl(cat.image_url, siteOrigin),
+    imageUrl: createCatProfileImageUrl(cat.image_url, siteOrigin),
     type: 'profile',
     robots: 'index, follow',
   });

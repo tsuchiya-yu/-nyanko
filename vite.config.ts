@@ -14,8 +14,13 @@ import {
 } from './src/utils/catProfileMetadata';
 
 function catProfileMetadataPlugin(env: Record<string, string>): Plugin {
+  let configRoot = process.cwd();
+
   return {
     name: 'cat-profile-metadata',
+    configResolved(config) {
+      configRoot = config.root;
+    },
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
         const requestUrl = request.url;
@@ -29,7 +34,7 @@ function catProfileMetadataPlugin(env: Record<string, string>): Plugin {
         }
 
         try {
-          const template = await readFile(resolve(process.cwd(), 'index.html'), 'utf8');
+          const template = await readFile(resolve(configRoot, 'index.html'), 'utf8');
           const html = await server.transformIndexHtml(requestUrl, template);
           response.statusCode = 200;
           response.setHeader('content-type', 'text/html; charset=utf-8');

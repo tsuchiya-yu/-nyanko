@@ -17,9 +17,10 @@ import { handleApiError } from '../lib/api';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { calculateAge } from '../utils/calculateAge';
+import { createCatProfileDescription, createCatProfileImageUrl } from '../utils/catProfileMetadata';
 import { defaultBackgroundColor, defaultTextColor } from '../utils/constants';
 import { paths } from '../utils/paths';
-import { absoluteUrl } from '../utils/url';
+import { absoluteUrl, getBaseUrl } from '../utils/url';
 
 interface CatWithOwner {
   id: string;
@@ -331,6 +332,8 @@ export default function CatProfile() {
 
   // データベースから取得した色を使用（設定されていない場合はデフォルト値）
   const textColor = cat.text_color || defaultTextColor;
+  const socialDescription = createCatProfileDescription(cat);
+  const socialImageUrl = createCatProfileImageUrl(cat.image_url, getBaseUrl());
 
   return (
     <div
@@ -340,10 +343,7 @@ export default function CatProfile() {
       {!path && <Navigate to={paths.home()} replace />}
       <Helmet>
         <title>{`${cat.name}のプロフィール | ねこプロフィール`}</title>
-        <meta
-          name="description"
-          content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}${cat.description ? cat.description.substring(0, 100) + '...' : ''}`}
-        />
+        <meta name="description" content={socialDescription} />
         <meta
           name="keywords"
           content={`${cat.name}, ${cat.breed}, 猫, ペット, プロフィール, 写真`}
@@ -351,25 +351,13 @@ export default function CatProfile() {
         <meta property="og:title" content={`${cat.name}のプロフィール | ねこプロフィール`} />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content={absoluteUrl(paths.catProfile(path))} />
-        <meta
-          property="og:image"
-          content={`${cat.image_url}?width=1200&height=630&resize=contain`}
-        />
-        <meta
-          property="og:description"
-          content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
-        />
+        <meta property="og:image" content={socialImageUrl} />
+        <meta property="og:description" content={socialDescription} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@catnote_tokyo" />
         <meta name="twitter:title" content={`${cat.name}のプロフィール | ねこプロフィール`} />
-        <meta
-          name="twitter:description"
-          content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
-        />
-        <meta
-          name="twitter:image"
-          content={`${cat.image_url}?width=1200&height=630&resize=contain`}
-        />
+        <meta name="twitter:description" content={socialDescription} />
+        <meta name="twitter:image" content={socialImageUrl} />
         <meta property="profile:first_name" content={cat.name} />
         <link rel="canonical" href={absoluteUrl(paths.catProfile(path))} />
         <script type="application/ld+json">

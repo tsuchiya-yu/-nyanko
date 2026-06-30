@@ -1,4 +1,5 @@
 import {
+  createCatProfileDescription,
   createCatProfileMetadata,
   createFallbackCatMetadata,
   createMissingCatMetadata,
@@ -52,6 +53,18 @@ describe('catProfileMetadata', () => {
 
     expect(metadata).toContain('https://cat-link.catnote.tokyo/images/ogp.png');
     expect(metadata).not.toContain('javascript:');
+  });
+
+  it('truncates descriptions without splitting emoji surrogate pairs', () => {
+    const description = createCatProfileDescription({
+      name: 'ミケ',
+      catchphrase: null,
+      description: `${'a'.repeat(158)}🐈末尾`,
+    });
+
+    expect(description).toBe(`${'a'.repeat(158)}🐈…`);
+    expect(Array.from(description)).toHaveLength(160);
+    expect(description).not.toContain('\uFFFD');
   });
 
   it('replaces only the marked metadata block', () => {

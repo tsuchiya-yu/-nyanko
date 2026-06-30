@@ -32,8 +32,9 @@ async function fetchHtmlShell(request: Request): Promise<Response> {
   const shellUrl = new URL('/index.html', request.url);
   const headers = new Headers();
   const authorization = request.headers.get('authorization');
+  const basicAuthEnabled = Boolean(process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD);
 
-  if (authorization) {
+  if (basicAuthEnabled && authorization && /^Basic\s+\S+$/i.test(authorization)) {
     headers.set('authorization', authorization);
   }
 

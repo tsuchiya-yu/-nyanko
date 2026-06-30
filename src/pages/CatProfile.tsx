@@ -359,6 +359,17 @@ export default function CatProfile() {
           property="og:description"
           content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
         />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@catnote_tokyo" />
+        <meta name="twitter:title" content={`${cat.name}のプロフィール | ねこプロフィール`} />
+        <meta
+          name="twitter:description"
+          content={`${cat.name}は${age?.toString() || ''}の${cat.breed}です。${cat.catchphrase ? cat.catchphrase : ''}`}
+        />
+        <meta
+          name="twitter:image"
+          content={`${cat.image_url}?width=1200&height=630&resize=contain`}
+        />
         <meta property="profile:first_name" content={cat.name} />
         <link rel="canonical" href={absoluteUrl(paths.catProfile(path))} />
         <script type="application/ld+json">

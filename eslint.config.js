@@ -92,6 +92,23 @@ export default [
     },
   },
   {
+    files: ['api/**/*.ts', 'middleware.ts', 'vite.config.ts'],
+    languageOptions: {
+      globals: {
+        atob: 'readonly',
+        process: 'readonly',
+      },
+    },
+  },
+  {
+    files: ['vite.config.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.node.json',
+      },
+    },
+  },
+  {
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     languageOptions: {
       globals: {

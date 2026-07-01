@@ -11,6 +11,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["vite/client", "node", "vitest/globals"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -22,7 +23,7 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "api/**/*", "middleware.ts"],
   "exclude": ["supabase/functions/**/*"],
   "references": [{ "path": "./tsconfig.node.json", "composite": true }]
 }

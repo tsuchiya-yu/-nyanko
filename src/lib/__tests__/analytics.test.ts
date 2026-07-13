@@ -41,4 +41,33 @@ describe('analytics', () => {
       }),
     ]);
   });
+
+  it('queues structured events and removes undefined parameters', async () => {
+    const { trackEvent } = await import('../analytics');
+
+    trackEvent('quick_profile_preview_ready', {
+      elapsed_time_ms: 12_345,
+      optional_parameter: undefined,
+      within_30_seconds: true,
+    });
+
+    expect(window.dataLayer.at(-1)).toEqual([
+      'event',
+      'quick_profile_preview_ready',
+      {
+        elapsed_time_ms: 12_345,
+        within_30_seconds: true,
+      },
+    ]);
+  });
+
+  it('does not propagate errors from gtag', async () => {
+    const { trackEvent, trackPageView } = await import('../analytics');
+    window.gtag = vi.fn(() => {
+      throw new Error('analytics unavailable');
+    });
+
+    expect(() => trackEvent('quick_profile_create_start')).not.toThrow();
+    expect(() => trackPageView('/create')).not.toThrow();
+  });
 });

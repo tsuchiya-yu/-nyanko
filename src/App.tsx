@@ -17,6 +17,7 @@ const EditCat = lazy(() => import('./pages/EditCat'));
 const News = lazy(() => import('./pages/News'));
 const NewsDetail = lazy(() => import('./pages/NewsDetail'));
 const Privacy = lazy(() => import('./pages/Privacy'));
+const QuickProfile = lazy(() => import('./pages/QuickProfile'));
 const RegisterCat = lazy(() => import('./pages/RegisterCat'));
 const Terms = lazy(() => import('./pages/Terms'));
 const UserProfile = lazy(() => import('./pages/UserProfile'));
@@ -87,6 +88,14 @@ export default function App() {
                 <ProtectedRoute>
                   <EditCat />
                 </ProtectedRoute>
+              </LazyRoute>
+            }
+          />
+          <Route
+            path={routePatterns.quickProfile}
+            element={
+              <LazyRoute>
+                <QuickProfile />
               </LazyRoute>
             }
           />

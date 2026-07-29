@@ -1,14 +1,14 @@
 import { trackEvent, type AnalyticsEventParameters } from './analytics';
 
 export const QUICK_PROFILE_EVENT_NAMES = {
-  createStart: 'quick_profile_create_start',
-  photoSelected: 'quick_profile_photo_selected',
-  previewReady: 'quick_profile_preview_ready',
-  authOpen: 'quick_profile_auth_open',
-  authComplete: 'quick_profile_auth_complete',
-  publishComplete: 'quick_profile_publish_complete',
-  cardDownload: 'profile_card_download',
-  cardShare: 'profile_card_share',
+  CREATE_START: 'quick_profile_create_start',
+  PHOTO_SELECTED: 'quick_profile_photo_selected',
+  PREVIEW_READY: 'quick_profile_preview_ready',
+  AUTH_OPEN: 'quick_profile_auth_open',
+  AUTH_COMPLETE: 'quick_profile_auth_complete',
+  PUBLISH_COMPLETE: 'quick_profile_publish_complete',
+  CARD_DOWNLOAD: 'profile_card_download',
+  CARD_SHARE: 'profile_card_share',
 } as const;
 
 export type QuickProfileEventName =
@@ -56,56 +56,56 @@ export class QuickProfileAnalytics {
     const currentSession = this.readSession();
     if (
       currentSession &&
-      !currentSession.sentEvents.includes(QUICK_PROFILE_EVENT_NAMES.publishComplete)
+      !currentSession.sentEvents.includes(QUICK_PROFILE_EVENT_NAMES.PUBLISH_COMPLETE)
     ) {
       return;
     }
 
     const session: QuickProfileMeasurementSession = {
-      sentEvents: [QUICK_PROFILE_EVENT_NAMES.createStart],
+      sentEvents: [QUICK_PROFILE_EVENT_NAMES.CREATE_START],
       startedAt: this.now(),
     };
 
     this.writeSession(session);
-    this.track(QUICK_PROFILE_EVENT_NAMES.createStart);
+    this.track(QUICK_PROFILE_EVENT_NAMES.CREATE_START);
   }
 
   trackPhotoSelected(): void {
-    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.photoSelected);
+    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.PHOTO_SELECTED);
   }
 
   trackPreviewReady(): void {
     const session = this.readSession();
-    if (!session || session.sentEvents.includes(QUICK_PROFILE_EVENT_NAMES.previewReady)) {
+    if (!session || session.sentEvents.includes(QUICK_PROFILE_EVENT_NAMES.PREVIEW_READY)) {
       return;
     }
 
     const elapsedTimeMs = Math.max(0, Math.round(this.now() - session.startedAt));
-    this.markAsSent(session, QUICK_PROFILE_EVENT_NAMES.previewReady);
-    this.track(QUICK_PROFILE_EVENT_NAMES.previewReady, {
+    this.markAsSent(session, QUICK_PROFILE_EVENT_NAMES.PREVIEW_READY);
+    this.track(QUICK_PROFILE_EVENT_NAMES.PREVIEW_READY, {
       elapsed_time_ms: elapsedTimeMs,
       within_30_seconds: elapsedTimeMs <= THIRTY_SECONDS_IN_MS,
     });
   }
 
   trackAuthOpen(authMethod: QuickProfileAuthMethod): void {
-    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.authOpen, { auth_method: authMethod });
+    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.AUTH_OPEN, { auth_method: authMethod });
   }
 
   trackAuthComplete(authMethod: QuickProfileAuthMethod): void {
-    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.authComplete, { auth_method: authMethod });
+    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.AUTH_COMPLETE, { auth_method: authMethod });
   }
 
   trackPublishComplete(): void {
-    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.publishComplete);
+    this.trackOnce(QUICK_PROFILE_EVENT_NAMES.PUBLISH_COMPLETE);
   }
 
   trackCardDownload(): void {
-    this.track(QUICK_PROFILE_EVENT_NAMES.cardDownload, { card_format: 'standard_3_4' });
+    this.track(QUICK_PROFILE_EVENT_NAMES.CARD_DOWNLOAD, { card_format: 'standard_3_4' });
   }
 
   trackCardShare(destination: ProfileCardShareDestination): void {
-    this.track(QUICK_PROFILE_EVENT_NAMES.cardShare, {
+    this.track(QUICK_PROFILE_EVENT_NAMES.CARD_SHARE, {
       card_format: 'standard_3_4',
       share_destination: destination,
     });
@@ -144,16 +144,25 @@ export class QuickProfileAnalytics {
       const storedValue = this.storage?.getItem(STORAGE_KEY);
       if (!storedValue) return this.inMemorySession;
 
-      const parsedValue = JSON.parse(storedValue) as Partial<QuickProfileMeasurementSession>;
-      if (!Number.isFinite(parsedValue.startedAt) || !Array.isArray(parsedValue.sentEvents)) {
+      const parsedValue: unknown = JSON.parse(storedValue);
+      if (!parsedValue || typeof parsedValue !== 'object') {
+        return undefined;
+      }
+
+      const sessionCandidate = parsedValue as Partial<QuickProfileMeasurementSession>;
+      if (
+        !Number.isFinite(sessionCandidate.startedAt) ||
+        !Array.isArray(sessionCandidate.sentEvents)
+      ) {
         return undefined;
       }
 
       return {
-        sentEvents: parsedValue.sentEvents.filter((eventName): eventName is QuickProfileEventName =>
-          Object.values(QUICK_PROFILE_EVENT_NAMES).includes(eventName as QuickProfileEventName)
+        sentEvents: sessionCandidate.sentEvents.filter(
+          (eventName): eventName is QuickProfileEventName =>
+            Object.values(QUICK_PROFILE_EVENT_NAMES).includes(eventName as QuickProfileEventName)
         ),
-        startedAt: parsedValue.startedAt as number,
+        startedAt: sessionCandidate.startedAt as number,
       };
     } catch {
       return this.inMemorySession;

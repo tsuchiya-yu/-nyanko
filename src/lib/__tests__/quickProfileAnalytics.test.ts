@@ -23,7 +23,7 @@ describe('QuickProfileAnalytics', () => {
     analytics.start();
 
     expect(track).toHaveBeenCalledTimes(1);
-    expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.createStart);
+    expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.CREATE_START);
   });
 
   it('tracks the first ready preview with elapsed time and the 30-second result', () => {
@@ -33,7 +33,7 @@ describe('QuickProfileAnalytics', () => {
     analytics.trackPreviewReady();
     analytics.trackPreviewReady();
 
-    expect(track).toHaveBeenLastCalledWith(QUICK_PROFILE_EVENT_NAMES.previewReady, {
+    expect(track).toHaveBeenLastCalledWith(QUICK_PROFILE_EVENT_NAMES.PREVIEW_READY, {
       elapsed_time_ms: 29_500,
       within_30_seconds: true,
     });
@@ -47,7 +47,7 @@ describe('QuickProfileAnalytics', () => {
     analytics.trackPreviewReady();
 
     expect(track).toHaveBeenLastCalledWith(
-      QUICK_PROFILE_EVENT_NAMES.previewReady,
+      QUICK_PROFILE_EVENT_NAMES.PREVIEW_READY,
       expect.objectContaining({ within_30_seconds: false })
     );
   });
@@ -72,11 +72,11 @@ describe('QuickProfileAnalytics', () => {
     analytics.trackPublishComplete();
 
     expect(track.mock.calls).toEqual([
-      [QUICK_PROFILE_EVENT_NAMES.createStart],
-      [QUICK_PROFILE_EVENT_NAMES.photoSelected, undefined],
-      [QUICK_PROFILE_EVENT_NAMES.authOpen, { auth_method: 'register' }],
-      [QUICK_PROFILE_EVENT_NAMES.authComplete, { auth_method: 'register' }],
-      [QUICK_PROFILE_EVENT_NAMES.publishComplete, undefined],
+      [QUICK_PROFILE_EVENT_NAMES.CREATE_START],
+      [QUICK_PROFILE_EVENT_NAMES.PHOTO_SELECTED, undefined],
+      [QUICK_PROFILE_EVENT_NAMES.AUTH_OPEN, { auth_method: 'register' }],
+      [QUICK_PROFILE_EVENT_NAMES.AUTH_COMPLETE, { auth_method: 'register' }],
+      [QUICK_PROFILE_EVENT_NAMES.PUBLISH_COMPLETE, undefined],
     ]);
   });
 
@@ -87,7 +87,7 @@ describe('QuickProfileAnalytics', () => {
 
     analytics.start();
 
-    expect(track).toHaveBeenLastCalledWith(QUICK_PROFILE_EVENT_NAMES.createStart);
+    expect(track).toHaveBeenLastCalledWith(QUICK_PROFILE_EVENT_NAMES.CREATE_START);
     expect(track).toHaveBeenCalledTimes(3);
   });
 
@@ -95,10 +95,10 @@ describe('QuickProfileAnalytics', () => {
     analytics.trackCardDownload();
     analytics.trackCardShare('x');
 
-    expect(track).toHaveBeenNthCalledWith(1, QUICK_PROFILE_EVENT_NAMES.cardDownload, {
+    expect(track).toHaveBeenNthCalledWith(1, QUICK_PROFILE_EVENT_NAMES.CARD_DOWNLOAD, {
       card_format: 'standard_3_4',
     });
-    expect(track).toHaveBeenNthCalledWith(2, QUICK_PROFILE_EVENT_NAMES.cardShare, {
+    expect(track).toHaveBeenNthCalledWith(2, QUICK_PROFILE_EVENT_NAMES.CARD_SHARE, {
       card_format: 'standard_3_4',
       share_destination: 'x',
     });
@@ -124,8 +124,19 @@ describe('QuickProfileAnalytics', () => {
     storageBlockedAnalytics.start();
     storageBlockedAnalytics.trackPhotoSelected();
 
-    expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.createStart);
-    expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.photoSelected, undefined);
+    expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.CREATE_START);
+    expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.PHOTO_SELECTED, undefined);
     expect(() => storageBlockedAnalytics.reset()).not.toThrow();
   });
+
+  it.each(['null', '"invalid"', '123'])(
+    'starts a new measurement session when stored data is not an object: %s',
+    storedValue => {
+      sessionStorage.setItem('quick-profile-measurement-v1', storedValue);
+
+      analytics.start();
+
+      expect(track).toHaveBeenCalledWith(QUICK_PROFILE_EVENT_NAMES.CREATE_START);
+    }
+  );
 });

@@ -5,6 +5,7 @@ export const routePatterns = {
   catProfile: '/cats/:path',
   editCat: '/cats/:id/edit',
   catPhotos: '/cats/:id/photos',
+  quickProfile: '/quick-profile',
   registerCat: '/register-cat',
   columns: '/columns',
   columnDetail: '/columns/:slug',
@@ -21,6 +22,7 @@ export const paths = {
     routePatterns.catProfile.replace(':path', encodeURIComponent(profPathId)),
   editCat: (catId: string) => routePatterns.editCat.replace(':id', encodeURIComponent(catId)),
   catPhotos: (catId: string) => routePatterns.catPhotos.replace(':id', encodeURIComponent(catId)),
+  quickProfile: () => routePatterns.quickProfile,
   registerCat: () => routePatterns.registerCat,
   userProfile: (userId: string) =>
     routePatterns.userProfile.replace(':id', encodeURIComponent(userId)),

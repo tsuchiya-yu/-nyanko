@@ -17,6 +17,18 @@ const ensureGtag = (): ((...args: unknown[]) => void) => {
   return window.gtag;
 };
 
+export type AnalyticsEventParameter = string | number | boolean;
+export type AnalyticsEventParameters = Record<string, AnalyticsEventParameter | undefined>;
+
+const removeUndefinedParameters = (
+  parameters: AnalyticsEventParameters
+): Record<string, AnalyticsEventParameter> =>
+  Object.fromEntries(
+    Object.entries(parameters).filter(
+      (entry): entry is [string, AnalyticsEventParameter] => entry[1] !== undefined
+    )
+  );
+
 // Google Analytics初期化
 export const initGA = (): void => {
   ensureGtag();
@@ -24,27 +36,26 @@ export const initGA = (): void => {
 
 // ページビューをトラッキング
 export const trackPageView = (path: string): void => {
-  const gtag = ensureGtag();
-  gtag('event', 'page_view', {
-    page_path: path,
-    page_location: window.location.href,
-    page_title: document.title,
-  });
+  try {
+    const gtag = ensureGtag();
+    gtag('event', 'page_view', {
+      page_path: path,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+  } catch {
+    // Analytics must never block navigation or rendering.
+  }
 };
 
 // イベントをトラッキング
-export const trackEvent = (
-  category: string,
-  action: string,
-  label?: string,
-  value?: number
-): void => {
-  const gtag = ensureGtag();
-  gtag('event', action, {
-    event_category: category,
-    event_label: label,
-    value: value,
-  });
+export const trackEvent = (action: string, parameters: AnalyticsEventParameters = {}): void => {
+  try {
+    const gtag = ensureGtag();
+    gtag('event', action, removeUndefinedParameters(parameters));
+  } catch {
+    // Analytics must never block the action being measured.
+  }
 };
 
 // TypeScriptのためのgtagの型定義

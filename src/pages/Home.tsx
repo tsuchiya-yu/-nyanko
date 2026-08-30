@@ -195,7 +195,7 @@ export default function Home() {
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-2 sm:py-8 sm:mt-2 mt-8">
           <div className="max-w-7xl mx-auto text-center space-y-6">
             <div className="mb-10 space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-800">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-ink">
                 ねこプロフィール
               </h1>
               <p className="text-base sm:text-lg text-gray-600">
@@ -283,7 +283,7 @@ export default function Home() {
           <div className="text-center mt-8">
             <button
               onClick={handleStartAction}
-              className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+              className="inline-block w-full max-w-[400px] px-8 py-4 bg-brand-500 text-ink rounded-full font-medium hover:bg-brand-600 transition-colors"
             >
               今すぐ始める
             </button>
@@ -294,11 +294,11 @@ export default function Home() {
       {/* みんなの愛猫 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">みんなの愛猫</h2>
+          <h2 className="text-2xl font-semibold text-ink mb-4">みんなの愛猫</h2>
         </div>
         {isLoadingCats ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"></div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -308,7 +308,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <button
             onClick={handleStartAction}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-brand-500 text-ink rounded-full font-medium hover:bg-brand-600 transition-colors"
           >
             今すぐ始める
           </button>
@@ -318,7 +318,7 @@ export default function Home() {
       {/* AIが猫の気持ちを代弁 - 新しいセクション */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl mb-16">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">AIが猫の気持ちを代弁</h2>
+          <h2 className="text-2xl font-semibold text-ink mb-4">AIが猫の気持ちを代弁</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             写真をアップロードすると、AIが猫の気持ちを分析して教えてくれる「ねこのひとこと」機能を搭載！
           </p>
@@ -339,7 +339,7 @@ export default function Home() {
                 />
               </picture>
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <h3 className="text-gray-800 font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
+                <h3 className="text-ink font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
                 <p className="text-gray-700 text-sm italic">
                   窓の外を見ていると、鳥さんたちが遊んでるのが見えるニャ。私も外に出たいけど、ここからじっと見守るのも悪くないにゃ〜。
                 </p>
@@ -348,10 +348,10 @@ export default function Home() {
           </div>
           <div className="w-full lg:w-1/2 max-w-md space-y-4">
             <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
-              <div className="bg-pink-100 rounded-full p-2 mr-4">
+              <div className="bg-brand-50 rounded-full p-2 mr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-pink-500"
+                  className="h-6 w-6 text-brand-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -365,17 +365,17 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">最新のAI技術を活用</h3>
+                <h3 className="font-medium text-ink">最新のAI技術を活用</h3>
                 <p className="text-gray-600 text-sm">
                   最新のAI画像認識技術で、猫の表情や姿勢から気持ちを分析
                 </p>
               </div>
             </div>
             <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
-              <div className="bg-pink-100 rounded-full p-2 mr-4">
+              <div className="bg-brand-50 rounded-full p-2 mr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-pink-500"
+                  className="h-6 w-6 text-brand-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -389,17 +389,17 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">猫の気持ちを理解</h3>
+                <h3 className="font-medium text-ink">猫の気持ちを理解</h3>
                 <p className="text-gray-600 text-sm">
                   愛猫の表情や仕草から、どんな気持ちだったのかを教えてくれます
                 </p>
               </div>
             </div>
             <div className="bg-white p-5 rounded-lg shadow-sm flex items-start">
-              <div className="bg-pink-100 rounded-full p-2 mr-4">
+              <div className="bg-brand-50 rounded-full p-2 mr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-pink-500"
+                  className="h-6 w-6 text-brand-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -413,7 +413,7 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800">猫視点の語り口</h3>
+                <h3 className="font-medium text-ink">猫視点の語り口</h3>
                 <p className="text-gray-600 text-sm">
                   まるで猫が話しているかのような語り口で、より楽しめます
                 </p>
@@ -424,7 +424,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <button
             onClick={handleTryAIAction}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-brand-500 text-ink rounded-full font-medium hover:bg-brand-600 transition-colors"
           >
             「ねこのひとこと」を試してみる
           </button>
@@ -434,10 +434,10 @@ export default function Home() {
       {/* コラムセクション */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="bg-white rounded-xl p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">猫のコラム</h2>
+          <h2 className="text-2xl font-semibold text-ink mb-6">猫のコラム</h2>
           {isLoadingColumns ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"></div>
             </div>
           ) : (
             <>
@@ -467,7 +467,7 @@ export default function Home() {
                           })
                           .replace(/\//g, '.')}
                       </time>
-                      <h3 className="text-base font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors line-clamp-2">
+                      <h3 className="text-base font-semibold text-ink mt-2 hover:text-gray-500 transition-colors line-clamp-2">
                         <Link to={paths.columnDetail(column.slug)}>{column.title}</Link>
                       </h3>
                       <p className="mt-2 text-sm text-gray-600 line-clamp-2">
@@ -506,10 +506,10 @@ export default function Home() {
       {/* お知らせセクション */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="bg-white rounded-xl p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">お知らせ</h2>
+          <h2 className="text-2xl font-semibold text-ink mb-4">お知らせ</h2>
           {isLoadingNews ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"></div>
             </div>
           ) : (
             <>
@@ -525,7 +525,7 @@ export default function Home() {
                         })
                         .replace(/\//g, '.')}
                     </time>
-                    <h3 className="text-base text-gray-800 mt-1 hover:text-gray-500 transition-colors">
+                    <h3 className="text-base text-ink mt-1 hover:text-gray-500 transition-colors">
                       <Link to={paths.newsDetail(item.slug)} className="block">
                         {item.title}
                       </Link>
@@ -560,7 +560,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <button
             onClick={handleStartAction}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-brand-500 text-ink rounded-full font-medium hover:bg-brand-600 transition-colors"
           >
             今すぐ始める
           </button>
@@ -569,7 +569,7 @@ export default function Home() {
 
       {/* プロフィールページを作ろう！ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
+        <h2 className="text-2xl font-semibold text-ink text-center mb-8">
           ３ステップでページを作ろう！
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -584,10 +584,10 @@ export default function Home() {
                 height="192"
               />
             </picture>
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-brand-50 text-brand-600 rounded-full text-xl font-semibold mb-4">
               1
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">会員登録</h3>
+            <h3 className="text-lg font-medium text-ink mb-2">会員登録</h3>
             <p className="text-gray-600">メールアドレスで簡単に登録できます</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -603,10 +603,10 @@ export default function Home() {
                 loading="lazy"
               />
             </picture>
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-brand-50 text-brand-600 rounded-full text-xl font-semibold mb-4">
               2
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">猫ちゃん情報の入力</h3>
+            <h3 className="text-lg font-medium text-ink mb-2">猫ちゃん情報の入力</h3>
             <p className="text-gray-600">名前やプロフィール、写真を登録できます</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -622,17 +622,17 @@ export default function Home() {
                 loading="lazy"
               />
             </picture>
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-pink-500 rounded-full text-xl font-semibold mb-4">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-brand-50 text-brand-600 rounded-full text-xl font-semibold mb-4">
               3
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">ページの公開</h3>
+            <h3 className="text-lg font-medium text-ink mb-2">ページの公開</h3>
             <p className="text-gray-600">SNSでページを共有して、うちの子を他の人に共有しよう！</p>
           </div>
         </div>
         <div className="text-center mt-8">
           <button
             onClick={handleStartAction}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-brand-500 text-ink rounded-full font-medium hover:bg-brand-600 transition-colors"
           >
             無料で始める
           </button>
@@ -641,9 +641,7 @@ export default function Home() {
 
       {/* スマホ操作説明 */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">
-          スマホでかんたん操作
-        </h2>
+        <h2 className="text-2xl font-semibold text-ink text-center mb-8">スマホでかんたん操作</h2>
         <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4 scrollbar-none sm:space-x-0 sm:space-y-6 sm:flex-col sm:overflow-x-visible">
           <div className="bg-white p-6 rounded-lg shadow-md flex-none w-[280px] sm:w-full flex flex-col sm:flex-row items-center">
             <picture>
@@ -659,7 +657,7 @@ export default function Home() {
               />
             </picture>
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">写真の追加</h3>
+              <h3 className="text-lg font-medium text-ink mb-2">写真の追加</h3>
               <p className="text-gray-600">スマホで撮影した写真をすぐにアップロード</p>
             </div>
           </div>
@@ -677,7 +675,7 @@ export default function Home() {
               />
             </picture>
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">プロフィール編集</h3>
+              <h3 className="text-lg font-medium text-ink mb-2">プロフィール編集</h3>
               <p className="text-gray-600">いつでもどこでも情報を更新できます</p>
             </div>
           </div>
@@ -695,7 +693,7 @@ export default function Home() {
               />
             </picture>
             <div className="w-full">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">SNSシェア</h3>
+              <h3 className="text-lg font-medium text-ink mb-2">SNSシェア</h3>
               <p className="text-gray-600">InstagramやXへ簡単に共有</p>
             </div>
           </div>
@@ -703,7 +701,7 @@ export default function Home() {
         <div className="text-center mt-8">
           <button
             onClick={handleStartAction}
-            className="inline-block w-full max-w-[400px] px-8 py-4 bg-gray-800 text-white rounded-full font-medium hover:bg-gray-700 transition-colors"
+            className="inline-block w-full max-w-[400px] px-8 py-4 bg-brand-500 text-ink rounded-full font-medium hover:bg-brand-600 transition-colors"
           >
             今すぐ始める
           </button>
@@ -712,7 +710,7 @@ export default function Home() {
 
       {/* よくある質問 */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-8">よくある質問</h2>
+        <h2 className="text-2xl font-semibold text-ink text-center mb-8">よくある質問</h2>
         <div className="space-y-4">
           <details className="bg-white p-6 rounded-lg shadow-md">
             <summary className="flex justify-between items-center cursor-pointer">

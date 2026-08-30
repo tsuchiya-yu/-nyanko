@@ -64,14 +64,14 @@ export default function Columns() {
           トップに戻る
         </Link>
       </div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">コラム一覧</h1>
+      <h1 className="text-3xl font-bold text-ink mb-8">コラム一覧</h1>
 
       {isLoading ? (
         <div className="text-center py-12">
           <div
             role="status"
             aria-label="読み込み中"
-            className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"
+            className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"
           />
         </div>
       ) : error ? (
@@ -111,7 +111,7 @@ export default function Columns() {
                     })
                     .replace(/\//g, '.')}
                 </time>
-                <h2 className="text-xl font-semibold text-gray-800 mt-2 hover:text-gray-500 transition-colors">
+                <h2 className="text-xl font-semibold text-ink mt-2 hover:text-gray-500 transition-colors">
                   <Link to={paths.columnDetail(column.slug)}>{column.title}</Link>
                 </h2>
                 <p className="mt-3 text-gray-600 line-clamp-3">{stripHtml(column.content)}</p>

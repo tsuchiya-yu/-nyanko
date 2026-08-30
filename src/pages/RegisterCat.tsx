@@ -274,11 +274,11 @@ export default function RegisterCat() {
         <div className="flex items-center mb-6">
           <Link
             to={user ? paths.userProfile(user.id) : paths.home()}
-            className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="mr-2 text-gray-600 hover:text-ink transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">新しい猫ちゃんを登録</h1>
+          <h1 className="text-2xl font-bold text-ink">新しい猫ちゃんを登録</h1>
         </div>
 
         {showImageEditor && editingImage ? (
@@ -301,7 +301,7 @@ export default function RegisterCat() {
                 type="text"
                 {...register('name', { required: '名前は必須です' })}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
             </div>
@@ -310,7 +310,7 @@ export default function RegisterCat() {
               <label className="block text-sm font-medium text-gray-700 mb-1">性別</label>
               <select
                 {...register('gender')}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               >
                 <option value="">不明</option>
                 <option value="男の子">男の子</option>
@@ -324,7 +324,7 @@ export default function RegisterCat() {
                 type="date"
                 {...register('birthdate', { required: '生年月日は必須です' })}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
               {errors.birthdate && (
                 <p className="mt-1 text-sm text-red-600">{errors.birthdate.message}</p>
@@ -334,7 +334,7 @@ export default function RegisterCat() {
                   <input
                     type="checkbox"
                     {...register('is_birthdate_estimated')}
-                    className="rounded border-gray-300 text-pink-500 focus:ring-gray-500"
+                    className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                   />
                   <span className="ml-2 text-sm text-gray-600">推定の生年月日</span>
                 </label>
@@ -348,7 +348,7 @@ export default function RegisterCat() {
                 {...register('breed', { required: '品種は必須です' })}
                 placeholder="ミックス"
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
               {errors.breed && <p className="mt-1 text-sm text-red-600">{errors.breed.message}</p>}
             </div>
@@ -360,7 +360,7 @@ export default function RegisterCat() {
                 {...register('catchphrase')}
                 placeholder="いつも元気いっぱい！甘えん坊な女の子♪"
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
@@ -369,7 +369,7 @@ export default function RegisterCat() {
               <textarea
                 {...register('description', { required: '説明は必須です' })}
                 rows={5}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               ></textarea>
               {errors.description && (
                 <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
@@ -387,7 +387,7 @@ export default function RegisterCat() {
                   {...profPathIdProps}
                   placeholder="my_cat"
                   className="block w-[160px] px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   ref={node => {
                     profPathIdFormRef(node);
                     profPathIdRef.current = node;
@@ -417,7 +417,7 @@ export default function RegisterCat() {
                   }
                 }}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
 
               {/* プレビュー画像の表示 */}
@@ -454,7 +454,7 @@ export default function RegisterCat() {
                 {...register('instagram_url')}
                 placeholder="https://www.instagram.com/..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
@@ -465,7 +465,7 @@ export default function RegisterCat() {
                 {...register('youtube_url')}
                 placeholder="https://www.youtube.com/@..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
@@ -476,7 +476,7 @@ export default function RegisterCat() {
                 {...register('tiktok_url')}
                 placeholder="https://www.tiktok.com/@..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
@@ -487,7 +487,7 @@ export default function RegisterCat() {
                 {...register('x_url')}
                 placeholder="https://x.com/..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
@@ -500,7 +500,7 @@ export default function RegisterCat() {
                 {...register('homepage_url')}
                 placeholder="https://nekoneko.com/..."
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
@@ -526,7 +526,7 @@ export default function RegisterCat() {
 
             {/* カラーテーマ設定 */}
             <div className="pt-4 border-t border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">カラーテーマ設定</h2>
+              <h2 className="text-lg font-semibold text-ink mb-4">カラーテーマ設定</h2>
 
               <div className="space-y-6">
                 <p>プロフィールページのカラーテーマを設定できます。</p>
@@ -547,7 +547,7 @@ export default function RegisterCat() {
                         setValue('background_color', e.target.value);
                       }}
                       className="block px-3 py-2 border border-gray-300 rounded-lg
-                        focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -569,7 +569,7 @@ export default function RegisterCat() {
                         setValue('text_color', e.target.value);
                       }}
                       className="block px-3 py-2 border border-gray-300 rounded-lg
-                        focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -613,7 +613,7 @@ export default function RegisterCat() {
               disabled={mutation.isPending}
               className="w-full py-2 px-4 border border-transparent rounded-full
                 bg-gray-500 hover:bg-gray-600 text-white font-medium
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {mutation.isPending ? '登録中...' : '登録する'}

@@ -58,7 +58,7 @@ export default function Modal({
           )}
 
           <div className="p-6">
-            {title && <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>}
+            {title && <h2 className="text-xl font-semibold text-ink mb-6">{title}</h2>}
             {children}
           </div>
         </div>

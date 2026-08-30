@@ -32,7 +32,7 @@ export default function Terms() {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">利用規約</h1>
+          <h1 className="text-2xl font-bold text-ink">利用規約</h1>
         </div>
 
         <div className="prose max-w-none">

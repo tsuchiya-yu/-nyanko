@@ -237,10 +237,10 @@ export default function CatPhotos() {
         </Helmet>
       )}
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+      <h1 className="text-2xl font-bold text-ink mb-6 flex items-center">
         <Link
           to={paths.catProfile(cat.prof_path_id)}
-          className="mr-2 text-gray-600 hover:text-gray-900 transition-colors"
+          className="mr-2 text-gray-600 hover:text-ink transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
@@ -280,7 +280,7 @@ export default function CatPhotos() {
                     }
                   }}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
                 {!imageFile && !previewUrl && (
                   <p className="mt-1 text-sm text-red-600">写真は必須です</p>
@@ -314,7 +314,7 @@ export default function CatPhotos() {
                   {...register('comment')}
                   rows={2}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
 
@@ -322,7 +322,7 @@ export default function CatPhotos() {
                 type="submit"
                 disabled={addPhoto.isPending || isUploading}
                 className="w-full py-2 px-4 border border-transparent rounded-full
-                  text-white bg-gray-800 hover:bg-gray-500 font-medium
+                  text-ink bg-brand-500 hover:bg-brand-600 font-medium
                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-500 
                   transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -335,7 +335,7 @@ export default function CatPhotos() {
 
       {isLoading ? (
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"></div>
         </div>
       ) : (
         <>

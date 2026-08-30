@@ -59,7 +59,7 @@ export default function OwnerCatsSection({
                     />
                   </div>
                   <div className="p-2 bg-white">
-                    <h3 className="text-sm font-semibold text-gray-800 truncate">{cat.name}</h3>
+                    <h3 className="text-sm font-semibold text-ink truncate">{cat.name}</h3>
                     <div className="h-[2.5rem] overflow-hidden mt-1">
                       <p className="text-xs text-gray-600 leading-normal line-clamp-2">
                         {cat.description || '　'}

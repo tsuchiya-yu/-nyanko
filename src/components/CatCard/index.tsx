@@ -58,7 +58,7 @@ export default function CatCard({ cat, actions, footer }: CatCardProps) {
           )}
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-800 truncate">{cat.name}</h3>
+          <h3 className="text-lg font-semibold text-ink truncate">{cat.name}</h3>
           <p className="text-sm text-gray-600 mt-1">
             {cat.breed} | {age.toString()}
           </p>

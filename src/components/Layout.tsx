@@ -85,7 +85,7 @@ export default function Layout({ children }: LayoutProps) {
               <div className="flex items-center space-x-2 text-sm">
                 <Link
                   to={paths.columns()}
-                  className="px-1 py-4 rounded-full text-gray-700 hover:text-gray-900 font-medium"
+                  className="px-1 py-4 rounded-full text-gray-700 hover:text-ink font-medium"
                 >
                   コラム
                 </Link>
@@ -93,7 +93,7 @@ export default function Layout({ children }: LayoutProps) {
                   <>
                     <Link
                       to={paths.userProfile(user.id)}
-                      className="px-1 py-4 rounded-full text-gray-700 hover:text-gray-900 font-medium"
+                      className="px-1 py-4 rounded-full text-gray-700 hover:text-ink font-medium"
                     >
                       マイページ
                     </Link>
@@ -102,13 +102,13 @@ export default function Layout({ children }: LayoutProps) {
                   <>
                     <button
                       onClick={handleLoginAction}
-                      className="px-1 py-4 rounded-full text-gray-700 hover:text-gray-900 font-medium"
+                      className="px-1 py-4 rounded-full text-gray-700 hover:text-ink font-medium"
                     >
                       ログイン
                     </button>
                     <button
                       onClick={handleRegisterAction}
-                      className="px-3 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-500 font-medium transition-colors"
+                      className="px-3 py-2 rounded-full bg-brand-500 text-ink hover:bg-brand-600 font-medium transition-colors"
                     >
                       新規登録
                     </button>

@@ -328,8 +328,8 @@ export default function ImageEditor({
       {isSaving && (
         <div className="absolute inset-0 bg-gray-500/50 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="bg-white/90 rounded-lg p-4 flex flex-col items-center gap-3 shadow-lg">
-            <div className="w-10 h-10 border-4 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-gray-800 font-medium">画像を保存中...</p>
+            <div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-ink font-medium">画像を保存中...</p>
           </div>
         </div>
       )}
@@ -416,7 +416,7 @@ export default function ImageEditor({
           type="button"
           onClick={handleSave}
           disabled={isSaving}
-          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-ink bg-brand-500 hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           保存
         </button>

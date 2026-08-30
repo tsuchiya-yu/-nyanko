@@ -114,9 +114,7 @@ export default function UserProfile() {
           <div>
             <div className="flex items-center gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">
-                  {profile?.name || '飼い主'} さん
-                </h1>
+                <h1 className="text-2xl font-bold text-ink">{profile?.name || '飼い主'} さん</h1>
                 <p className="text-gray-500 mt-1">{getGreetingMessage()}</p>
               </div>
             </div>
@@ -126,14 +124,14 @@ export default function UserProfile() {
             <div className="flex flex-wrap gap-3">
               <Link
                 to={paths.registerCat()}
-                className="flex items-center px-5 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 font-medium text-sm"
+                className="flex items-center px-5 py-2.5 bg-brand-500 text-ink rounded-lg hover:bg-brand-600 transition-all duration-300 font-medium text-sm"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 新しい猫ちゃんを登録
               </Link>
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className="flex items-center px-5 py-2.5 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 font-medium text-sm"
+                className="flex items-center px-5 py-2.5 bg-white text-ink border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-300 font-medium text-sm"
               >
                 <Settings className="h-4 w-4 mr-2" />
                 アカウント設定
@@ -143,7 +141,7 @@ export default function UserProfile() {
         </div>
 
         <div className="border-t border-gray-100 pt-8">
-          <h2 className="text-lg font-medium text-gray-800 mb-6 flex items-center">
+          <h2 className="text-lg font-medium text-ink mb-6 flex items-center">
             登録している猫ちゃん
           </h2>
 
@@ -156,7 +154,7 @@ export default function UserProfile() {
               {isOwnProfile && (
                 <Link
                   to={paths.registerCat()}
-                  className="inline-block mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 text-sm font-medium"
+                  className="inline-block mt-4 px-4 py-2 bg-brand-500 text-ink rounded-lg hover:bg-brand-600 transition-all duration-300 text-sm font-medium"
                 >
                   猫ちゃんを登録する
                 </Link>
@@ -174,7 +172,7 @@ export default function UserProfile() {
 
       {isOwnProfile && favoriteCats && favoriteCats.length > 0 && (
         <div className="bg-white rounded-2xl shadow-sm p-2">
-          <h2 className="text-lg font-medium text-gray-800 mb-6 flex items-center">
+          <h2 className="text-lg font-medium text-ink mb-6 flex items-center">
             いいねした猫ちゃん
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

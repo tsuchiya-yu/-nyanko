@@ -93,7 +93,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           className={`flex-1 py-2 text-center rounded-lg text-sm font-medium transition-colors
             ${
               localMode === 'login'
-                ? 'bg-gray-800 text-white'
+                ? 'bg-brand-500 text-ink'
                 : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
             }`}
           onClick={() => setLocalMode('login')}
@@ -104,7 +104,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           className={`flex-1 py-2 text-center rounded-lg text-sm font-medium transition-colors
             ${
               localMode === 'register'
-                ? 'bg-gray-800 text-white'
+                ? 'bg-brand-500 text-ink'
                 : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
             }`}
           onClick={() => setLocalMode('register')}
@@ -132,7 +132,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               value={name}
               onChange={e => setName(e.target.value)}
               className="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-                focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all"
+                focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
               placeholder="猫田 太郎"
               autoComplete="name"
             />
@@ -147,7 +147,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-              focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all"
+              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
             placeholder="example@email.com"
             autoComplete="email"
             name="email"
@@ -162,7 +162,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             value={password}
             onChange={e => setPassword(e.target.value)}
             className="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl
-              focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all"
+              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
             placeholder="••••••••"
             autoComplete={localMode === 'login' ? 'current-password' : 'new-password'}
             name="password"
@@ -173,8 +173,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           type="submit"
           disabled={loading}
           className="w-full py-3 px-4 mt-4 rounded-xl
-            text-white bg-gray-800 hover:bg-gray-900 font-medium
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700
+            text-ink bg-brand-500 hover:bg-brand-600 font-medium
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500
             transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? '処理中...' : localMode === 'login' ? 'ログイン' : 'アカウントを作成'}

@@ -59,7 +59,7 @@ export default function NewsDetail() {
         <div
           role="status"
           aria-label="読み込み中"
-          className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"
+          className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"
         />
       </div>
     );
@@ -129,7 +129,7 @@ export default function NewsDetail() {
               })
               .replace(/\//g, '.')}
           </time>
-          <h1 className="text-3xl font-bold text-gray-900 mt-2">{article.title}</h1>
+          <h1 className="text-3xl font-bold text-ink mt-2">{article.title}</h1>
         </header>
 
         <div className="prose prose-gray max-w-none">{convertUrlsToLinks(article.content)}</div>

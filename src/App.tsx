@@ -27,7 +27,7 @@ const LoadingFallback = () => (
     <div
       role="status"
       aria-label="読み込み中"
-      className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"
+      className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"
     />
   </div>
 );

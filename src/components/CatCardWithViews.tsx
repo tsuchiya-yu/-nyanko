@@ -25,13 +25,13 @@ export default function CatCardWithViews({ cat, isOwnProfile }: CatCardWithViews
             <>
               <Link
                 to={paths.catPhotos(cat.id)}
-                className="flex-1 px-3 py-2 bg-gray-800 text-white rounded-lg hover:bg-black transition-all text-sm font-medium text-center"
+                className="flex-1 px-3 py-2 bg-brand-500 text-ink rounded-lg hover:bg-brand-600 transition-all text-sm font-medium text-center"
               >
                 写真を追加
               </Link>
               <Link
                 to={paths.editCat(cat.id)}
-                className="flex-1 px-3 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
+                className="flex-1 px-3 py-2 bg-white text-ink border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium text-center"
               >
                 編集する
               </Link>

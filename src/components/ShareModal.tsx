@@ -99,7 +99,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
         </button>
 
         <div className="p-6 text-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">{catName} | ねこプロフィール</h3>
+          <h3 className="text-lg font-semibold text-ink mb-4">{catName} | ねこプロフィール</h3>
           <div className="mb-4">
             <div className="flex justify-center mb-4">
               <div className="border border-gray-300 rounded-md inline-block">
@@ -155,7 +155,7 @@ export default function ShareModal({ isOpen, onClose, catName }: ShareModalProps
           <p className="text-sm text-gray-600 mb-2">うちの子のページをつくる</p>
           <button
             onClick={handleRegister}
-            className="w-full py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-500 transition-colors"
+            className="w-full py-2 bg-brand-500 text-ink rounded-lg hover:bg-brand-600 transition-colors"
           >
             登録する
           </button>

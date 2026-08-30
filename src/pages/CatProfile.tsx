@@ -90,10 +90,10 @@ const Modal = ({ isOpen, onClose, photo }: ModalProps) => {
             decoding="async"
             options={{ resize: 'contain', quality: 85 }}
           />
-          {photo?.comment && <p className="text-gray-800 text-sm text-center">{photo.comment}</p>}
+          {photo?.comment && <p className="text-ink text-sm text-center">{photo.comment}</p>}
           {photo?.cat_mood && (
             <div className="mt-4 pt-4 border-t border-gray-200">
-              <h3 className="text-gray-800 font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
+              <h3 className="text-ink font-semibold text-sm mb-2">ねこのひとこと(β版)</h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">{photo.cat_mood}</p>
             </div>
           )}
@@ -304,7 +304,7 @@ export default function CatProfile() {
   if (isLoading) {
     return (
       <div className="text-center py-12 min-h-[calc(100vh-200px)] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto"></div>
       </div>
     );
   }
